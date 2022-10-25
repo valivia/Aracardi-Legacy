@@ -1,0 +1,86 @@
+@use "styles/vars" as *;
+@use "styles/button" as *;
+
+.main {
+    grid-area: main;
+    display: grid;
+    height: fit-content;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 400px min-content;
+    row-gap: 20px;
+    grid-template-areas:
+        "settings addons"
+        "button button";
+}
+
+.settings,
+.addons {
+    height: 100%;
+    width: 100%;
+    padding: 30px;
+
+    & > h2 {
+        font-weight: 400;
+    }
+}
+
+.settings {
+    grid-area: settings;
+    border-right: 1px $text solid;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    & > fieldset {
+        border: none;
+        outline: none;
+
+        & > label {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.button {
+    grid-area: button;
+    display: flex;
+    justify-content: center;
+
+    & > button {
+        @include primaryButton;
+    }
+
+    width: 100%;
+}
+
+.addons {
+    grid-area: addons;
+
+    & > table {
+        border-collapse: collapse;
+        gap: 10px;
+        & * {
+            text-align: left;
+            gap: 10px;
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .main {
+        grid-area: main;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .settings,
+    .addons {
+        padding: 0 10px;
+    }
+
+    .settings {
+        align-items: center;
+    }
+}

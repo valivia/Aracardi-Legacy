@@ -1,0 +1,32 @@
+@use "styles/vars" as *;
+
+@mixin textInput {
+    border: none;
+    border-bottom: 2px $text solid;
+    margin: 5px;
+
+    font: inherit;
+    padding: 10px;
+    font-weight: normal;
+
+    background-color: transparent;
+    color: $text;
+
+    text-align: center;
+
+    transition: padding 200ms ease-in-out;;
+
+    &:hover,
+    &:active {
+        border-bottom: 2px $textHover solid;
+    }
+
+    &:focus {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+}

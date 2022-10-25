@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# data
+/assets
+/data
+/public
+
 # testing
 /coverage
 

@@ -1,0 +1,20 @@
+@use "styles/vars" as *;
+
+.tr {
+    @include noselect();
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &[data-selected="true"] {
+        background-color: $text;
+        color: $primary;
+    }
+
+    & * {
+        padding: 5px;
+        padding-right: 40px;
+        font-weight: 400;
+    }
+}

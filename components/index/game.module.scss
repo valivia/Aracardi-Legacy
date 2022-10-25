@@ -1,0 +1,15 @@
+@use "styles/vars" as *;
+
+.main {
+    border: 1px $text solid;
+    border-radius: 15px;
+    padding: 30px;
+    width: 400px;
+    height: 300px;
+
+    text-align: center;
+
+    & > h1 {
+       font-weight: 400; 
+    }
+}
