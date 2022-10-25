@@ -1,3 +1,4 @@
+import CheckBoxComponent from "@components/input/checkbox.module";
 import onChangeParser from "@components/onchange";
 import { Settings } from "@structs/game";
 
@@ -12,13 +13,23 @@ function SettingsComponent({ settings, setSettings }: Props) {
 
     return <>
         {Object.entries(settings).map(([key, value]) => {
+            const text = key.replace("_", " ");
+
+            if (typeof value == "boolean")
+                return (
+                    <CheckBoxComponent
+                        key={key}
+                        name={key}
+                        onChange={onChange}
+                        value={value}
+                        text={text}
+                    />)
+
+
             return (
                 <fieldset key={key}>
                     <label htmlFor={key}>{key.replace("_", " ")}</label>
-                    {typeof value == "boolean"
-                        ? <input type="checkbox" id={key} name={key} onChange={onChange} defaultChecked={value} />
-                        : <input type="number" id={key} name={key} onChange={onChange} value={value} />
-                    }
+                    <input type="number" id={key} name={key} onChange={onChange} value={value} />
                 </fieldset>
             )
         })

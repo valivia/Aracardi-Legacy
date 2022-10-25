@@ -1,0 +1,29 @@
+@use "styles/vars" as *;
+$size: 20px;
+
+.main {
+    display: flex;
+    gap: 5px;
+    &:hover {
+        color: $textHover;
+    }
+    & .input:checked ~ .checkbox {
+        background-color: currentColor;
+    }
+}
+
+.label {
+    @include noselect();
+}
+
+.checkbox {
+    display: block;
+    height: $size;
+    width: $size;
+    border: 1px solid currentColor;
+    border-radius: 100%;
+}
+
+.input {
+    display: none;
+}
