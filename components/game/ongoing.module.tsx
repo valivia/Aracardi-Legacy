@@ -127,24 +127,30 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
         const newPreviousCards = [...usedCards];
 
         // Remove card from previouscards if there is too many.
-        if (newPreviousCards.length === backlogCount)
-            newCards.push(newPreviousCards.shift()!);
+        if (settings.loop_cards) {
+            if (newPreviousCards.length === backlogCount)
+                newCards.push(newPreviousCards.shift()!);
+        }
 
 
         // Add current card to previous cards.
         const previousCard = { ...currentCard } as processedCard;
         newPreviousCards.push(previousCard);
 
-        // Set new random card as current card.
-        const newCardIndex = Math.floor(Math.random() * newCards.length);
-        const newCard = newCards[newCardIndex];
-        newCards.splice(newCardIndex, 1);
+
+        // Set new current card.
+        if (newCards.length === 0) setCurrentCard(undefined);
+        else {
+            const newCardIndex = Math.floor(Math.random() * newCards.length);
+            const newCard = newCards[newCardIndex];
+            newCards.splice(newCardIndex, 1);
+            setCurrentCard(processCard(newCard, newCurrentPlayer));
+        }
 
 
         setUsedCards(newPreviousCards);
         setCurrentPlayer(newCurrentPlayer);
         setCards(newCards);
-        setCurrentCard(processCard(newCard, newCurrentPlayer));
     };
 
     const onPlayerRemove = (player: Player) => {
@@ -171,7 +177,9 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
             {/* Card */}
             <section className={styles.currentCardContainer}>
                 {currentCard === undefined
-                    ? <button onClick={() => nextCard()}>Start Game</button>
+                    ? usedCards.length === 0
+                        ? <button onClick={() => nextCard()}>Start Game</button>
+                        : "Thanks for playing!"
                     : <CardComponent card={currentCard} settings={settings} onClick={nextCard} />}
             </section>
 

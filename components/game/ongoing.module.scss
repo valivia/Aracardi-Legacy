@@ -17,14 +17,15 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 
+    padding-left: 20px;
     width: 100%;
 }
 
 .players {
     height: 80%;
-    width: 100%;
+    padding: 20px 10px;
     overflow-y: auto;
 }
 
@@ -35,6 +36,7 @@
 
     width: 100%;
     height: 100%;
+    padding-right: 20px;
 
     & > article {
         width: 100%;
