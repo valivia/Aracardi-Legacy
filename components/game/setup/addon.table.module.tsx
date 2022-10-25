@@ -1,7 +1,8 @@
+import { Card } from "@structs/card"
 import { cardPack } from "@structs/pack"
 import AddonComponent from "./addon.module"
 
-function AddonTableComponent({ addons, activeAddons, toggleAddon }: Props) {
+function AddonTableComponent({ addons, activeAddons, currentCards, toggleAddon }: Props) {
     return (
         <table>
 
@@ -27,7 +28,7 @@ function AddonTableComponent({ addons, activeAddons, toggleAddon }: Props) {
             <tfoot>
                 <tr>
                     <th>{activeAddons.length} addons</th>
-                    <th>{activeAddons.reduce((total, current) => { return total + current.cards.length }, 0)}</th>
+                    <th>{currentCards.length}</th>
                     <th>by {activeAddons.reduce((total, current) => { return total + (current.authors?.length ?? 0) }, 0)} authors</th>
                 </tr>
             </tfoot>
@@ -41,5 +42,6 @@ export default AddonTableComponent
 interface Props {
     addons: cardPack[];
     activeAddons: cardPack[];
+    currentCards: Card[];
     toggleAddon: (addon: cardPack) => void
 }

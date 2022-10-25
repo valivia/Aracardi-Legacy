@@ -1,17 +1,23 @@
 import { Settings } from "@structs/game";
 import styles from "./setup.module.scss";
 import addons from "../../data/addons.json";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cardPack } from "@structs/pack";
 import { Card } from "@structs/card";
 import { Scene } from "@structs/scene";
-import onChangeParser from "@components/onchange";
 import AddonTableComponent from "./setup/addon.table.module";
 import SettingsComponent from "./setup/settings.module";
 
 function SetupScene({ settings, setSettings, setCards, setScene }: Props) {
   const [activeAddons, setActiveAddons] = useState<cardPack[]>([]);
   const [currentCards, setCurrentCards] = useState<Card[]>([]);
+
+  useEffect(() => {
+    const cards = activeAddons
+      .reduce<Card[]>((total, addon) => { return total.concat(addon.cards) }, [])
+      .filter(x => !(!settings.allow_nsfw && x.is_nsfw))
+    setCurrentCards(cards);
+  }, [settings, activeAddons]);
 
   const toggleAddon = (addon: cardPack) => {
     console.log({ addon });
@@ -27,13 +33,8 @@ function SetupScene({ settings, setSettings, setCards, setScene }: Props) {
   }
 
   const nextScene = () => {
-    const cards = activeAddons
-      .reduce<Card[]>((total, addon) => { return total.concat(addon.cards) }, [])
-      .filter(x => settings.allow_nsfw ?? !x.is_nsfw)
-
-    if (cards.length < 50) return alert("Not enough cards (50 minimum)")
-
-    setCards(cards);
+    // if (cards.length < 50) return alert("Not enough cards (50 minimum)")
+    setCards(currentCards);
     setScene(Scene.POPULATE);
   }
 
@@ -51,6 +52,7 @@ function SetupScene({ settings, setSettings, setCards, setScene }: Props) {
         <AddonTableComponent
           addons={addons}
           activeAddons={activeAddons}
+          currentCards={currentCards}
           toggleAddon={toggleAddon}
         />
       </section>

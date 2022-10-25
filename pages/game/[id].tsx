@@ -15,7 +15,7 @@ import { Card } from '@structs/card';
 import { Scene } from '@structs/scene';
 
 const DEFAULT_SETTINGS: Settings = {
-    allow_nsfw: true,
+    allow_nsfw: false,
     display_images: true,
     loop_cards: true,
     turn_multiplier: 1.0,

@@ -2,7 +2,7 @@
 
 .frame {
     display: grid;
-    grid-template-columns: 200px 1fr 200px 1fr 200px;
+    grid-template-columns: 300px 1fr 200px 1fr 300px;
     grid-template-rows: 200px 1fr 150px;
     grid-template-areas:
         "players title title title activeCards"
