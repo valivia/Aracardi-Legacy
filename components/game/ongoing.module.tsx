@@ -3,14 +3,15 @@ import styles from "./ongoing.module.scss";
 import { Card, processedCard } from "@structs/card";
 import { Settings } from "@structs/game";
 import { Player } from "@structs/player";
-import PlayerComponent from "./populate/player.module";
 import { useState } from "react";
 import CardComponent from "./game/current_card.module";
+import ActiveCardsComponent from "./game/active_cards.module";
+import PlayersComponent from "./game/players.module";
+import processCard from "@components/process_card";
 
-const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
-
-function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSource }: Props) {
+function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings, cards: CardsSource }: Props) {
     const [currentPlayer, setCurrentPlayer] = useState(players[0]);
+    const [backlogCount, setBacklogCount] = useState(Math.floor(settings.backlog_percentage * CardsSource.length));
 
     // Cards
     const [activeCards, setActiveCards] = useState<processedCard[]>([]);
@@ -18,86 +19,8 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
     const [currentCard, setCurrentCard] = useState<processedCard>();
     const [cards, setCards] = useState<Card[]>(CardsSource);
 
-    const backlogCount = settings.backlog_percentage * cards.length;
-
 
     const deleteActiveCard = (card: processedCard) => setActiveCards(old => old.filter((x) => x.id !== card.id));
-
-    const processCard = (card: Card, player: Player): processedCard => {
-        let text = card.text as string;
-        let output = { ...card, players: [player] } as unknown as processedCard;
-
-        if (output.turns === undefined) output.turns = 0;
-
-        // Previous/next/current player
-        const currentIndex = players.indexOf(player ?? players[0]);
-        const nextIndex = (currentIndex + 1) % players.length;
-        const prevIndex = (currentIndex + players.length - 1) % players.length;
-
-        // Random players
-        let randomPlayers: { name: string; placeholder: string }[] = [];
-        const match = text.match(/%PLAYER[0-9]%/g);
-
-        if (match) {
-            const playerOptions = players.filter((p) => p !== player);
-            const uniquePlaceholders = Array.from(new Set([...match]));
-            const names = [...playerOptions]
-                .sort(() => Math.random() - 0.5)
-                .splice(0, uniquePlaceholders.length);
-            randomPlayers = names.map((x, y) => ({
-                name: x.name,
-                placeholder: uniquePlaceholders[y],
-            }));
-        }
-
-        // Replace placeholders
-        const processed_text = text
-            .replace(/ /g, "~ ")
-            .split("~")
-            .map((substring) => {
-                if (substring.match(/%PREVIOUS_PLAYER%/))
-                    return (
-                        <>
-                            {" "}
-                            <var>{players[prevIndex].name}</var>
-                        </>
-                    );
-                if (substring.match(/%NEXT_PLAYER%/))
-                    return (
-                        <>
-                            {" "}
-                            <var>{players[nextIndex].name}</var>
-                        </>
-                    );
-                if (substring.match(/%SELF%/))
-                    return (
-                        <>
-                            {" "}
-                            <var>
-                                <u>{player.name}</u>
-                            </var>
-                        </>
-                    );
-
-                if (substring.match(/%PLAYER[0-9]%/)) {
-                    const randomPlayer = randomPlayers.find(
-                        (p) => p.placeholder === substring.trim()
-                    );
-
-                    if (randomPlayer)
-                        return (
-                            <>
-                                {" "}
-                                <var>{randomPlayer.name}</var>
-                            </>
-                        );
-                }
-
-                return substring;
-            });
-
-        return { ...output, processed_text };
-    }
 
     const nextCard = () => {
         const player = currentPlayer ?? players[0];
@@ -105,7 +28,7 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
         const newCurrentPlayer =
             players[(currentIndex + 1) % players.length];
 
-        document.getElementById(`player_${newCurrentPlayer.name}`)?.scrollTo({ behavior: "smooth" })
+        document.getElementById(`player_${newCurrentPlayer.name}`)?.scrollIntoView({ behavior: "smooth", block: "center" })
 
         setActiveCards(old => {
             // Filter expired active cards.
@@ -116,8 +39,16 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
                 })
                 .filter(card => card.turns !== 0)
 
+            if (!currentCard) return newArray;
+
             // Add to active cards
-            if (currentCard && currentCard.turns !== 0)
+            const allPlayersPresent = currentCard.players.length === currentCard.players
+                .reduce((x, player) =>
+                    players.some(y => y.name === player.name) ? x + 1 : x,
+                    0
+                )
+
+            if (currentCard.turns !== 0 && allPlayersPresent)
                 newArray.push(currentCard);
 
             return newArray;
@@ -128,8 +59,12 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
 
         // Remove card from previouscards if there is too many.
         if (settings.loop_cards) {
-            if (newPreviousCards.length === backlogCount)
-                newCards.push(newPreviousCards.shift()!);
+
+            if (newPreviousCards.length === backlogCount) {
+                const a = newPreviousCards.shift()
+                // TODO
+                newCards.push(a!);
+            }
         }
 
 
@@ -144,7 +79,7 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
             const newCardIndex = Math.floor(Math.random() * newCards.length);
             const newCard = newCards[newCardIndex];
             newCards.splice(newCardIndex, 1);
-            setCurrentCard(processCard(newCard, newCurrentPlayer));
+            setCurrentCard(processCard(newCard, newCurrentPlayer, [...players]));
         }
 
 
@@ -160,18 +95,19 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
 
     return (
         <>
+            {/* Add Player */}
+            {/* <section className={styles.addPlayer}>
+                <PlayerInputComponent players={players} addPlayer={addPlayer} />
+            </section> */}
+
             {/* Players */}
-            <section className={styles.playersFrame}>
-                <section className={styles.players}>
-                    {players.map(player =>
-                        <PlayerComponent
-                            player={player}
-                            removePlayer={onPlayerRemove}
-                            canRemove={players.length > PLAYER_COUNT && player.name !== currentPlayer.name}
-                            active={currentPlayer.name === player.name}
-                        />
-                    )}
-                </section>
+            <section className={styles.players}>
+                <PlayersComponent
+                    players={players}
+                    currentPlayer={currentPlayer}
+                    removePlayer={onPlayerRemove}
+                    shufflePlayers={shufflePlayers}
+                />
             </section>
 
             {/* Card */}
@@ -185,7 +121,11 @@ function GameScene({ players, addPlayer, removePlayer, settings, cards: CardsSou
 
             {/* Active */}
             <section className={styles.activeCards}>
-                {activeCards.map(card => <CardComponent card={card} preview={true} settings={settings} onClick={() => deleteActiveCard(card)} />)}
+                <ActiveCardsComponent
+                    cards={activeCards}
+                    deleteCard={deleteActiveCard}
+                    settings={settings}
+                />
             </section>
         </>
     );
@@ -195,8 +135,9 @@ export default GameScene;
 
 interface Props {
     players: Player[];
-    addPlayer: (player: Player) => void;
+    addPlayer: (player: Player) => boolean;
     removePlayer: (player: Player) => void;
+    shufflePlayers: () => void;
     settings: Settings;
     cards: Card[]
 }
