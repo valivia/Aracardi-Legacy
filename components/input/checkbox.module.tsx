@@ -1,9 +1,12 @@
+import React, { useRef } from "react";
 import styles from "./checkbox.module.scss";
 
 function CheckBoxComponent({ text: inputText, name, value, onChange }: Props) {
     const text = inputText ?? name;
+    const input = useRef<HTMLInputElement>(null);
+
     return (
-        <fieldset className={styles.main}>
+        <fieldset className={styles.main} >
             <label
                 className={styles.label}
                 htmlFor={name}
@@ -12,6 +15,7 @@ function CheckBoxComponent({ text: inputText, name, value, onChange }: Props) {
             </label>
 
             <input
+                ref={input}
                 id={name}
                 type="checkBox"
                 name={name}
@@ -20,8 +24,11 @@ function CheckBoxComponent({ text: inputText, name, value, onChange }: Props) {
                 className={styles.input}
             />
 
-            <span className={styles.checkbox}></span>
-        </fieldset>
+            <span
+                className={styles.checkbox}
+                onClick={() => input.current?.click()}
+            ></span>
+        </fieldset >
     )
 }
 

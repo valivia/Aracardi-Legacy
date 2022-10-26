@@ -6,6 +6,7 @@ $size: 20px;
     gap: 5px;
     &:hover {
         color: $textHover;
+        cursor: pointer;
     }
     & .input:checked ~ .checkbox {
         background-color: currentColor;

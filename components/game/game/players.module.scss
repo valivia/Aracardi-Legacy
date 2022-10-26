@@ -1,0 +1,48 @@
+@use "styles/vars" as *;
+
+.main {
+    grid-area: main;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    max-height: 100vh;
+    overflow-y: auto;
+    height: 100%;
+    padding: 20px 10px;
+    overflow-y: auto;
+}
+
+.playerButton {
+    width: 96px;
+    height: 96px;
+    border: 2px currentColor solid;
+    border-radius: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 5em;
+    letter-spacing: normal;
+
+    &:hover {
+        color: $textHover;
+        cursor: pointer;
+        font-weight: 100;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
+    .main {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        gap: 20px;
+
+        width: 100%;
+        overflow-x: auto;
+    }
+}

@@ -1,55 +1,13 @@
 @use "styles/button" as *;
 @use "styles/vars" as *;
 
-.players,
-.activeCards {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-
-    max-height: 100vh;
-    overflow-y: auto;
-}
-
-.playersFrame {
-    grid-area: players;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-
-    padding-left: 20px;
-    width: 100%;
-}
-
-.players {
-    height: 80%;
-    padding: 20px 10px;
-    overflow-y: auto;
-}
-
-.activeCards {
-    grid-area: activeCards;
-
-    justify-content: center;
-
-    width: 100%;
-    height: 100%;
-    padding-right: 20px;
-
-    & > article {
-        width: 100%;
-        height: 200px;
-    }
-}
-
 .currentCardContainer {
     grid-area: main;
     @include noselect();
 
     width: 100%;
     height: 100%;
+    padding: 50px 150px;
 
     display: flex;
     flex-direction: column;
@@ -61,38 +19,50 @@
     }
 
     & > article {
-        width: 80vh;
-        height: 50vh;
+        width: 100%;
+        height: 100%;
     }
 }
 
-@media (max-width: 640px) {
-    .players,
-    .activeCards {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 20px;
+.players,
+.activeCards {
+    display: grid;
+    grid-template-rows: 100px 1fr 100px;
+    grid-template-areas: "top" "main" "bottom";
 
-        max-height: 100vh;
-        overflow-y: auto;
+    max-height: 100vh;
+    width: 300px;
+
+    padding: 0 20px;
+}
+
+.players {
+    grid-area: players;
+}
+
+.activeCards {
+    grid-area: activeCards;
+}
+
+.addPlayer {
+    grid-area: space1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 25px;
+
+    & button {
+        @include primaryButton();
     }
+}
 
-    .activeCards {
-        display: grid;
-        grid-template-rows: 1fr;
-        grid-template-columns: repeat(auto-fill, 400px);
-
-        overflow-y: hidden;
-        overflow-x: auto;
-
-        & > article {
-            padding: 5px;
-            & > p {
-                font-size: 0.7em;
-                font-weight: 200;
-            }
-        }
+@media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
+    .activeCards,
+    .players {
+        width: 100%;
+        display: block;
+        padding: 0 20px;
     }
 
     .currentCardContainer {
@@ -101,5 +71,9 @@
             width: 100%;
             height: 30vh;
         }
+    }
+
+    .addPlayer {
+        display: none;
     }
 }

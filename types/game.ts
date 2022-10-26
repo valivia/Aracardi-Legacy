@@ -5,7 +5,7 @@ export interface Game {
     description: string;
     is_official: boolean;
 
-    base_pack_id: string;
+    base_packs: string[];
 }
 
 export interface Settings {

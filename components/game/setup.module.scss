@@ -5,7 +5,7 @@
     grid-area: main;
     display: grid;
     height: fit-content;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 50%;
     grid-template-rows: 400px min-content;
     row-gap: 20px;
     grid-template-areas:
@@ -19,6 +19,9 @@
     width: 100%;
     padding: 30px;
 
+    display: flex;
+    flex-direction: column;
+
     & > h2 {
         font-weight: 400;
     }
@@ -27,8 +30,6 @@
 .settings {
     grid-area: settings;
     border-right: 1px $text solid;
-    display: flex;
-    flex-direction: column;
     align-items: flex-end;
 
     & > fieldset {
@@ -43,6 +44,11 @@
     }
 }
 
+.addons {
+    grid-area: addons;
+    align-items: flex-start;
+}
+
 .button {
     grid-area: button;
     display: flex;
@@ -55,20 +61,7 @@
     width: 100%;
 }
 
-.addons {
-    grid-area: addons;
-
-    & > table {
-        border-collapse: collapse;
-        gap: 10px;
-        & * {
-            text-align: left;
-            gap: 10px;
-        }
-    }
-}
-
-@media (max-width: 640px) {
+@media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
     .main {
         grid-area: main;
         display: flex;
@@ -78,9 +71,6 @@
     .settings,
     .addons {
         padding: 0 10px;
-    }
-
-    .settings {
         align-items: center;
     }
 }

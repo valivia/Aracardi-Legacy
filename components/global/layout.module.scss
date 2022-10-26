@@ -2,13 +2,14 @@
 
 .frame {
     display: grid;
-    grid-template-columns: 300px 1fr 200px 1fr 300px;
+    grid-template-columns: auto 1fr 200px 1fr auto;
     grid-template-rows: 200px 1fr 150px;
     grid-template-areas:
         "players title title title activeCards"
         "players main main main activeCards"
         "players space1 logo space2 activeCards";
 
+    row-gap: 20px;
     width: 100%;
     min-height: 100vh;
 }
@@ -23,17 +24,18 @@
     & > h1 {
         text-align: center;
         margin: 0;
+        padding: 10px;
         font-weight: 100;
         font-size: 96px;
         text-transform: uppercase;
     }
 }
-
-@media (max-width: 640px) {
+@media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
     .frame {
+        
         display: grid;
         grid-template-columns: 1fr 200px 1fr;
-        grid-template-rows: min-content 20vh auto 20vh 70px;
+        grid-template-rows: min-content min-content auto min-content 70px;
         grid-template-areas:
             "title title title"
             "players players players"
@@ -43,6 +45,8 @@
 
         width: 100%;
         height: 100vh;
+        overflow-y: auto;
+        row-gap: 5px;
     }
 
     .title > h1 {

@@ -7,7 +7,6 @@ export interface cardPack {
     description: string;
     authors: string[];
 
-    has_banner: boolean;
     is_official: boolean;
 
     cards: Card[];

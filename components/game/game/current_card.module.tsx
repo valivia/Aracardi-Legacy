@@ -18,7 +18,7 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
             return (
                 <>
                     {" "}
-                    <var id="turns">{card.turns}</var>{" "}
+                    <var key={`${card.active_id}_turns`}>{card.turns}</var>{" "}
                     {`turn${card.turns! > 1 ? "s" : ""}`}
                 </>
             );
@@ -27,7 +27,6 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
 
     if (preview) return (
         <article
-            key={`${card.text}${card.turns}`}
             className={styles.active}
             onClick={onClick}
         >
@@ -38,7 +37,6 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
 
     return (
         <article
-            key={`${card.text}${card.turns}`}
             style={cardStyle}
             className={styles.main}
             onClick={onClick}

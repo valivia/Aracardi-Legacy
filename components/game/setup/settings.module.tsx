@@ -1,4 +1,5 @@
 import CheckBoxComponent from "@components/input/checkbox.module";
+import NumberInputComponent from "@components/input/number.module";
 import onChangeParser from "@components/onchange";
 import { Settings } from "@structs/game";
 
@@ -12,28 +13,53 @@ function SettingsComponent({ settings, setSettings }: Props) {
 
 
     return <>
-        {Object.entries(settings).map(([key, value]) => {
-            const text = key.replace("_", " ");
+        <CheckBoxComponent
+            name={"allow_nsfw"}
+            onChange={onChange}
+            value={settings.allow_nsfw}
+        />
 
-            if (typeof value == "boolean")
-                return (
-                    <CheckBoxComponent
-                        key={key}
-                        name={key}
-                        onChange={onChange}
-                        value={value}
-                        text={text}
-                    />)
+        <CheckBoxComponent
+            name={"display_images"}
+            onChange={onChange}
+            value={settings.display_images}
+        />
 
+        <CheckBoxComponent
+            name={"loop_cards"}
+            onChange={onChange}
+            value={settings.loop_cards}
+        />
 
-            return (
-                <fieldset key={key}>
-                    <label htmlFor={key}>{key.replace("_", " ")}</label>
-                    <input type="number" id={key} name={key} onChange={onChange} value={value} />
-                </fieldset>
-            )
-        })
-        }
+        <NumberInputComponent
+            name={"turn_multiplier"}
+            onChange={onChange}
+            value={settings.turn_multiplier}
+
+            step={0.05}
+            min={0.5}
+            max={2}
+        />
+
+        <NumberInputComponent
+            name={"timer_multiplier"}
+            onChange={onChange}
+            value={settings.timer_multiplier}
+
+            step={0.05}
+            min={0.5}
+            max={2}
+        />
+
+        <NumberInputComponent
+            name={"backlog_percentage"}
+            onChange={onChange}
+            value={settings.backlog_percentage}
+
+            step={0.05}
+            min={0.2}
+            max={0.90}
+        />
     </>
 }
 

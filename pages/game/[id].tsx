@@ -4,8 +4,7 @@ import SetupScene from '@components/game/setup.module';
 import GameScene from '@components/game/ongoing.module';
 import PopulateScene from '@components/game/populate.module';
 import games from "../../data/games.json";
-import cardsJson from "../../data/addons.json";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import LayoutComponent from '@components/global/layout.module';
 
 // Types
@@ -13,6 +12,7 @@ import { Settings } from '@structs/game';
 import { Player } from '@structs/player';
 import { Card } from '@structs/card';
 import { Scene } from '@structs/scene';
+import shuffle from '@components/shuffle';
 
 const DEFAULT_SETTINGS: Settings = {
     allow_nsfw: false,
@@ -38,11 +38,14 @@ const Game: NextPage = () => {
         return true;
     }
 
+    const shufflePlayers = () => setPlayers(shuffle(players));
+
     const removePlayer = (player: Player) => setPlayers(players => players.filter(x => x.name !== player.name));
 
     if (scene === Scene.SETUP) return (
         <LayoutComponent game={game}>
             <SetupScene
+                game={game}
                 settings={settings}
                 setSettings={setSettings}
                 setCards={setCards}
@@ -68,6 +71,7 @@ const Game: NextPage = () => {
                 players={players}
                 addPlayer={addPlayer}
                 removePlayer={removePlayer}
+                shufflePlayers={shufflePlayers}
                 settings={settings}
                 cards={cards}
             />

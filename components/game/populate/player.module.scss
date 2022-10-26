@@ -16,7 +16,7 @@
         color: gold;
     }
 
-    &:hover[data-canRemove="true"] > .avatarContainer {
+    &:hover[data-canremove="true"] > .avatarContainer {
         border: 1px $disabled solid;
         cursor: pointer;
 
@@ -59,4 +59,14 @@
     font-weight: 300;
     text-transform: capitalize;
     margin: 0;
+}
+
+@media (max-width: 640px) {
+    .main {
+        width: 64px;
+    }
+    .avatarContainer {
+        width: 64px;
+        height: 64px;
+    }
 }

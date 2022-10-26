@@ -11,7 +11,7 @@ function PlayerComponent({ player, active = false, canRemove = true, removePlaye
             id={`player_${player.name}`}
             onClick={() => canRemove && removePlayer(player)}
             data-active={active}
-            data-canRemove={canRemove}
+            data-canremove={canRemove}
         >
             {/* Avatar */}
             <div className={styles.avatarContainer}>

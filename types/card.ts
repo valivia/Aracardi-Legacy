@@ -17,6 +17,7 @@ export interface Card {
 }
 
 export interface processedCard extends Card {
+  active_id: string;
   turns: number;
   processed_text: (string | JSX.IntrinsicElements["var"])[];
   players: Player[];
