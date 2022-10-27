@@ -1,5 +1,5 @@
 import { Player } from "@structs/player";
-import PlayerComponent from "../populate/player.module";
+import PlayerComponent from "@components/player/player.module";
 import styles from "./players.module.scss";
 
 const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;

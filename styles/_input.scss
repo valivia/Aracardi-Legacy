@@ -14,16 +14,9 @@
 
     text-align: center;
 
-    transition: padding 200ms ease-in-out;;
-
     &:hover,
     &:active {
         border-bottom: 2px $textHover solid;
-    }
-
-    &:focus {
-        padding-left: 40px;
-        padding-right: 40px;
     }
 
     &:focus-visible {

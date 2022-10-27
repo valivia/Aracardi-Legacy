@@ -1,9 +1,10 @@
 import { Player } from "@structs/player";
 import styles from "./player.module.scss";
 import avatars from "@assets/avatars/avatars";
+import AvatarComponent from "./avatar.module";
 
 function PlayerComponent({ player, active = false, canRemove = true, removePlayer }: Props) {
-    const Avatar = avatars[player.avatar].element;
+    const avatar = avatars[player.avatar].element;
 
     return (
         <article
@@ -14,10 +15,7 @@ function PlayerComponent({ player, active = false, canRemove = true, removePlaye
             data-canremove={canRemove}
         >
             {/* Avatar */}
-            <div className={styles.avatarContainer}>
-                {<Avatar className={styles.avatar} />}
-                <div className={styles.delete}>&#x2715;</div>
-            </div>
+            <AvatarComponent avatar={avatar} />
             {/* Name */}
             <p className={styles.name}>{player.name}</p>
         </article>

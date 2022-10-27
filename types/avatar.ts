@@ -1,5 +1,5 @@
 export interface Avatar {
     name: string;
-    author: string[];
+    authors: string[];
     element: any;
 };

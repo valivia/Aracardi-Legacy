@@ -1,3 +1,4 @@
+@use "styles/player" as *;
 @use "styles/vars" as *;
 
 .main {
@@ -10,31 +11,22 @@
     max-height: 100vh;
     overflow-y: auto;
     height: 100%;
-    padding: 20px 10px;
+    padding: 20px 15px;
     overflow-y: auto;
+
+    & svg,
+    .playerButton {
+        max-width: 96px;
+        max-height: 96px;
+    }
 }
 
 .playerButton {
-    min-width: 96px;
-    min-height: 96px;
-    max-width: 96px;
-    max-height: 96px;
-
-    border: 2px currentColor solid;
-    border-radius: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include circle();
 
     font-size: 5em;
     letter-spacing: normal;
-
-    &:hover {
-        color: $textHover;
-        cursor: pointer;
-        font-weight: 100;
-    }
+    font-weight: 100;
 }
 
 @media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
@@ -47,12 +39,11 @@
 
         width: 100%;
         overflow-x: auto;
-    }
 
-    .playerButton {
-        min-width: 64px;
-        min-height: 64px;
-        max-width: 64px;
-        max-height: 64px;
+        & svg,
+        .playerButton {
+            max-width: 64px;
+            max-height: 64px;
+        }
     }
 }
