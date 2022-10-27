@@ -28,7 +28,7 @@ function PlayerInputComponent({ players, addPlayer, children }: Props) {
                 placeholder="Enter Player Name..."
                 value={name}
                 minLength={3}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value.replace(" ", ""))}
             />
             {children}
         </form>

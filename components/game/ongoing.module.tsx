@@ -95,12 +95,6 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
 
     return (
         <>
-            {/* Add Player */}
-            {/* <section className={styles.addPlayer}>
-                <PlayerInputComponent players={players} addPlayer={addPlayer} />
-            </section> */}
-
-            {/* Players */}
             <section className={styles.players}>
                 <PlayersComponent
                     players={players}

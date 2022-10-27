@@ -15,8 +15,11 @@
 }
 
 .playerButton {
-    width: 96px;
-    height: 96px;
+    min-width: 96px;
+    min-height: 96px;
+    max-width: 96px;
+    max-height: 96px;
+
     border: 2px currentColor solid;
     border-radius: 100%;
 
@@ -38,11 +41,18 @@
     .main {
         display: flex;
         flex-direction: row;
-        align-items: center;
+        align-items: flex-start;
 
         gap: 20px;
 
         width: 100%;
         overflow-x: auto;
+    }
+
+    .playerButton {
+        min-width: 64px;
+        min-height: 64px;
+        max-width: 64px;
+        max-height: 64px;
     }
 }

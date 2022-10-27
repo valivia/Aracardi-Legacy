@@ -31,7 +31,7 @@ function SetupScene({ settings, game, setSettings, setCards, setScene }: Props) 
   }
 
   const nextScene = () => {
-    // if (currentCards.length < 50) return alert("Not enough cards (50 minimum)")
+    if (currentCards.length < 50) return alert("Not enough cards (50 minimum)")
     setCards(currentCards);
     setScene(Scene.POPULATE);
   }
