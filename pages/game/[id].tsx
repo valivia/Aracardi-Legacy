@@ -38,7 +38,7 @@ const Game: NextPage = () => {
         return true;
     }
 
-    const shufflePlayers = () => setPlayers(shuffle([...players]));
+    const shufflePlayers = () => setPlayers(old => shuffle(old));
 
     const removePlayer = (player: Player) => setPlayers(players => players.filter(x => x.name !== player.name));
 

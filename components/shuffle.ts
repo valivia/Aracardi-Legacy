@@ -1,4 +1,5 @@
-export default function shuffle(array: any[]): any[] {
+export default function shuffle(input: any[]): any[] {
+    let array = [...input]
     let currentIndex = array.length,
         randomIndex;
 
