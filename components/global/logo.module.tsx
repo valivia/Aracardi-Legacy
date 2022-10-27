@@ -1,8 +1,10 @@
+import { useRouter } from "next/router";
 import styles from "./logo.module.scss";
 
 function LogoComponent() {
+    const router = useRouter();
     return (
-        <div className={styles.main}>
+        <div className={styles.main} onClick={() => confirm("Are you sure you want to leave?") && router.replace("/")}>
             <svg viewBox="0 0 145.72 71">
                 <g>
                     <polygon points="110.86 10.5 76.86 70.5 144.86 70.5 110.86 10.5" />
