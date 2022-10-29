@@ -1,10 +1,11 @@
 import GameComponent from '@components/index/game.module'
-import type { NextPage } from 'next'
 import styles from "./index.module.scss";
-import games from "../data/games.json";
+import { PrismaClient } from '@prisma/client'
 import LayoutComponent from '@components/global/layout.module';
+import { Game } from '@structs/game';
+import prisma from 'lib/prisma';
 
-const Home: NextPage = () => {
+const Home = ({ games }: Props) => {
 
   return (
     <LayoutComponent>
@@ -20,4 +21,21 @@ const Home: NextPage = () => {
   )
 }
 
+interface Props {
+  games: Game[]
+}
+
 export default Home
+
+export async function getStaticProps() {
+  const result = await prisma.game.findMany()
+  const games = result.map(game => ({ ...game, created_at: Number(game.created_at) }))
+
+
+  return {
+
+    props: { games }
+
+  }
+
+}

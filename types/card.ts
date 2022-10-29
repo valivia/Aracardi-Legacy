@@ -3,17 +3,15 @@ import { Player } from "./player";
 export interface Card {
   id: string;
 
-  title?: string;
+  title?: string | null;
   text: string;
 
-  turns?: number;
-  minimum_players?: number;
-  maximum_players?: number;
-  time_limit?: number;
-  has_image: boolean;
-  is_nsfw?: boolean;
-
-  parent_card?: string;
+  turns?: number | null;
+  minimum_players?: number | null;
+  maximum_players?: number | null;
+  time_limit?: number | null;
+  has_image: boolean | null;
+  is_nsfw?: boolean | null;
 }
 
 export interface processedCard extends Card {

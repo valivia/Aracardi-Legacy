@@ -1,11 +1,10 @@
 export interface Game {
+    created_at: number;
     id: string;
 
     title: string;
     description: string;
     is_official: boolean;
-
-    base_packs: string[];
 }
 
 export interface Settings {

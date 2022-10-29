@@ -1,4 +1,4 @@
-import { cardPack } from "@structs/pack";
+import { Addon } from "@structs/addon";
 import styles from "./addon.module.scss";
 
 function AddonComponent({ addon, toggleAddon, selected = false }: Props) {
@@ -9,7 +9,7 @@ function AddonComponent({ addon, toggleAddon, selected = false }: Props) {
             data-selected={selected}
         >
             <th>{addon.title}</th>
-            <th>{addon.cards.length}</th>
+            <th>{addon.card_count}</th>
             <th>{addon.description}</th>
         </tr>
     )
@@ -18,7 +18,7 @@ function AddonComponent({ addon, toggleAddon, selected = false }: Props) {
 export default AddonComponent;
 
 interface Props {
-    addon: cardPack;
-    toggleAddon: (addon: cardPack) => void;
+    addon: Addon;
+    toggleAddon: (addon: Addon) => void;
     selected?: boolean;
 }

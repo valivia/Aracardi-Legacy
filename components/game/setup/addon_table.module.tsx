@@ -1,5 +1,5 @@
 import { Card } from "@structs/card"
-import { cardPack } from "@structs/pack"
+import { Addon } from "@structs/addon"
 import AddonComponent from "./addon.module"
 import styles from "./addon_table.module.scss";
 
@@ -44,8 +44,8 @@ function AddonTableComponent({ addons, activeAddons, currentCards, toggleAddon }
 export default AddonTableComponent
 
 interface Props {
-    addons: cardPack[];
-    activeAddons: cardPack[];
+    addons: Addon[];
+    activeAddons: Addon[];
     currentCards: Card[];
-    toggleAddon: (addon: cardPack) => void
+    toggleAddon: (addon: Addon) => void
 }

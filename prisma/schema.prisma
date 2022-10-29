@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  title       String  @db.VarChar(256)
+  description String @db.VarChar(256)
+  is_official Boolean @default(false) @db.Boolean
+
+  authors User[]
+  addons   Addon[]
+}
+
+model Addon {
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  title       String  @db.VarChar(256)
+  description String @db.VarChar(256)
+  is_official Boolean @default(false) @db.Boolean
+
+  game_id String @db.Uuid
+
+  game    Game   @relation(fields: [game_id], references: [id])
+  authors User[]
+  cards    Card[]
+}
+
+model Card {
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+
+  title String? @db.VarChar(256)
+  text  String  @db.VarChar()
+
+  turns           Int? @db.Integer
+  minimum_players Int? @db.Integer
+  maximum_players Int? @db.Integer
+  time_limit      Int? @db.Integer
+
+  has_image Boolean @default(false) @db.Boolean
+  is_nsfw   Boolean @default(false) @db.Boolean
+
+  addon_id String @db.Uuid
+  addon    Addon  @relation(fields: [addon_id], references: [id])
+}
+
+model User {
+  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name String @db.VarChar()
+
+  game  Game[]
+  addon Addon[]
+}

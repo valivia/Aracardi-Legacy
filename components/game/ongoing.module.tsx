@@ -3,11 +3,11 @@ import styles from "./ongoing.module.scss";
 import { Card, processedCard } from "@structs/card";
 import { Settings } from "@structs/game";
 import { Player } from "@structs/player";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardComponent from "./game/current_card.module";
 import ActiveCardsComponent from "./game/active_cards.module";
 import PlayersComponent from "./game/players.module";
-import processCard from "@components/process_card";
+import processCard from "@lib/process_card";
 
 function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings, cards: CardsSource }: Props) {
     const [currentPlayer, setCurrentPlayer] = useState(players[0]);
@@ -18,6 +18,11 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
     const [usedCards, setUsedCards] = useState<Card[]>([]);
     const [currentCard, setCurrentCard] = useState<processedCard>();
     const [cards, setCards] = useState<Card[]>(CardsSource);
+
+    useEffect(() => {
+        localStorage.setItem("players", JSON.stringify(players))
+    }, [players])
+
 
 
     const deleteActiveCard = (card: processedCard) => setActiveCards(old => old.filter((x) => x.id !== card.id));

@@ -1,6 +1,6 @@
 import CheckBoxComponent from "@components/input/checkbox.module";
 import NumberInputComponent from "@components/input/number.module";
-import onChangeParser from "@components/onchange";
+import onChangeParser from "@lib/onchange";
 import { Settings } from "@structs/game";
 
 function SettingsComponent({ settings, setSettings }: Props) {

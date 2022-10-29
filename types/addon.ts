@@ -1,6 +1,6 @@
 import { Card } from "./card";
 
-export interface cardPack {
+export interface Addon {
     id: string;
 
     title: string;
@@ -8,6 +8,6 @@ export interface cardPack {
     authors: string[];
 
     is_official: boolean;
-
+    card_count: number;
     cards: Card[];
 }
