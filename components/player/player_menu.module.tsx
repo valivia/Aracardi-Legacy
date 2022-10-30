@@ -16,7 +16,7 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
 
     const getDefaultPlayer = (): Player => {
         return {
-            id: "",
+            id: `${Date.now()}`,
             name: "",
             color: "",
             avatar: getRandomAvatar(),

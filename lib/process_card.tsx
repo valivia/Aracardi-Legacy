@@ -2,8 +2,14 @@ import { Card, processedCard } from "@structs/card";
 import { Player } from "@structs/player";
 import shuffle from "./shuffle";
 
-const processCard = (card: Card, player: Player, players: Player[]): processedCard => {
+const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[]): processedCard => {
+    let card = { ...cardInput };
+    let players = [...playersInput];
+    let player = { ...playerInput };
+
     let text = card.text as string;
+
+    console.info({ card, player, players })
 
     let output: processedCard = {
         ...card,
@@ -20,7 +26,7 @@ const processCard = (card: Card, player: Player, players: Player[]): processedCa
     if (text.match(previousPlayerRegex)) {
         // Get player
         const currentPlayerIndex = players.indexOf(player ?? players[0]);
-        const match_player = players.splice(currentPlayerIndex - 1, currentPlayerIndex)[0];
+        const match_player = players.splice(currentPlayerIndex - 1)[0];
 
         // Add player to card list
         output.players.push(match_player);
@@ -38,7 +44,7 @@ const processCard = (card: Card, player: Player, players: Player[]): processedCa
     if (text.match(nextPlayerRegex)) {
         // Get player
         const currentPlayerIndex = players.indexOf(player ?? players[0]);
-        const match_player = players.splice(currentPlayerIndex, currentPlayerIndex + 1)[0];
+        const match_player = players.splice(currentPlayerIndex + 1)[0];
 
         // Add player to card list
         output.players.push(match_player);
@@ -55,10 +61,10 @@ const processCard = (card: Card, player: Player, players: Player[]): processedCa
     const currentPlayerRegex = /%SELF%/g;
     // Get player.
     const currentPlayerIndex = players.indexOf(player ?? players[0]);
-    const currentPlayer = players.splice(currentPlayerIndex, currentPlayerIndex + 1)[0];
+    const currentPlayer = players.splice(currentPlayerIndex)[0];
 
     // Add player to card list
-    output.players.push(currentPlayer);
+    output.players.push(player);
 
     // Check for matches.
     if (text.match(currentPlayerRegex)) {
@@ -67,7 +73,7 @@ const processCard = (card: Card, player: Player, players: Player[]): processedCa
             if (typeof substring !== "string") return substring;
             if (!substring.match(currentPlayerRegex)) return substring;
             return (
-                <var key={`${output.active_id}_next_${index}`}><u> {currentPlayer.name}</u></var>
+                <var key={`${output.active_id}_self_${index}`}><u> {currentPlayer.name}</u></var>
             )
         });
     }

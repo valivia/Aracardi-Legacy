@@ -4,7 +4,7 @@ import { Card, processedCard } from "@structs/card";
 import { Settings } from "@structs/game";
 import { Player } from "@structs/player";
 import { useEffect, useState } from "react";
-import CardComponent from "./game/current_card.module";
+import CardComponent from "./game/card.module";
 import ActiveCardsComponent from "./game/active_cards.module";
 import PlayersComponent from "./game/players.module";
 import processCard from "@lib/process_card";
@@ -24,15 +24,12 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
         localStorage.setItem("players", JSON.stringify(players))
     }, [players])
 
-
-
     const deleteActiveCard = (card: processedCard) => setActiveCards(old => old.filter((x) => x.id !== card.id));
 
     const nextCard = () => {
-        const player = currentPlayer ?? players[0];
+        const player = currentPlayer ?? [...players][0];
         const currentIndex = players.indexOf(player);
-        const newCurrentPlayer =
-            players[(currentIndex + 1) % players.length];
+        const newCurrentPlayer = [...players][(currentIndex + 1) % players.length];
 
         document.getElementById(`player_${newCurrentPlayer.name}`)?.scrollIntoView({ behavior: "smooth", block: "center" })
 
@@ -47,7 +44,6 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
 
             if (!currentCard) return newArray;
 
-            // Add to active cards
             const allPlayersPresent = currentCard.players.length === currentCard.players
                 .reduce((x, player) =>
                     players.some(y => y.name === player.name) ? x + 1 : x,
@@ -65,11 +61,13 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
 
         // Remove card from previouscards if there is too many.
         if (settings.loop_cards) {
-
             if (newPreviousCards.length === backlogCount) {
-                const a = newPreviousCards.shift()
-                // TODO
-                newCards.push(a!);
+                const newCard = newPreviousCards.shift()
+                if (newCard === undefined)
+                    console.error("No card!??");
+                else
+                    newCards.push(newCard);
+
             }
         }
 
@@ -85,7 +83,7 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
             const newCardIndex = Math.floor(Math.random() * newCards.length);
             const newCard = newCards[newCardIndex];
             newCards.splice(newCardIndex, 1);
-            setCurrentCard(processCard(newCard, newCurrentPlayer, [...players]));
+            setCurrentCard(processCard(newCard, newCurrentPlayer, players));
         }
 
 
