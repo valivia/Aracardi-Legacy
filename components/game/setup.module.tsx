@@ -6,6 +6,7 @@ import { Card } from "@structs/card";
 import { Scene } from "@structs/scene";
 import AddonTableComponent from "./setup/addon_table.module";
 import SettingsComponent from "./setup/settings.module";
+import { motion } from "framer-motion";
 
 function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props) {
   const [activeAddons, setActiveAddons] = useState<Addon[]>(addons.filter(x => true));
@@ -36,7 +37,11 @@ function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props
   }
 
   return (
-    <main className={styles.main}>
+    <motion.main
+      className={styles.main}
+      initial={{ opacity: 0, y: 300 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
 
       <section className={styles.settings}>
         <h2>Settings</h2>
@@ -59,7 +64,7 @@ function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props
       <section className={styles.button}>
         <button onClick={() => nextScene()}>Load Game</button>
       </section>
-    </main>
+    </motion.main>
   )
 }
 

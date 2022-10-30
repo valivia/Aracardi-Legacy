@@ -1,4 +1,5 @@
 import { Game } from "@structs/game";
+import { motion } from "framer-motion";
 import Head from "next/head";
 import styles from "./layout.module.scss";
 import LogoComponent from "./logo.module";
@@ -12,9 +13,14 @@ function LayoutComponent({ title: inputTitle, game, children }: Props) {
                 <title>{title}</title>
                 <meta name="description" content={description} />
             </Head>
-            <header className={styles.title}>
+            <motion.header
+                key={title}
+                className={styles.title}
+                initial={{ x: 300 }}
+                animate={{ x: 0 }}
+            >
                 <h1>{title}</h1>
-            </header>
+            </motion.header>
             {children}
             <LogoComponent />
         </div>

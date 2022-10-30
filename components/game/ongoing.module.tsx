@@ -8,6 +8,7 @@ import CardComponent from "./game/current_card.module";
 import ActiveCardsComponent from "./game/active_cards.module";
 import PlayersComponent from "./game/players.module";
 import processCard from "@lib/process_card";
+import { motion } from "framer-motion";
 
 function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings, cards: CardsSource }: Props) {
     const [currentPlayer, setCurrentPlayer] = useState(players[0]);
@@ -111,13 +112,17 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
             </section>
 
             {/* Card */}
-            <section className={styles.currentCardContainer}>
+            <motion.main
+                className={styles.currentCardContainer}
+                initial={{ opacity: 0, y: 300 }}
+                animate={{ opacity: 1, y: 0 }}
+            >
                 {currentCard === undefined
                     ? usedCards.length === 0
                         ? <button onClick={() => nextCard()}>Start Game</button>
                         : "Thanks for playing!"
-                    : <CardComponent card={currentCard} settings={settings} onClick={nextCard} />}
-            </section>
+                    : <CardComponent key={currentCard.id} card={currentCard} settings={settings} onClick={nextCard} />}
+            </motion.main>
 
             {/* Active */}
             <section className={styles.activeCards}>

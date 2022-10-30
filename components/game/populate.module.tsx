@@ -4,6 +4,7 @@ import styles from "./populate.module.scss";
 import PlayerComponent from "@components/player/player.module";
 import PlayerMenuComponent from "@components/player/player_menu.module";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
 
@@ -26,21 +27,34 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
 
   const loadPlayerElement = <u onClick={() => loadPlayers()} className={styles.loadPrev}>Load from previous session</u>
 
+
   return (
-    <main className={styles.main}>
+    <motion.main
+      className={styles.main}
+      initial={{ opacity: 0, y: 300 }}
+      animate={{ opacity: 1, y: 0 }}
+    >
 
       {/* Current Players */}
-      <section className={styles.players}>
-        {players.length === 0
-          ? <div><p>No players added yet.</p> {canLoadPlayers && loadPlayerElement}</div>
-          : players.map(player =>
+      {players.length !== 0
+        ? <motion.section
+          className={styles.players}
+
+          variants={{ show: { transition: { staggerChildren: .05 } } }}
+          initial="hidden"
+          animate="show"
+        >
+          {players.map(player =>
             <PlayerComponent
               key={player.name}
               player={player}
               removePlayer={removePlayer}
-            />)
-        }
-      </section>
+            />)}
+
+        </motion.section>
+
+        : <div><p>No players added yet.</p> {canLoadPlayers && loadPlayerElement}</div>
+      }
 
       {/* Add player */}
       {players.length >= PLAYER_COUNT ?
@@ -58,7 +72,7 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
       {players.length < 15 &&
         <PlayerMenuComponent addPlayer={addPlayer} players={players} />
       }
-    </main>
+    </motion.main>
   )
 }
 

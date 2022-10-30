@@ -15,17 +15,10 @@
     stroke-width: 1px;
     stroke-linecap: round;
 
-    transform: scale(1);
-    transition: transform 100ms ease-in-out;
-
     &:hover:not([data-can_interact="false"]) {
-        transform: scale(1.05);
         cursor: pointer;
     }
 
-    &:active:not([data-can_interact="true"]) {
-        transform: scale(0.95);
-    }
 
     @media (min-width: 481px) and (max-width: 1024px), (max-width: 480px) {
         min-width: 64px;

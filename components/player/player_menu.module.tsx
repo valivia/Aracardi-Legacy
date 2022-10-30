@@ -3,6 +3,7 @@ import styles from "./player_menu.module.scss";
 import avatars from "@assets/avatars/avatars";
 import AvatarComponent from "./avatar.module";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 
 function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: Props) {
@@ -53,9 +54,17 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
 
 
                 {/* Selected Avatar */}
-                <figure className={styles.selectedAvatar} onClick={() => setPlayer(old => ({ ...old, avatar: getRandomAvatar() }))}>
+                <motion.figure
+                    className={styles.selectedAvatar}
+                    onClick={() => setPlayer(old => ({ ...old, avatar: getRandomAvatar() }))}
+                    key={avatar.name}
+
+                    initial={{ opacity: 0, rotate: 100 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    whileHover={{ scale: 1.1 }}
+                >
                     <AvatarComponent avatar={avatar.element} />
-                </figure>
+                </motion.figure>
 
                 {/* Avatar Info */}
                 <section className={styles.avatarInfo}>
@@ -67,18 +76,39 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
             </form>
 
             {/* Available Avatars */}
-            <section className={styles.avatars}>
-                {avatars.map((avatar, index) =>
-                    <div
-                        className={styles.avatar}
-                        onClick={() => setPlayer(old => ({ ...old, avatar: index }))}
-                        data-is_selected={index === player.avatar}
-                        data-is_used={players.some(x => x.avatar === index)}
-                    >
-                        <AvatarComponent avatar={avatar.element} />
-                    </div>
+            <motion.section
+                className={styles.avatars}
+                variants={{ show: { transition: { staggerChildren: .05 } } }}
+                initial="hidden"
+                animate="show"
+            >
+                {avatars.map((avatar, index) => {
+                    const isUsed = players.some(x => x.avatar === index);
+                    const isSelected = index === player.avatar;
+
+                    return (
+                        <motion.div
+                            key={index}
+                            className={styles.avatar}
+                            onClick={() => setPlayer(old => ({ ...old, avatar: index }))}
+
+                            data-is_selected={isSelected}
+                            data-is_used={isUsed}
+
+                            variants={{
+                                hidden: { opacity: 0 },
+                                show: { opacity: 1 },
+
+                            }}
+                            transition={{ type: "spring", stiffness: 260, damping: 20 }}
+
+                        >
+                            <AvatarComponent avatar={avatar.element} />
+                        </motion.div>
+                    )
+                }
                 )}
-            </section>
+            </motion.section>
 
         </article >
     )

@@ -11,6 +11,7 @@
     grid-template-columns: 1fr;
     grid-template-areas: "players" "startGame" "addPlayer";
     justify-items: center;
+    text-align: center;
 
     gap: 20px;
 }
@@ -21,7 +22,6 @@
     justify-content: center;
     align-content: flex-start;
 
-    text-align: center;
 
     max-width: 800px;
     padding: 20px;

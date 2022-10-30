@@ -2,7 +2,7 @@ import { processedCard } from "types/card";
 import React, { ReactNode } from "react";
 import styles from "./current_card.module.scss";
 import { Settings } from "@structs/game";
-import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 function CardComponent({ card, settings, preview = false, onClick }: Props) {
     let cardStyle = {};
@@ -26,24 +26,39 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
     }
 
     if (preview) return (
-        <article
-            className={styles.active}
-            onClick={onClick}
-        >
-            <p>{text as string | ReactNode}</p>
-        </article>
+            <motion.article
+                className={styles.active}
+                onClick={onClick}
+                key={card.id}
+
+                // Animation
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+            >
+                <p>{text as string | ReactNode}</p>
+            </motion.article>
     );
 
 
     return (
-        <article
+        <motion.article
             style={cardStyle}
             className={styles.main}
             onClick={onClick}
+
+            // Animation
+            initial="hidden"
+            animate="visible"
+            variants={{
+                hidden: { opacity: 0, rotate: 60, scale: .1 },
+                visible: { opacity: 1, rotate: 0, scale: 1 },
+            }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
             {card.title && <h1>{card.title}</h1>}
             <p>{text as string | ReactNode}</p>
-        </article>
+        </motion.article>
     );
 
 }

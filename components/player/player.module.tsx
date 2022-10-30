@@ -1,24 +1,34 @@
 import { Player } from "@structs/player";
 import styles from "./player.module.scss";
 import avatars from "@assets/avatars/avatars";
-import AvatarComponent from "./avatar.module";
+import { motion } from "framer-motion";
 
 function PlayerComponent({ player, active = false, canRemove = true, removePlayer }: Props) {
-    const avatar = avatars[player.avatar].element;
+    const Avatar = avatars[player.avatar].element;
 
     return (
-        <article
+        <motion.article
             className={styles.main}
             id={`player_${player.name}`}
-            onClick={() => canRemove && removePlayer(player)}
             data-active={active}
             data-canremove={canRemove}
+
+            // Animation
+            variants={{
+                hidden: { opacity: 0, scale: .1 },
+                show: { opacity: 1, scale: 1 },
+            }}
+
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
             {/* Avatar */}
-            <AvatarComponent avatar={avatar} />
+            <section className={styles.avatarContainer}>
+                <Avatar className={styles.avatar} />
+                <button className={styles.removeButton} onClick={() => canRemove && removePlayer(player)}>X</button>
+            </section>
             {/* Name */}
             <p className={styles.name}>{player.name}</p>
-        </article>
+        </motion.article>
     )
 }
 

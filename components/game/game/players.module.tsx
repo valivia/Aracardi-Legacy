@@ -4,6 +4,7 @@ import styles from "./players.module.scss";
 import ModalComponent from "@components/global/modal.module";
 import PlayerMenuComponent from "@components/player/player_menu.module";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
 
@@ -17,7 +18,15 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
     }
 
     return (
-        <section className={styles.main}>
+        <motion.section
+            className={styles.main}
+
+            variants={{ show: { transition: { staggerChildren: .05 } } }}
+            initial="hidden"
+            animate="show"
+        >
+
+            {/* Modal */}
 
             {addPlayerIsOpen &&
                 <ModalComponent onClose={() => setAddPlayerIsOpen(false)}>
@@ -28,7 +37,25 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
                 </ModalComponent>
             }
 
-            <article className={styles.playerButton} onClick={() => setAddPlayerIsOpen(true)}>+</article>
+
+            {/* Add */}
+            <motion.article
+                className={styles.playerButton}
+                onClick={() => setAddPlayerIsOpen(true)}
+
+                // Animation
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                variants={{
+                    hidden: { opacity: 0, scale: .1 },
+                    show: { opacity: 1, scale: 1 },
+                }}
+            >
+                +
+            </motion.article>
+
+
+
+            {/* Players */}
             {players.map(player =>
                 <PlayerComponent
                     key={player.name}
@@ -38,13 +65,25 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
                     active={currentPlayer.name === player.name}
                 />
             )}
-            <article
+
+
+            {/* Shuffle */}
+            <motion.article
                 className={styles.playerButton}
                 onClick={shufflePlayers}
+
+                // Animation
+                variants={{
+                    hidden: { opacity: 0, scale: .1 },
+                    show: { opacity: 1, scale: 1 },
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
-                ~
-            </article>
-        </section>
+                +
+            </motion.article>
+
+
+        </motion.section>
     );
 
 }

@@ -34,10 +34,22 @@
         &[data-is_used="true"] {
             color: $textDark;
             transform: scale(0.9);
+
+            &:hover {
+                transform: scale(0.95);
+            }
         }
 
         &[data-is_selected="true"] {
             color: gold;
+            transform: scale(1.1);
+
+            &:hover {
+                transform: scale(1.15);
+            }
+        }
+
+        &:hover {
             transform: scale(1.1);
         }
     }
