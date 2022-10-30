@@ -35,7 +35,7 @@ const GamePage = ({ game, addons }: Props) => {
     const addPlayer = (player: Player) => {
         if (player.name.length < 2) return false;
         if (players.some(x => x.name == player.name)) return false;
-        setPlayers(players => [...players, player]);
+        setPlayers(players => [player, ...players]);
         return true;
     }
 
