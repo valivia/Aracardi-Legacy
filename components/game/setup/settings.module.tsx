@@ -31,7 +31,7 @@ function SettingsComponent({ settings, setSettings }: Props) {
             value={settings.loop_cards}
         />
 
-        <NumberInputComponent
+        {/* <NumberInputComponent
             name={"turn_multiplier"}
             onChange={onChange}
             value={settings.turn_multiplier}
@@ -59,7 +59,7 @@ function SettingsComponent({ settings, setSettings }: Props) {
             step={0.05}
             min={0.2}
             max={0.90}
-        />
+        /> */}
     </>
 }
 
