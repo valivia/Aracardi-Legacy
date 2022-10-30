@@ -10,8 +10,11 @@
 
     max-height: 100vh;
     overflow-y: auto;
+
     height: 100%;
-    padding: 20px 15px;
+    width: min-content;
+
+    padding: 20px 40px;
     overflow-y: auto;
 
     & svg,
