@@ -45,7 +45,7 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
                     <input
                         placeholder="Enter Player Name..."
                         value={player.name}
-                        minLength={3}
+                        minLength={1}
                         maxLength={10}
                         onChange={(e) => setPlayer(old => ({ ...old, name: e.target.value.replace(" ", "") }))}
                     />
