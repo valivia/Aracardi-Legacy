@@ -1,7 +1,7 @@
 import { processedCard } from "@structs/card";
 import { Settings } from "@structs/game";
 import styles from "./active_cards.module.scss";
-import CardComponent from "./current_card.module";
+import CardComponent from "./card.module";
 
 function ActiveCardsComponent({ cards, settings, deleteCard }: Props) {
 

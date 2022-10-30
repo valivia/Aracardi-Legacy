@@ -1,6 +1,6 @@
 import { processedCard } from "types/card";
 import React, { ReactNode } from "react";
-import styles from "./current_card.module.scss";
+import styles from "./card.module.scss";
 import { Settings } from "@structs/game";
 import { AnimatePresence, motion } from "framer-motion";
 
