@@ -6,7 +6,8 @@ import PlayerMenuComponent from "@components/player/player_menu.module";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
+const MIN_PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
+const MAX_PLAYER_COUNT = process.env.NEXT_PUBLIC_MAXIMUM_PLAYER_COUNT as unknown as number;
 
 function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers }: Props) {
   const [canLoadPlayers, setCanLoad] = useState(false);
@@ -57,7 +58,7 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
       }
 
       {/* Add player */}
-      {players.length >= PLAYER_COUNT ?
+      {players.length >= MIN_PLAYER_COUNT ?
         <button
           type="button"
           onClick={() => startGame()}
@@ -69,7 +70,7 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
       }
 
       {/* Start Game */}
-      {players.length < 15 &&
+      {players.length < MAX_PLAYER_COUNT  &&
         <PlayerMenuComponent addPlayer={addPlayer} players={players} />
       }
     </motion.main>

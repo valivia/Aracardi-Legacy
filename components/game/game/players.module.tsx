@@ -6,7 +6,8 @@ import PlayerMenuComponent from "@components/player/player_menu.module";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
+const MIN_PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
+const MAX_PLAYER_COUNT = process.env.NEXT_PUBLIC_MAXIMUM_PLAYER_COUNT as unknown as number;
 
 function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shufflePlayers }: Props) {
     const [addPlayerIsOpen, setAddPlayerIsOpen] = useState(false);
@@ -39,19 +40,21 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
 
 
             {/* Add */}
-            <motion.article
-                className={styles.playerButton}
-                onClick={() => setAddPlayerIsOpen(true)}
+            {players.length < MAX_PLAYER_COUNT &&
+                <motion.article
+                    className={styles.playerButton}
+                    onClick={() => setAddPlayerIsOpen(true)}
 
-                // Animation
-                transition={{ type: "spring", stiffness: 260, damping: 20 }}
-                variants={{
-                    hidden: { opacity: 0, scale: .1 },
-                    show: { opacity: 1, scale: 1 },
-                }}
-            >
-                +
-            </motion.article>
+                    // Animation
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    variants={{
+                        hidden: { opacity: 0, scale: .1 },
+                        show: { opacity: 1, scale: 1 },
+                    }}
+                >
+                    +
+                </motion.article>
+            }
 
 
 
@@ -61,7 +64,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
                     key={player.name}
                     player={player}
                     removePlayer={removePlayer}
-                    canRemove={players.length > PLAYER_COUNT && player.name !== currentPlayer.name}
+                    canRemove={players.length > MIN_PLAYER_COUNT && player.name !== currentPlayer.name}
                     active={currentPlayer.name === player.name}
                 />
             )}
