@@ -1,6 +1,5 @@
 import GameComponent from '@components/index/game.module'
 import styles from "./index.module.scss";
-import { PrismaClient } from '@prisma/client'
 import LayoutComponent from '@components/global/layout.module';
 import { Game } from '@structs/game';
 import prisma from 'lib/prisma';

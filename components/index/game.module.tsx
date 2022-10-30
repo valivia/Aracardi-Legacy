@@ -7,6 +7,7 @@ function GameComponent({ game }: Props) {
         <Link href={`/game/${game.id}`}>
             <article className={styles.main}>
                 <h1>{game.title}</h1>
+                <p>{game.description}</p>
             </article>
         </Link>
     )

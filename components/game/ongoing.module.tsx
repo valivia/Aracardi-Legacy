@@ -105,6 +105,7 @@ function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings,
                     players={players}
                     currentPlayer={currentPlayer}
                     removePlayer={onPlayerRemove}
+                    addPlayer={addPlayer}
                     shufflePlayers={shufflePlayers}
                 />
             </section>
