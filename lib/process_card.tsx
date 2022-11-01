@@ -26,7 +26,7 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
     if (text.match(previousPlayerRegex)) {
         // Get player
         const currentPlayerIndex = players.indexOf(player ?? players[0]);
-        const match_player = players.splice(currentPlayerIndex - 1)[0];
+        const match_player = players.splice(currentPlayerIndex - 1, 1)[0];
 
         // Add player to card list
         output.players.push(match_player);
@@ -44,7 +44,7 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
     if (text.match(nextPlayerRegex)) {
         // Get player
         const currentPlayerIndex = players.indexOf(player ?? players[0]);
-        const match_player = players.splice(currentPlayerIndex + 1)[0];
+        const match_player = players.splice(currentPlayerIndex + 1, 1)[0];
 
         // Add player to card list
         output.players.push(match_player);
@@ -61,7 +61,7 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
     const currentPlayerRegex = /%SELF%/g;
     // Get player.
     const currentPlayerIndex = players.indexOf(player ?? players[0]);
-    const currentPlayer = players.splice(currentPlayerIndex)[0];
+    const currentPlayer = players.splice(currentPlayerIndex, 1)[0];
 
     // Add player to card list
     output.players.push(player);
@@ -73,7 +73,7 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
             if (typeof substring !== "string") return substring;
             if (!substring.match(currentPlayerRegex)) return substring;
             return (
-                <var key={`${output.active_id}_self_${index}`}><u> {currentPlayer.name}</u></var>
+                <var key={`${output.active_id}_self_${index}`}><u> {player.name}</u></var>
             )
         });
     }

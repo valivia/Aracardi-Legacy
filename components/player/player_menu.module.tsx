@@ -70,7 +70,7 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
                 <section className={styles.avatarInfo}>
                     <b>Name</b>
                     {avatar.name}
-                    <b>Authors</b>
+                    <b>Author{avatar.authors.length > 1 && "s"}</b>
                     {avatar.authors.join(", ")}
                 </section>
             </form>

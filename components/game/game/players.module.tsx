@@ -82,7 +82,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
                 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
-                +
+                ~
             </motion.article>
 
 
