@@ -22,7 +22,7 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
     let processed_text: (string | JSX.Element)[] = text.replace(/ /g, "~ ").split("~");
 
     // Next player.
-    const previousPlayerRegex = /%NEXT_PLAYER%/g;
+    const previousPlayerRegex = /%PREVIOUS_PLAYER%/g;
     if (text.match(previousPlayerRegex)) {
         // Get player
         const currentPlayerIndex = players.indexOf(player ?? players[0]);
