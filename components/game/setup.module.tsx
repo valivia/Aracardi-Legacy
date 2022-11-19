@@ -1,4 +1,4 @@
-import { Game, Settings } from "@structs/game";
+import { Settings } from "@structs/game";
 import styles from "./setup.module.scss";
 import React, { useEffect, useState } from "react";
 import { Addon } from "@structs/addon";
@@ -9,13 +9,14 @@ import SettingsComponent from "./setup/settings.module";
 import { motion } from "framer-motion";
 
 function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props) {
-  const [activeAddons, setActiveAddons] = useState<Addon[]>(addons.filter(x => true));
+  // TODO
+  const [activeAddons, setActiveAddons] = useState<Addon[]>(addons.filter(() => true));
   const [currentCards, setCurrentCards] = useState<Card[]>([]);
 
   useEffect(() => {
     const cards = activeAddons
-      .reduce<Card[]>((total, addon) => { return total.concat(addon.cards) }, [])
-      .filter(x => !(!settings.allow_nsfw && x.is_nsfw))
+      .reduce<Card[]>((total, addon) => { return total.concat(addon.cards); }, [])
+      .filter(x => !(!settings.allow_nsfw && x.is_nsfw));
     setCurrentCards(cards);
   }, [settings, activeAddons]);
 
@@ -28,13 +29,13 @@ function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props
 
 
     setActiveAddons(newCards);
-  }
+  };
 
   const nextScene = () => {
-    if (currentCards.length < 50) return alert("Not enough cards (50 minimum)")
+    if (currentCards.length < 50) return alert("Not enough cards (50 minimum)");
     setCards(currentCards);
     setScene(Scene.POPULATE);
-  }
+  };
 
   return (
     <motion.main
@@ -65,7 +66,7 @@ function SetupScene({ settings, addons, setSettings, setCards, setScene }: Props
         <button onClick={() => nextScene()}>Load Game</button>
       </section>
     </motion.main>
-  )
+  );
 }
 
 export default SetupScene;

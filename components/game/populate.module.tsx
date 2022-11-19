@@ -19,14 +19,14 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
       && localStorage.getItem("players") !== null
     ) setCanLoad(true);
 
-  }, [players])
+  }, [players, canLoadPlayers]);
 
   // Start the game and save the current players.
   const startGame = () => {
     setScene(Scene.ONGOING);
-  }
+  };
 
-  const loadPlayerElement = <u onClick={() => loadPlayers()} className={styles.loadPrev}>Load from previous session</u>
+  const loadPlayerElement = <u onClick={() => loadPlayers()} className={styles.loadPrev}>Load from previous session</u>;
 
 
   return (
@@ -41,7 +41,7 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
         ? <motion.section
           className={styles.players}
 
-          variants={{ show: { transition: { staggerChildren: .05 } } }}
+          variants={{ show: { transition: { staggerChildren: 0.05 } } }}
           initial="hidden"
           animate="show"
         >
@@ -70,11 +70,11 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
       }
 
       {/* Start Game */}
-      {players.length < MAX_PLAYER_COUNT  &&
+      {players.length < MAX_PLAYER_COUNT &&
         <PlayerMenuComponent addPlayer={addPlayer} players={players} />
       }
     </motion.main>
-  )
+  );
 }
 
 export default PopulateScene;

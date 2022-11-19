@@ -1,17 +1,17 @@
 export default function shuffle(input: any[]): any[] {
-    let array = [...input]
-    let currentIndex = array.length,
-        randomIndex;
+  const array = [...input];
+  let currentIndex = array.length,
+    randomIndex;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
 
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex],
-            array[currentIndex],
-        ];
-    }
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
 
-    return array;
+  return array;
 }

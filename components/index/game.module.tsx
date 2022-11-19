@@ -3,18 +3,18 @@ import Link from "next/link";
 import styles from "./game.module.scss";
 
 function GameComponent({ game }: Props) {
-    return (
-        <Link href={`/game/${game.id}`}>
-            <article className={styles.main}>
-                <h1>{game.title}</h1>
-                <p>{game.description}</p>
-            </article>
-        </Link>
-    )
+  return (
+    <article className={styles.main}>
+      <Link href={`/game/${game.id}`}>
+        <h1>{game.title}</h1>
+        <p>{game.description}</p>
+      </Link>
+    </article>
+  );
 }
 
 export default GameComponent;
 
 interface Props {
-    game: Game;
+  game: Game;
 }

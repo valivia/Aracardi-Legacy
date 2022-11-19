@@ -1,37 +1,36 @@
 import CheckBoxComponent from "@components/input/checkbox.module";
-import NumberInputComponent from "@components/input/number.module";
 import onChangeParser from "@lib/onchange";
 import { Settings } from "@structs/game";
 
 function SettingsComponent({ settings, setSettings }: Props) {
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const target = e.target;
-        const value = onChangeParser(target);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target;
+    const value = onChangeParser(target);
 
-        setSettings({ ...settings, [target.name]: value })
-    }
+    setSettings({ ...settings, [target.name]: value });
+  };
 
 
-    return <>
-        <CheckBoxComponent
-            name={"allow_nsfw"}
-            onChange={onChange}
-            value={settings.allow_nsfw}
-        />
+  return <>
+    <CheckBoxComponent
+      name={"allow_nsfw"}
+      onChange={onChange}
+      value={settings.allow_nsfw}
+    />
 
-        <CheckBoxComponent
-            name={"display_images"}
-            onChange={onChange}
-            value={settings.display_images}
-        />
+    <CheckBoxComponent
+      name={"display_images"}
+      onChange={onChange}
+      value={settings.display_images}
+    />
 
-        <CheckBoxComponent
-            name={"loop_cards"}
-            onChange={onChange}
-            value={settings.loop_cards}
-        />
+    <CheckBoxComponent
+      name={"loop_cards"}
+      onChange={onChange}
+      value={settings.loop_cards}
+    />
 
-        {/* <NumberInputComponent
+    {/* <NumberInputComponent
             name={"turn_multiplier"}
             onChange={onChange}
             value={settings.turn_multiplier}
@@ -60,12 +59,12 @@ function SettingsComponent({ settings, setSettings }: Props) {
             min={0.2}
             max={0.90}
         /> */}
-    </>
+  </>;
 }
 
 export default SettingsComponent;
 
 interface Props {
-    settings: Settings;
-    setSettings: (x: Settings) => void;
+  settings: Settings;
+  setSettings: (x: Settings) => void;
 }

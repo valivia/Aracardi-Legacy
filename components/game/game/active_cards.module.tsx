@@ -5,26 +5,26 @@ import CardComponent from "./card.module";
 
 function ActiveCardsComponent({ cards, settings, deleteCard }: Props) {
 
-    return (
-        <section className={styles.main}>
-            {cards.map(card =>
-                <CardComponent
-                    key={card.active_id}
-                    card={card}
-                    preview={true}
-                    settings={settings}
-                    onClick={() => deleteCard(card)}
-                />
-            )}
-        </section>
-    );
+  return (
+    <section className={styles.main}>
+      {cards.map(card =>
+        <CardComponent
+          key={card.active_id}
+          card={card}
+          preview={true}
+          settings={settings}
+          onClick={() => deleteCard(card)}
+        />
+      )}
+    </section>
+  );
 
 }
 
 interface Props {
-    cards: processedCard[];
-    settings: Settings;
-    deleteCard: (card: processedCard) => void;
+  cards: processedCard[];
+  settings: Settings;
+  deleteCard: (card: processedCard) => void;
 }
 
 export default ActiveCardsComponent;

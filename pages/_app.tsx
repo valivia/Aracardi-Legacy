@@ -1,7 +1,6 @@
-import '../styles/globals.scss'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
-import LogoComponent from '../components/global/logo.module'
+import "../styles/globals.scss";
+import type { AppProps } from "next/app";
+import Head from "next/head";
 
 function App({ Component, pageProps }: AppProps) {
   return <>
@@ -12,7 +11,7 @@ function App({ Component, pageProps }: AppProps) {
       <meta name="viewport" content="initial-scale=1.0, width=device-width"></meta>
     </Head>
     <Component {...pageProps} />
-  </>
+  </>;
 }
 
-export default App
+export default App;
