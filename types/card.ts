@@ -10,7 +10,7 @@ export interface Card {
   minimum_players?: number | null;
   maximum_players?: number | null;
   time_limit?: number | null;
-  has_image: boolean | null;
+  has_image: boolean;
   is_nsfw?: boolean | null;
 }
 
