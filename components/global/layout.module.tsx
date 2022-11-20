@@ -5,8 +5,8 @@ import styles from "./layout.module.scss";
 import LogoComponent from "./logo.module";
 
 function LayoutComponent({ title: inputTitle, game, children }: Props) {
-  const title = inputTitle ?? game?.title ?? "Card Game";
-  const description = game?.description ?? "Play a card game!";
+  const title = inputTitle ?? game?.title ?? "Aracardi";
+  const description = game?.description ?? "Play card games!";
   return (
     <div className={styles.frame}>
       <Head>
