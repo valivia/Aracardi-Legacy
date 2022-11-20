@@ -10,10 +10,10 @@ services:
     volumes:
       - ./init-scripts/:/docker-entrypoint-initdb.d/
     ports:
-      - 5432:5432
+      - 9305:5432
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080

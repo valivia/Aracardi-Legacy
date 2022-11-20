@@ -1,7 +1,7 @@
 #!/bin/sh
 
 psql \
-  -d "cards" \
+  -d "cardgame" \
   -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
     SCHEMA "public"
     VERSION "1.1"'

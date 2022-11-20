@@ -1,3 +1,3 @@
 
 /* Install uuid-ossp for uuidv4 */
-CREATE DATABASE cards;
+CREATE DATABASE cardgame;
