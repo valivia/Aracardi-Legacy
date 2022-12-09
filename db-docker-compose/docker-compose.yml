@@ -1,0 +1,24 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   environment:
+  #     POSTGRES_PASSWORD: example
+  #   volumes:
+  #     - ./init-scripts/:/docker-entrypoint-initdb.d/
+  #   ports:
+  #     - 9305:5432
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./mongo-init-scripts/:/docker-entrypoint-initdb.d/
+    ports:
+      - 27017:27017

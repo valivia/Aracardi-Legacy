@@ -1,5 +1,5 @@
 
-# Docker-Compose for Postgres
+# Docker-Compose for db
 
 To start
 ```
