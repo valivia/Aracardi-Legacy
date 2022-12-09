@@ -21,4 +21,4 @@ services:
     volumes:
       - ./mongo-init-scripts/:/docker-entrypoint-initdb.d/
     ports:
-      - 27017:27017
+      - 9305:27017
