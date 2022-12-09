@@ -10,21 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// TODO
+// edit permissions per user on games/addons?
+// improve card stages (how to persist data between stages? how to select which players are affected? etc)
+// Properly work out user to support actual auth etc.
+
 // USER #########################################################################################################
 model User {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
   name String
 
-  Game              Game?   @relation(fields: [authored_game_ids], references: [id])
-  authored_game_ids String? @db.ObjectId
+  Game              Game[]   @relation(fields: [authored_game_ids], references: [id])
+  authored_game_ids String[] @db.ObjectId
 
-  Addon              Addon?  @relation(fields: [authored_addon_ids], references: [id])
-  authored_addon_ids String? @db.ObjectId
+  Addon              Addon[]  @relation(fields: [authored_addon_ids], references: [id])
+  authored_addon_ids String[] @db.ObjectId
 }
 
 // GAME #########################################################################################################
 model Game {
   created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   title            String
@@ -33,13 +42,15 @@ model Game {
 
   has_image            Boolean @default(false)
   is_official          Boolean @default(false)
-  is_available_online  Boolean @default(true)
-  is_available_offline Boolean @default(true)
+  is_available_online  Boolean @default(false)
+  is_available_offline Boolean @default(false)
 
   addons Addon[]
 
   // Relationship
-  authors User[]
+  authors    User[]   @relation(fields: [author_ids], references: [id])
+  author_ids String[] @db.ObjectId
+
   session Session[]
 }
 
@@ -59,7 +70,7 @@ model Player {
 // ADDON #########################################################################################################
 model Addon {
   created_at DateTime @default(now()) @db.Timestamp()
-  updatedAt  DateTime @updatedAt
+  updated_at DateTime @updatedAt
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   title       String
@@ -73,11 +84,13 @@ model Addon {
   cards Card[]
 
   // Relationship
-  authors User[]
+  authors    User[]   @relation(fields: [author_ids], references: [id])
+  author_ids String[] @db.ObjectId
 }
 
 model Card {
   created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   turns           Int?
@@ -94,32 +107,32 @@ model Card {
 }
 
 type Stage {
-  type stageType
+  type StageType
 
   // Base
   title      String?
   time_limit Int?
 
   // Text Card
-  text      String
-  has_image Boolean @default(false)
+  text      String?
+  has_image Boolean? @default(false)
 
   // Poll Card
   winner_points   Int?
   selection_count Int?
-  options         pollOption[]
+  options         PollOption[]
 
   // Input Card
   target String[]
 }
 
-enum stageType {
+enum StageType {
   TEXT
   POLL
   INPUT
 }
 
-type pollOption {
+type PollOption {
   id   String @db.ObjectId
   text String
 }
