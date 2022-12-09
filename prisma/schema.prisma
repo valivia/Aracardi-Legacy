@@ -10,35 +10,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model session {
+  created_at DateTime @default(now()) @db.Timestamp()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  join_code String
+  settings  Settings
+
+  players Player[]
+
+  // Relations
+  game_id String @db.ObjectId
+  game    Game   @relation(fields: [game_id], references: [id])
+
+  addon_ids String[] @db.ObjectId
+}
+
+model Player {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  token String
+
+  name   String
+  avatar String
+  points Int    @default(0)
+
+  // Relations
+  session    session @relation(fields: [session_id], references: [id])
+  session_id String  @db.ObjectId
+}
+
 model Game {
   created_at DateTime @default(now()) @db.Timestamp()
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title       String
-  description String
-  is_official Boolean @default(false)
+  title            String
+  description      String
+  default_settings Settings
 
+  has_image            Boolean @default(false)
+  is_official          Boolean @default(false)
   is_available_online  Boolean @default(true)
   is_available_offline Boolean @default(true)
 
   addons Addon[]
 
   // Relationship
-  author_ids String[] @db.ObjectId
-  authors    User[]   @relation(fields: [author_ids], references: [id])
+  author_ids String[]  @db.ObjectId
+  authors    User[]    @relation(fields: [author_ids], references: [id])
+  session    session[]
 }
 
 model Addon {
   created_at DateTime @default(now()) @db.Timestamp()
+  updatedAt  DateTime @updatedAt
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   title       String
   description String
   is_official Boolean @default(false)
+  is_draft    Boolean @default(true)
 
   game_id String
+  game    Game   @relation(fields: [game_id], references: [id])
 
-  game  Game   @relation(fields: [game_id], references: [id])
   cards Card[]
 
   // Relationship
@@ -63,8 +97,7 @@ model Card {
   addon    Addon  @relation(fields: [addon_id], references: [id])
 }
 
-model Stage {
-  id   String    @id @default(auto()) @map("_id") @db.ObjectId
+type Stage {
   type stageType
 
   // Base
@@ -78,18 +111,14 @@ model Stage {
   // Poll Card
   winner_points   Int?
   selection_count Int
-  options         String[]
+  options         pollOption[]
 
   // Input Card
   target String[]
-
-  // Relationship
-  Card   Card   @relation(fields: [cardId], references: [id])
-  cardId String @db.ObjectId
 }
 
-model pollOption {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
+type pollOption {
+  id   String @db.ObjectId
   text String
 }
 
@@ -98,13 +127,23 @@ model User {
   name String
 
   // Relationship
-  // game
   authored_game_ids String[] @db.ObjectId
   games             Game[]   @relation(fields: [authored_game_ids], references: [id])
 
-  // addon
   authored_addon_ids String[] @db.ObjectId
   addons             Addon[]  @relation(fields: [authored_addon_ids], references: [id])
+}
+
+type Settings {
+  use_timers Boolean @default(true)
+  use_images Boolean @default(true)
+  use_loop   Boolean @default(true)
+  use_nsfw   Boolean @default(false)
+
+  timer_multipler Float @default(1)
+  turn_multipler  Float @default(1)
+
+  backlog_percentage Float @default(0.85)
 }
 
 enum stageType {
