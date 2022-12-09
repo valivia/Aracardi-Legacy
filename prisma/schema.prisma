@@ -6,60 +6,109 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Game {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title       String  @db.VarChar(256)
-  description String @db.VarChar(256)
-  is_official Boolean @default(false) @db.Boolean
+  title       String
+  description String
+  is_official Boolean @default(false)
 
-  authors User[]
-  addons   Addon[]
+  is_available_online  Boolean @default(true)
+  is_available_offline Boolean @default(true)
+
+  addons Addon[]
+
+  // Relationship
+  author_ids String[] @db.ObjectId
+  authors    User[]   @relation(fields: [author_ids], references: [id])
 }
 
 model Addon {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title       String  @db.VarChar(256)
-  description String @db.VarChar(256)
-  is_official Boolean @default(false) @db.Boolean
+  title       String
+  description String
+  is_official Boolean @default(false)
 
-  game_id String @db.Uuid
+  game_id String
 
-  game    Game   @relation(fields: [game_id], references: [id])
-  authors User[]
-  cards    Card[]
+  game  Game   @relation(fields: [game_id], references: [id])
+  cards Card[]
+
+  // Relationship
+  author_ids String[] @db.ObjectId
+  authors    User[]   @relation(fields: [author_ids], references: [id])
 }
 
 model Card {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title String? @db.VarChar(256)
-  text  String  @db.VarChar()
+  turns           Int?
+  minimum_players Int?
+  maximum_players Int?
 
-  turns           Int? @db.Integer
-  minimum_players Int? @db.Integer
-  maximum_players Int? @db.Integer
-  time_limit      Int? @db.Integer
+  stages Stage[]
 
-  has_image Boolean @default(false) @db.Boolean
-  is_nsfw   Boolean @default(false) @db.Boolean
+  is_nsfw Boolean @default(false)
 
-  addon_id String @db.Uuid
+  // Relationship
+  addon_id String @db.ObjectId
   addon    Addon  @relation(fields: [addon_id], references: [id])
 }
 
-model User {
-  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name String @db.VarChar()
+model Stage {
+  id   String    @id @default(auto()) @map("_id") @db.ObjectId
+  type stageType
 
-  game  Game[]
-  addon Addon[]
+  // Base
+  title      String?
+  time_limit Int?
+
+  // Text Card
+  text      String
+  has_image Boolean @default(false)
+
+  // Poll Card
+  winner_points   Int?
+  selection_count Int
+  options         String[]
+
+  // Input Card
+  target String[]
+
+  // Relationship
+  Card   Card   @relation(fields: [cardId], references: [id])
+  cardId String @db.ObjectId
+}
+
+model pollOption {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  text String
+}
+
+model User {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  // Relationship
+  // game
+  authored_game_ids String[] @db.ObjectId
+  games             Game[]   @relation(fields: [authored_game_ids], references: [id])
+
+  // addon
+  authored_addon_ids String[] @db.ObjectId
+  addons             Addon[]  @relation(fields: [authored_addon_ids], references: [id])
+}
+
+enum stageType {
+  TEXT
+  POLL
+  INPUT
 }
