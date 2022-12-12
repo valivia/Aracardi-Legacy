@@ -6,60 +6,163 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
-model Game {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+// TODO
+// edit permissions per user on games/addons?
+// improve card stages (how to persist data between stages? how to select which players are affected? etc)
+// Properly work out user to support actual auth etc.
 
-  title       String  @db.VarChar(256)
-  description String @db.VarChar(256)
-  is_official Boolean @default(false) @db.Boolean
+// USER #########################################################################################################
+model User {
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  authors User[]
-  addons   Addon[]
+  name String
+
+  Game              Game[]   @relation(fields: [authored_game_ids], references: [id])
+  authored_game_ids String[] @db.ObjectId
+
+  Addon              Addon[]  @relation(fields: [authored_addon_ids], references: [id])
+  authored_addon_ids String[] @db.ObjectId
 }
 
+// GAME #########################################################################################################
+model Game {
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  title            String
+  description      String
+  default_settings Settings
+
+  has_image            Boolean @default(false)
+  is_official          Boolean @default(false)
+  is_available_online  Boolean @default(false)
+  is_available_offline Boolean @default(false)
+
+  addons Addon[]
+
+  // Relationship
+  authors    User[]   @relation(fields: [author_ids], references: [id])
+  author_ids String[] @db.ObjectId
+
+  session Session[]
+}
+
+model Player {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  token String
+
+  name   String
+  avatar String
+  points Int    @default(0)
+
+  // Relations
+  session    Session @relation(fields: [session_id], references: [id])
+  session_id String  @db.ObjectId
+}
+
+// ADDON #########################################################################################################
 model Addon {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title       String  @db.VarChar(256)
-  description String @db.VarChar(256)
-  is_official Boolean @default(false) @db.Boolean
+  title       String
+  description String
+  is_official Boolean @default(false)
+  is_draft    Boolean @default(true)
 
-  game_id String @db.Uuid
-
+  game_id String
   game    Game   @relation(fields: [game_id], references: [id])
-  authors User[]
-  cards    Card[]
+
+  cards Card[]
+
+  // Relationship
+  authors    User[]   @relation(fields: [author_ids], references: [id])
+  author_ids String[] @db.ObjectId
 }
 
 model Card {
-  created_at DateTime @default(now()) @db.Timestamp(0)
-  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title String? @db.VarChar(256)
-  text  String  @db.VarChar()
+  turns           Int?
+  minimum_players Int?
+  maximum_players Int?
 
-  turns           Int? @db.Integer
-  minimum_players Int? @db.Integer
-  maximum_players Int? @db.Integer
-  time_limit      Int? @db.Integer
+  stages Stage[]
 
-  has_image Boolean @default(false) @db.Boolean
-  is_nsfw   Boolean @default(false) @db.Boolean
+  is_nsfw Boolean @default(false)
 
-  addon_id String @db.Uuid
+  // Relationship
+  addon_id String @db.ObjectId
   addon    Addon  @relation(fields: [addon_id], references: [id])
 }
 
-model User {
-  id   String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name String @db.VarChar()
+type Stage {
+  type StageType
 
-  game  Game[]
-  addon Addon[]
+  // Base
+  title      String?
+  time_limit Int?
+
+  // Text Card
+  text      String?
+  has_image Boolean? @default(false)
+
+  // Poll Card
+  winner_points   Int?
+  selection_count Int?
+  options         PollOption[]
+
+  // Input Card
+  target String[]
+}
+
+enum StageType {
+  TEXT
+  POLL
+  INPUT
+}
+
+type PollOption {
+  id   String @db.ObjectId
+  text String
+}
+
+// SESSION #########################################################################################################
+model Session {
+  created_at DateTime @default(now()) @db.Timestamp()
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  join_code String
+  settings  Settings
+
+  players Player[]
+
+  // Relations
+  game_id String @db.ObjectId
+  game    Game   @relation(fields: [game_id], references: [id])
+
+  addon_ids String[] @db.ObjectId
+}
+
+// OTHER #########################################################################################################
+type Settings {
+  use_timers Boolean @default(true)
+  use_images Boolean @default(true)
+  use_loop   Boolean @default(true)
+  use_nsfw   Boolean @default(false)
+
+  timer_multipler Float @default(1)
+  turn_multipler  Float @default(1)
+
+  backlog_percentage Float @default(0.85)
 }
