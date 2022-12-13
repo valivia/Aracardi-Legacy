@@ -7,7 +7,6 @@
 
 # data
 /data
-/public
 
 # testing
 /coverage
