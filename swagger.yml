@@ -41,10 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Pet"
-            application/xml:
-              schema:
-                $ref: "#/components/schemas/Pet"
+                $ref: "#/components/schemas/BaseGame"
         "404":
           description: No games found
   /game/{gameId}:
@@ -102,6 +99,10 @@ paths:
       responses:
         "200":
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
         "404":
           description: No game found
   /session:
@@ -220,34 +221,34 @@ paths:
           description: User not found
 components:
   schemas:
-    Order:
+    BaseGame:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
           type: string
-          format: date-time
-        status:
+          example: 63964fd8ff9e2d8649857828
+        title:
           type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
+          example: Drunk pirate
+        description:
+          type: string
+          example: A drinking game
+        has_game:
           type: boolean
+        is_official:
+          type: boolean
+        is_available_online:
+          type: boolean
+        is_available_offline:
+          type: boolean
+    Game:
+      allOf:
+        - $ref: "#/components/schemas/BaseGame"
+        - properties:
+            addons:
+              type: string
+            default_settings:
+              type: string
     Customer:
       type: object
       properties:
