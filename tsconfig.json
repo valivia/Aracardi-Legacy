@@ -24,16 +24,16 @@
         "public/*"
       ],
       "@structs/*": [
-        "types/*"
+        "src/types/*"
       ],
       "@assets/*": [
         "assets/*"
       ],
       "@styles/*": [
-        "styles/*"
+        "src/styles/*"
       ],
       "@components/*": [
-        "components/*"
+        "src/components/*"
       ],
       "@lib/*": [
         "lib/*"
