@@ -6,8 +6,15 @@ import { prisma } from "@server/prisma";
 
 const defaultCardSelect = Prisma.validator<Prisma.CardSelect>()({
   id: true,
-  stages: true,
+  created_at: true,
+  updated_at: true,
+
+  minimum_players: true,
+  maximum_players: true,
   is_nsfw: true,
+
+  addon_id: true,
+  stages: true,
 });
 
 export const cardRouter = router({

@@ -6,9 +6,24 @@ import { prisma } from "@server/prisma";
 
 const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
+  created_at: true,
+
+  settings: true,
+  game: { select: { title: true } },
+
+  players: {
+    select: {
+      id: true,
+      name: true,
+      avatar: true,
+      points: true,
+    },
+  },
+
 });
 
 export const sessionRouter = router({
+  // GET
   get: procedure
     .input(
       z.object({
@@ -29,6 +44,7 @@ export const sessionRouter = router({
       }
       return addon;
     }),
+  // ADD
   add: procedure
     .input(
       z.object({
@@ -44,4 +60,5 @@ export const sessionRouter = router({
       });
       return addon;
     }),
+
 });

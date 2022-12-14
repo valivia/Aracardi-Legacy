@@ -6,7 +6,16 @@ import { prisma } from "@server/prisma";
 
 const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   id: true,
+  created_at: true,
+  updated_at: true,
+
   title: true,
+  description: true,
+
+  has_image: true,
+  is_official: true,
+  is_available_online: true,
+  is_available_offline: true,
 });
 
 export const addonRouter = router({
@@ -24,7 +33,7 @@ export const addonRouter = router({
       const items = await prisma.addon.findMany({
         select: defaultAddonSelect,
         take: input.limit + 1,
-        where: { game_id: input.game_id },
+        where: { game_id: input.game_id, NOT: { is_draft: true } },
         cursor: cursor
           ? {
             id: cursor,

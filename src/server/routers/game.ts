@@ -4,9 +4,19 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
 
-const defaultPostSelect = Prisma.validator<Prisma.GameSelect>()({
+const defaultGameSelect = Prisma.validator<Prisma.GameSelect>()({
   id: true,
+  created_at: true,
+  updated_at: true,
+
   title: true,
+  description: true,
+  default_settings: true,
+
+  has_image: true,
+  is_official: true,
+  is_available_online: true,
+  is_available_offline: true,
 });
 
 export const gameRouter = router({
@@ -21,7 +31,7 @@ export const gameRouter = router({
       const { cursor } = input;
 
       const items = await prisma.game.findMany({
-        select: defaultPostSelect,
+        select: defaultGameSelect,
         take: input.limit + 1,
         where: {},
         cursor: cursor
@@ -57,12 +67,37 @@ export const gameRouter = router({
       const { id } = input;
       const game = await prisma.game.findUnique({
         where: { id },
-        select: defaultPostSelect,
+        select: defaultGameSelect,
       });
       if (!game) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: `No game with id '${id}'`,
+        });
+      }
+      return game;
+    }),
+  search: procedure
+    .input(
+      z.object({
+        query: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const { query } = input;
+      const game = await prisma.game.findFirst({
+        where: {
+          OR: [
+            { title: { contains: query } },
+            { id: query },
+          ],
+        },
+        select: defaultGameSelect,
+      });
+      if (!game) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `No game with query '${query}'`,
         });
       }
       return game;
@@ -78,7 +113,7 @@ export const gameRouter = router({
     .mutation(async ({ input }) => {
       const game = await prisma.game.create({
         data: { ...input, default_settings: {} },
-        select: defaultPostSelect,
+        select: defaultGameSelect,
       });
       return game;
     }),
