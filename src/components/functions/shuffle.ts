@@ -1,5 +1,6 @@
 export default function shuffle(input: any[]): any[] {
   const array = [...input];
+
   let currentIndex = array.length,
     randomIndex;
 

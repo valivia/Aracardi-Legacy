@@ -2,12 +2,11 @@ import { Card, processedCard } from "@structs/card";
 import { Player } from "@structs/player";
 import shuffle from "./shuffle";
 
-const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[]): processedCard => {
+export const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[]): processedCard => {
   const card = { ...cardInput };
   let players = [...playersInput];
   const player = { ...playerInput };
-
-  const text = card.text as string;
+  const text = card.text;
 
   const output: processedCard = {
     ...card,
@@ -81,7 +80,6 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
   const randomPlayerRegex = /%PLAYER[0-9]%/g;
   const randomPlayerRegexResult = text.match(randomPlayerRegex);
 
-
   if (randomPlayerRegexResult) {
     const uniquePlaceholders = Array.from(new Set([...randomPlayerRegexResult]));
 
@@ -107,5 +105,3 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
 
   return { ...output, processed_text };
 };
-
-export default processCard;

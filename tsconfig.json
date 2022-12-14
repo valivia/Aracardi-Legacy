@@ -26,17 +26,17 @@
       "@structs/*": [
         "src/types/*"
       ],
-      "@assets/*": [
-        "assets/*"
-      ],
       "@styles/*": [
         "src/styles/*"
       ],
       "@components/*": [
         "src/components/*"
       ],
-      "@lib/*": [
-        "lib/*"
+      "@server/*": [
+        "src/server/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
       ]
     },
     "plugins": [
