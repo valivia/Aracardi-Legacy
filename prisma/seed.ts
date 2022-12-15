@@ -19,7 +19,7 @@ function createTextStage() {
     type: StageType.TEXT,
     title: faker.random.words(5),
     text,
-    turns: hasTurns ? faker.datatype.number(12) : undefined,
+    turns: hasTurns ? faker.datatype.number({ min: 1, max: 12 }) : undefined,
   };
 }
 
@@ -27,7 +27,7 @@ function createPollStage() {
   return {
     type: StageType.POLL,
     title: faker.random.words(5),
-    winner_points: faker.datatype.boolean() ? faker.datatype.number(1000) : null,
+    winner_points: faker.datatype.boolean() ? faker.datatype.number({ min: 100, max: 1000, precision: 100 }) : null,
     selection_count: 1,
     options: createArray(2, 7).map(() => ({ text: faker.lorem.sentence() })),
   };
@@ -42,6 +42,7 @@ function createCard(addon: Addon) {
 }
 
 function createAddon(game: Game) {
+  const is_available_online = faker.datatype.boolean();
   return {
     created_at: faker.date.past(2),
     updated_at: faker.date.past(),
@@ -53,14 +54,15 @@ function createAddon(game: Game) {
     has_image: faker.datatype.boolean(),
     is_draft: faker.datatype.boolean(),
 
-    is_available_online: faker.datatype.boolean(),
-    is_available_offline: faker.datatype.boolean(),
+    is_available_online,
+    is_available_offline: is_available_online ? faker.datatype.boolean() : true,
 
     game_id: game.id,
   };
 }
 
 async function main() {
+  // generate preset games.
   await prisma.game.create({
     data: {
       id: "63964fd8ff9e2d8649857828",
