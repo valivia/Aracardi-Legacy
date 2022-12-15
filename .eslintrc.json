@@ -10,6 +10,7 @@
   },
   "rules": {
     "@next/next/no-img-element": "off",
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -32,8 +33,17 @@
         "allowSingleLine": true
       }
     ],
-    "comma-dangle": ["error", "always-multiline"],
-    "comma-spacing": "error",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "error",
+      {
+        "allow": ["err", "resolve", "reject"]
+      }
+    ],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "comma-spacing": "off",
+    "@typescript-eslint/comma-spacing": "error",
     "comma-style": "error",
     "dot-location": ["error", "property"],
     "eol-last": "error",
@@ -51,7 +61,6 @@
       }
     ],
     "no-console": "warn",
-    "no-empty-function": "error",
     "no-floating-decimal": "error",
     "no-inline-comments": "off",
     "no-lonely-if": "error",
@@ -64,17 +73,13 @@
         "maxBOF": 0
       }
     ],
-    "no-shadow": [
-      "error",
-      {
-        "allow": ["err", "resolve", "reject"]
-      }
-    ],
     "no-trailing-spaces": ["error"],
     "no-var": "error",
-    "object-curly-spacing": ["error", "always"],
+    "object-curly-spacing": "off",
+    "@typescript-eslint/object-curly-spacing": ["error", "always"],
     "prefer-const": "error",
-    "quotes": [
+    "quotes": "off",
+    "@typescript-eslint/quotes": [
       "error",
       "double",
       {
@@ -82,8 +87,10 @@
       }
     ],
     "semi": ["error", "always"],
-    "space-before-blocks": "error",
-    "space-before-function-paren": [
+    "space-before-blocks": "off",
+    "@typescript-eslint/space-before-blocks": "error",
+    "space-before-function-paren": "off",
+    "@typescript-eslint/space-before-function-paren": [
       "error",
       {
         "anonymous": "never",
@@ -92,7 +99,8 @@
       }
     ],
     "space-in-parens": "error",
-    "space-infix-ops": "error",
+    "space-infix-ops": "off",
+    "@typescript-eslint/space-infix-ops": "error",
     "space-unary-ops": "error",
     "spaced-comment": "error",
     "yoda": "error"
