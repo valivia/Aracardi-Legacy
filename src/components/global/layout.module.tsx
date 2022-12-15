@@ -30,7 +30,7 @@ function LayoutComponent({ title: inputTitle, game, children }: Props) {
 export default LayoutComponent;
 
 interface Props {
-    title?: string;
-    game?: Game;
-    children: JSX.Element | JSX.Element[];
+  title?: string;
+  game?: Game;
+  children: JSX.Element | JSX.Element[];
 }

@@ -1,5 +1,5 @@
 export enum Scene {
-    SETUP,
-    POPULATE,
-    ONGOING
+  SETUP,
+  POPULATE,
+  ONGOING,
 }
