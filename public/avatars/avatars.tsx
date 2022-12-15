@@ -1,29 +1,29 @@
 import { Avatar } from "src/types/avatar";
 
 // Owl
-import hooty1 from "@assets/avatars/hooty1.svg";
-import stolas from "@assets/avatars/stolas.svg";
-import duo from "@assets/avatars/duo.svg";
-import flapjack from "@assets/avatars/flapjack.svg";
-import king from "@assets/avatars/king.svg";
-import eda from "@assets/avatars/eda.svg";
-import marceline from "@assets/avatars/marceline.svg";
-import pb from "@assets/avatars/pb.svg";
-import jake from "@assets/avatars/jake.svg";
-import finn from "@assets/avatars/finn.svg";
+import hooty1 from "./hooty1.svg";
+import stolas from "./stolas.svg";
+import duo from "./duo.svg";
+import flapjack from "./flapjack.svg";
+import king from "./king.svg";
+import eda from "./eda.svg";
+import marceline from "./marceline.svg";
+import pb from "./pb.svg";
+import jake from "./jake.svg";
+import finn from "./finn.svg";
 // Czicken
-import catto from "@assets/avatars/catto.svg";
-import frogii from "@assets/avatars/froggi.svg";
-import rubberDucky from "@assets/avatars/rubberducky.svg";
-import duckie from "@assets/avatars/duckie.svg";
-import goose1 from "@assets/avatars/goose1.svg";
+import catto from "./catto.svg";
+import frogii from "./froggi.svg";
+import rubberDucky from "./rubberducky.svg";
+import duckie from "./duckie.svg";
+import goose1 from "./goose1.svg";
 // Pigeon
-import pidge from "@assets/avatars/pidge.svg";
-import goth from "@assets/avatars/goth.svg";
-import ghost from "@assets/avatars/ghost.svg";
+import pidge from "./pidge.svg";
+import goth from "./goth.svg";
+import ghost from "./ghost.svg";
 // Armex
-import pigeon from "@assets/avatars/pigeon.svg";
-import les from "@assets/avatars/les.svg";
+import pigeon from "./pigeon.svg";
+import les from "./les.svg";
 
 export default [
   // Owl House

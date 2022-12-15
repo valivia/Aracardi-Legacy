@@ -3,16 +3,17 @@ import styles from "./ongoing.module.scss";
 import { Card, processedCard } from "@structs/card";
 import { Settings } from "@structs/game";
 import { Player } from "@structs/player";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import CardComponent from "./game/card.module";
 import ActiveCardsComponent from "./game/active_cards.module";
 import PlayersComponent from "./game/players.module";
-import processCard from "@lib/process_card";
+import { processCard } from "@components/functions/process_card";
 import { motion } from "framer-motion";
 
 function GameScene({ players, addPlayer, removePlayer, shufflePlayers, settings, cards: CardsSource }: Props) {
   const [currentPlayer, setCurrentPlayer] = useState(players[0]);
-  const [backlogCount] = useState(Math.floor(settings.backlog_percentage * CardsSource.length));
+  const backlogCount = useMemo(() =>
+    Math.floor(settings.backlog_percentage * CardsSource.length), [settings.backlog_percentage, CardsSource.length]);
 
   // Cards
   const [activeCards, setActiveCards] = useState<processedCard[]>([]);
