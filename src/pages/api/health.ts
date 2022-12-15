@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   _req: NextApiRequest,
-  res: NextApiResponse<{ balls: "deez nuts" }>
+  res: NextApiResponse<string>
 ) {
-  return res.status(200).json({ balls: "deez nuts" }); // same
+  return res.status(200).json("🦉");
 }

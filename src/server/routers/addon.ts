@@ -22,9 +22,9 @@ export const addonRouter = router({
   all: procedure
     .input(
       z.object({
+        game_id: z.string().length(24),
         limit: z.number().min(1).max(100).default(50),
         cursor: z.string().nullish(),
-        game_id: z.string().length(24).optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -34,14 +34,8 @@ export const addonRouter = router({
         select: defaultAddonSelect,
         take: input.limit + 1,
         where: { game_id: input.game_id/* , NOT: { is_draft: true }*/ }, // TODO
-        cursor: cursor
-          ? {
-            id: cursor,
-          }
-          : undefined,
-        orderBy: {
-          created_at: "desc",
-        },
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: { created_at: "desc" },
       });
 
       let nextCursor: typeof cursor | undefined = undefined;
