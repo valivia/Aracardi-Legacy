@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 // import { forwardRef } from "react";
 
 import { Raleway } from "@next/font/google";
+import { trpc } from "@utils/trpc";
 const raleway = Raleway({ subsets: ["latin"] });
 
 // const LinkBehaviour = forwardRef(function LinkBehaviour(props, ref) {
@@ -46,7 +47,7 @@ const theme = createTheme({
 });
 
 
-export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return <>
     <Head>
       <title>Aracardi</title>
@@ -59,3 +60,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   </>;
 }
+
+export default trpc.withTRPC(App);

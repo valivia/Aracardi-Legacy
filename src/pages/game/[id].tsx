@@ -4,14 +4,14 @@ import GameScene from "src/components/game/ongoing.module";
 import PopulateScene from "src/components/game/populate.module";
 import { useState } from "react";
 import LayoutComponent from "src/components/global/layout.module";
-import prisma from "src/server/prisma";
+import { prisma } from "@server/prisma";
 
 // Types
 import { Game, Settings } from "@structs/game";
 import { Player } from "@structs/player";
 import { Card } from "@structs/card";
 import { Scene } from "@structs/scene";
-import shuffle from "@lib/shuffle";
+import shuffle from "@components/functions/shuffle";
 import { Addon } from "@structs/addon";
 
 const DEFAULT_SETTINGS: Settings = {

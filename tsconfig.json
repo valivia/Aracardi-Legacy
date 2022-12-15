@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2022",
+    "sourceMap": true,
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,6 +15,11 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "paths": {
       "@public/*": [
         "public/*"
@@ -26,17 +27,17 @@
       "@structs/*": [
         "src/types/*"
       ],
-      "@assets/*": [
-        "assets/*"
-      ],
       "@styles/*": [
         "src/styles/*"
       ],
       "@components/*": [
         "src/components/*"
       ],
-      "@lib/*": [
-        "lib/*"
+      "@server/*": [
+        "src/server/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
       ]
     },
     "plugins": [

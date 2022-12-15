@@ -54,19 +54,6 @@ model Game {
   session Session[]
 }
 
-model Player {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  token String
-
-  name   String
-  avatar String
-  points Int    @default(0)
-
-  // Relations
-  session    Session @relation(fields: [session_id], references: [id])
-  session_id String  @db.ObjectId
-}
-
 // ADDON #########################################################################################################
 model Addon {
   created_at DateTime @default(now()) @db.Timestamp()
@@ -75,8 +62,13 @@ model Addon {
 
   title       String
   description String
+
   is_official Boolean @default(false)
+  has_image   Boolean @default(false)
   is_draft    Boolean @default(true)
+
+  is_available_online  Boolean @default(false)
+  is_available_offline Boolean @default(false)
 
   game_id String
   game    Game   @relation(fields: [game_id], references: [id])
@@ -93,7 +85,6 @@ model Card {
   updated_at DateTime @updatedAt
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  turns           Int?
   minimum_players Int?
   maximum_players Int?
 
@@ -154,12 +145,27 @@ model Session {
   addon_ids String[] @db.ObjectId
 }
 
+model Player {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  token String
+
+  name   String
+  avatar String
+  points Int    @default(0)
+
+  // Relations
+  session    Session @relation(fields: [session_id], references: [id])
+  session_id String  @db.ObjectId
+}
+
 // OTHER #########################################################################################################
 type Settings {
   use_timers Boolean @default(true)
   use_images Boolean @default(true)
   use_loop   Boolean @default(true)
   use_nsfw   Boolean @default(false)
+
+  allow_hotjoin Boolean @default(true)
 
   timer_multipler Float @default(1)
   turn_multipler  Float @default(1)
