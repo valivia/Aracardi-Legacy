@@ -4,8 +4,6 @@ import { cardRouter } from "./card";
 import { gameRouter } from "./game";
 import { sessionRouter } from "./session";
 
-
-export const idLength = 24;
 export const appRouter = router({
   healthcheck: procedure.query(() => "yay!"),
 
