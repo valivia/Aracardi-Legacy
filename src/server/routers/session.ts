@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
+import { idLength } from "./_app";
 
 const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
@@ -27,7 +28,7 @@ export const sessionRouter = router({
   get: procedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.string().length(idLength),
       }),
     )
     .query(async ({ input }) => {
@@ -48,9 +49,8 @@ export const sessionRouter = router({
   add: procedure
     .input(
       z.object({
-        id: z.string().uuid().optional(),
-        addon_ids: z.string().length(24).array(),
-        game_id: z.string().length(24),
+        addon_ids: z.string().length(idLength).array(),
+        game_id: z.string().length(idLength),
       }),
     )
     .mutation(async ({ input }) => {

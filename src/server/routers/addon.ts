@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
+import { idLength } from "./_app";
 
 const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   id: true,
@@ -24,7 +25,7 @@ export const addonRouter = router({
       z.object({
         limit: z.number().min(1).max(100).default(50),
         cursor: z.string().nullish(),
-        game_id: z.string().length(24).optional(),
+        game_id: z.string().length(idLength).optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -33,7 +34,7 @@ export const addonRouter = router({
       const items = await prisma.addon.findMany({
         select: defaultAddonSelect,
         take: input.limit + 1,
-        where: { game_id: input.game_id, NOT: { is_draft: true } },
+        where: { game_id: input.game_id/* , NOT: { is_draft: true }*/ }, // TODO
         cursor: cursor
           ? {
             id: cursor,
@@ -60,7 +61,7 @@ export const addonRouter = router({
   get: procedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.string().length(idLength),
       }),
     )
     .query(async ({ input }) => {
@@ -80,10 +81,9 @@ export const addonRouter = router({
   add: procedure
     .input(
       z.object({
-        id: z.string().uuid().optional(),
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
-        game_id: z.string().length(24),
+        game_id: z.string().length(idLength),
       }),
     )
     .mutation(async ({ input }) => {

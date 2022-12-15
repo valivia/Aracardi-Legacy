@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
+import { idLength } from "./_app";
 
 const defaultGameSelect = Prisma.validator<Prisma.GameSelect>()({
   id: true,
@@ -60,7 +61,7 @@ export const gameRouter = router({
   get: procedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.string().length(idLength),
       }),
     )
     .query(async ({ input }) => {
@@ -105,7 +106,6 @@ export const gameRouter = router({
   add: procedure
     .input(
       z.object({
-        id: z.string().uuid().optional(),
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
       }),
