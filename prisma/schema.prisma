@@ -107,6 +107,7 @@ type Stage {
   // Text Card
   text      String?
   has_image Boolean? @default(false)
+  turns     Int?
 
   // Poll Card
   winner_points   Int?
@@ -124,8 +125,8 @@ enum StageType {
 }
 
 type PollOption {
-  id   String @db.ObjectId
-  text String
+  text   String
+  player String? @db.ObjectId
 }
 
 // SESSION #########################################################################################################
