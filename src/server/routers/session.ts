@@ -80,6 +80,7 @@ export const sessionRouter = router({
       // Generate x random codes to try.
       const randomCode = () => ((Math.random() + 1).toString(36).substring(2, 6).toUpperCase());
       const randomCodes = new Array(10).fill(1).map(() => randomCode());
+      let hasDbError = false;
 
       // Loop over codes and attempt to make session
       for (const join_code of randomCodes) {
@@ -97,14 +98,16 @@ export const sessionRouter = router({
           return session;
         } catch (error) {
           if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") continue;
-          else console.error(error);
+          console.error(error);
+          hasDbError = true;
+          break;
         }
       }
 
       // Throw error if failed.
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: "cant generate session code :(",
+        message: hasDbError ? "cant generate session code :(" : undefined,
       });
     }),
 
