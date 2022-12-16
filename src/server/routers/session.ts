@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
+import { DbId } from "@utils/input_validation";
 
 const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
@@ -36,7 +37,7 @@ const settingsObject = z.object({
 
   timer_multiplier: z.number().gte(0).lte(2),
   turn_multiplier: z.number().gte(0).lte(2),
-  backlog_percentage: z.number().gte(0).lte(1),
+  backlog_percentage: z.number().gte(0).lte(0.95),
 });
 
 export const sessionRouter = router({
@@ -44,7 +45,7 @@ export const sessionRouter = router({
   get: procedure
     .input(
       z.object({
-        id: z.string().length(24),
+        id: DbId,
       }),
     )
     .query(async ({ input }) => {
@@ -70,12 +71,11 @@ export const sessionRouter = router({
     .input(
       z.object({
         settings: settingsObject,
-        addon_ids: z.string().length(24).array(),
-        game_id: z.string().length(24),
+        game_id: DbId,
       }),
     )
     .mutation(async ({ input }) => {
-      const { addon_ids, game_id, settings } = input;
+      const { game_id, settings } = input;
 
       // Generate x random codes to try.
       const randomCode = () => ((Math.random() + 1).toString(36).substring(2, 6).toUpperCase());
@@ -90,17 +90,17 @@ export const sessionRouter = router({
             data: {
               game: { connect: { id: game_id } },
               join_code,
-              addon_ids,
               settings,
             },
           });
 
           return session;
         } catch (error) {
-          if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") continue;
-          console.error(error);
-          hasDbError = true;
-          break;
+          if (!(error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002")) {
+            console.error(error);
+            hasDbError = true;
+            break;
+          }
         }
       }
 
