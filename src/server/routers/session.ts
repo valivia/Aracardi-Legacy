@@ -107,7 +107,7 @@ export const sessionRouter = router({
       // Throw error if failed.
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: hasDbError ? "cant generate session code :(" : undefined,
+        message: hasDbError ? undefined : "cant generate session code :(",
       });
     }),
 
