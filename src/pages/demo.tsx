@@ -10,10 +10,15 @@ const Home = () => {
 
   const [name, setName] = useState("");
 
-  const addonmut = trpc.addon.add.useMutation();
+  const sessionMut = trpc.session.add.useMutation();
 
   const onClick = async () => {
-    const result = await addonmut.mutateAsync({ title: name, description: "hoot hoot! :)", game_id: "63964fd8ff9e2d8649857828" });
+    const result = await sessionMut.mutateAsync({
+      game_id: "63964fd8ff9e2d8649857828",
+      addon_ids: ["639b86eabfba6b52382022bc", "639b86eabfba6b52382022bd"],
+      settings: { use_images: true, use_nsfw: true, backlog_percentage: 0.85, timer_multiplier: 1, turn_multiplier: 1 },
+    });
+
     console.info(result);
   };
 

@@ -134,7 +134,7 @@ model Session {
   created_at DateTime @default(now()) @db.Timestamp()
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  join_code String
+  join_code String   @unique
   settings  Settings
 
   players Player[]
@@ -168,8 +168,8 @@ type Settings {
 
   allow_hotjoin Boolean @default(true)
 
-  timer_multipler Float @default(1)
-  turn_multipler  Float @default(1)
+  timer_multiplier Float @default(1)
+  turn_multiplier  Float @default(1)
 
   backlog_percentage Float @default(0.85)
 }
