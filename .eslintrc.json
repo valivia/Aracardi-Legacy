@@ -11,6 +11,15 @@
   "rules": {
     "@next/next/no-img-element": "off",
     "no-unused-vars": "off",
+    "react/jsx-tag-spacing": [
+      "error",
+      {
+        "closingSlash": "never",
+        "beforeSelfClosing": "always",
+        "afterOpening": "never",
+        "beforeClosing": "never"
+      }
+    ],
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
@@ -104,5 +113,13 @@
     "space-unary-ops": "error",
     "spaced-comment": "error",
     "yoda": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/server/**/*.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 }
