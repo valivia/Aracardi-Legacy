@@ -4,6 +4,8 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
 import { DbId } from "@utils/input_validation";
+import { createJoinCode } from "@utils/join_code";
+import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 
 const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
@@ -78,9 +80,7 @@ export const sessionRouter = router({
       const { game_id, settings } = input;
 
       // Generate x random codes to try.
-      const randomCode = () => ((Math.random() + 1).toString(36).substring(2, 6).toUpperCase());
-      const randomCodes = new Array(10).fill(1).map(() => randomCode());
-      let hasDbError = false;
+      const randomCodes = new Array(10).fill(1).map(createJoinCode);
 
       // Loop over codes and attempt to make session
       for (const join_code of randomCodes) {
@@ -96,10 +96,11 @@ export const sessionRouter = router({
 
           return session;
         } catch (error) {
-          if (!(error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002")) {
+          if (!isDatabaseError(error, DatabaseErrorCode.UniqueViolation)) {
             console.error(error);
-            hasDbError = true;
-            break;
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+            });
           }
         }
       }
@@ -107,7 +108,7 @@ export const sessionRouter = router({
       // Throw error if failed.
       throw new TRPCError({
         code: "INTERNAL_SERVER_ERROR",
-        message: hasDbError ? undefined : "cant generate session code :(",
+        message: "cant generate session code :(",
       });
     }),
 
