@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
+import { DbId } from "@utils/input_validation";
 
 const defaultCardSelect = Prisma.validator<Prisma.CardSelect>()({
   id: true,
@@ -22,8 +23,8 @@ export const cardRouter = router({
     .input(
       z.object({
         limit: z.number().min(1).max(100).default(50),
-        cursor: z.string().nullish(),
-        addon_id: z.string().length(24),
+        cursor: DbId.nullish(),
+        addon_id: DbId,
       }),
     )
     .query(async ({ input }) => {
@@ -59,7 +60,7 @@ export const cardRouter = router({
   get: procedure
     .input(
       z.object({
-        id: z.string().length(24),
+        id: DbId,
       }),
     )
     .query(async ({ input }) => {
@@ -79,7 +80,7 @@ export const cardRouter = router({
   add: procedure
     .input(
       z.object({
-        addon_id: z.string().length(24),
+        addon_id: DbId,
       }),
     )
     .mutation(async ({ input }) => {
