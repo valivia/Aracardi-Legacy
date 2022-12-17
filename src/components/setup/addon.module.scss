@@ -1,0 +1,83 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border: 1px solid $text;
+  border-radius: 300px;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.avatar {
+  border: 1px solid $text;
+  border-radius: 100%;
+
+  width: 64px;
+  height: 64px;
+
+  margin: -1px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+  padding-top: 2px;
+  padding-bottom: 4px;
+
+  & > h1 {
+    font-weight: 300;
+    font-size: 20px;
+    margin: 0;
+  }
+}
+
+.tags {
+  display: flex;
+  gap: 10px;
+  margin-left: -1px;
+
+  & section {
+    border: 1px solid currentColor;
+    border-radius: 100px;
+    padding: 0 5px;
+
+    font-size: 11px;
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    & > svg {
+      border: 1px solid currentColor;
+      border-radius: 100px;
+
+      width: 24px;
+      height: 24px;
+
+      padding: 3px;
+      margin: -1px;
+      margin-left: -6px;
+    }
+  }
+}
+
+.indicator {
+  border: 1px solid currentColor;
+  border-radius: 100%;
+
+  margin-left: auto;
+  margin-right: 7px;
+  width: 16px;
+  height: 16px;
+
+  background-color: transparent;
+  transition: background-color 100ms ease-in-out;
+
+  &[data-active="true"] {
+    background-color: currentColor;
+  }
+}
