@@ -1,0 +1,28 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border-radius: 100px;
+  border: none;
+  background-color: transparent;
+  color: currentColor;
+
+  padding: 6px 20px;
+
+  transform: scale(1);
+  transition: transform 100ms ease-in-out;
+
+  &[data-variant="Primary"] {
+    background-color: $text;
+    color: $primary;
+  }
+
+  &[data-variant="Secondary"] {
+    background-color: transparent;
+    color: $text;
+    border: 1px solid currentColor;
+  }
+
+  &:hover:not(:active) {
+    transform: scale(1.05);
+  }
+}
