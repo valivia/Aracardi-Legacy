@@ -1,42 +1,47 @@
-import TagComponent from "@components/global/tag.module";
+import { Tag } from "@components/global/tag.module";
 import { faker } from "@faker-js/faker";
-import { Addon } from "@prisma/client";
+import prisma from "@prisma/client";
 import React, { useMemo } from "react";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import styles from "./addon.module.scss";
 
-// TODO display correct card count.
+// TODO display correct card count. keyboard accessibility (keydown and infinite load?)
 
-function AddonComponent({ addon, active, onclick }: Props) {
+const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
   const avatar = useMemo(() => faker.image.abstract(640, 640, true), []);
   return (
-    <article className={styles.main} onClick={onclick}>
+    <article
+      className={styles.main}
+      onClick={onClick}
+      tabIndex={0}
+    >
+
       {/* Addon avatar */}
-      <img className={styles.avatar} src={avatar} alt="a" />
+      <img className={styles.avatar} src={avatar} alt="" />
 
       {/* Title, card count and tags */}
       <section className={styles.info}>
 
-        <h1>{addon.title}</h1>
+        <h2>{addon.title}</h2>
 
         <section className={styles.tags}>
-          <TagComponent><BsWifi />125</TagComponent>
-          <TagComponent><BsWifiOff />125</TagComponent>
-          {addon.is_official && <TagComponent>Official</TagComponent>}
+          <Tag><BsWifi />125</Tag>
+          <Tag><BsWifiOff />125</Tag>
+          {addon.is_official && <Tag>Official</Tag>}
         </section>
 
       </section>
 
       {/* Selection indicator */}
       {typeof active === "boolean" && <div className={styles.indicator} data-active={active}></div>}
-    </article >
+    </article>
   );
-}
+};
 
-export default AddonComponent;
+export { Addon };
 
 interface Props {
-  addon: Addon;
-  onclick?: () => void;
+  addon: prisma.Addon;
+  onClick?: () => void | Promise<void>;
   active?: boolean;
 }

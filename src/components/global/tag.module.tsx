@@ -1,23 +1,22 @@
+import { PropsWithChildren } from "react";
 import styles from "./tag.module.scss";
 
 // TODO semantics?, tag size (only 24px rn)
 
-function TagComponent({ children: input }: Props) {
-  const children = input instanceof Array ? input : [input];
-  let style = {};
+const Tag: React.FC<PropsWithChildren> = ({ children: input }) => {
+  const children = Array.isArray(input) ? input : [input];
 
-  if (typeof children[0] === "object") style = { ...style, paddingLeft: 0 };
-  if (typeof children[children.length - 1] === "object") style = { ...style, paddingRight: 0 };
+  // Remove padding if icon borders sides.
+  const style = {
+    paddingLeft: typeof children[0] === "object" ? 0 : undefined,
+    paddingRight: typeof children[children.length - 1] === "object" ? 0 : undefined,
+  };
 
   return (
     <div className={styles.main} style={style}>
       {children}
     </div>
   );
-}
+};
 
-export default TagComponent;
-
-interface Props {
-  children: (JSX.Element | string)[] | string | JSX.Element
-}
+export { Tag };

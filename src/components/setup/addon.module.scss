@@ -1,12 +1,17 @@
 @use "src/styles/vars" as *;
 
 .main {
-  border: 1px solid $text;
+  border: 1px solid currentColor;
   border-radius: 300px;
 
   display: flex;
   align-items: center;
   gap: 6px;
+
+  &:focus {
+    color: $accent;
+    outline: none;
+  }
 }
 
 .avatar {
@@ -28,7 +33,7 @@
   padding-top: 2px;
   padding-bottom: 4px;
 
-  & > h1 {
+  & > h2 {
     font-weight: 300;
     font-size: 20px;
     margin: 0;
@@ -39,30 +44,6 @@
   display: flex;
   gap: 10px;
   margin-left: -1px;
-
-  & section {
-    border: 1px solid currentColor;
-    border-radius: 100px;
-    padding: 0 5px;
-
-    font-size: 11px;
-
-    display: flex;
-    align-items: center;
-    gap: 5px;
-
-    & > svg {
-      border: 1px solid currentColor;
-      border-radius: 100px;
-
-      width: 24px;
-      height: 24px;
-
-      padding: 3px;
-      margin: -1px;
-      margin-left: -6px;
-    }
-  }
 }
 
 .indicator {

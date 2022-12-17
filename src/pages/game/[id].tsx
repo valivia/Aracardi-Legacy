@@ -3,14 +3,14 @@ import LayoutComponent from "src/components/global/layout.module";
 import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
 import { trpc } from "@utils/trpc";
-import { GetStaticPaths, GetStaticProps } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
-import ButtonComponent from "@components/input/button.module";
-import AddonComponent from "@components/setup/addon.module";
+import { Button } from "@components/input/button.module";
+import { Addon } from "@components/setup/addon.module";
 import { UIEvent } from "react";
-import TagComponent from "@components/global/tag.module";
+import { Tag } from "@components/global/tag.module";
 
-const GameSetup = ({ game }: Props) => {
+const GameSetup: NextPage<Props> = ({ game }) => {
   const addons = trpc.addon.all.useInfiniteQuery(
     { limit: 7, game_id: game.id },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
@@ -30,35 +30,36 @@ const GameSetup = ({ game }: Props) => {
 
         {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
-          <ButtonComponent variant="Secondary" >official</ButtonComponent>
-          <ButtonComponent variant="Secondary" ><BsWifi /></ButtonComponent>
-          <ButtonComponent variant="Secondary" ><BsWifiOff /></ButtonComponent>
+          {/* TODO 2 dropdown menus */}
           <input placeholder="E.g 'Base pack'" />
         </form>
 
         <hr />
 
         {/* List of addons */}
-        <section className={styles.addons} onScroll={scrolling}>
+        <section
+          className={styles.addons}
+          onScroll={scrolling}
+          tabIndex={-1}
+        >
           {addons.data?.pages.map(page =>
             page.items.map(x =>
-              <AddonComponent key={x.id} addon={x} />
+              <Addon key={x.id} addon={x} />
             )
-          )
-          }
+          )}
         </section>
 
         {/* Card count and settings */}
         <section className={styles.horizontalList}>
-          <TagComponent><BsWifi />125</TagComponent>
-          <TagComponent><BsWifiOff />125</TagComponent>
-          <ButtonComponent variant="Secondary">Settings</ButtonComponent>
+          <Tag><BsWifi />125</Tag>
+          <Tag><BsWifiOff />125</Tag>
+          <Button variant="secondary">Settings</Button>
         </section>
 
         {/* Start */}
         <section className={styles.horizontalList}>
-          <ButtonComponent>Start Online</ButtonComponent>
-          <ButtonComponent>Start Offline</ButtonComponent>
+          <Button>Start Online</Button>
+          <Button>Start Offline</Button>
         </section>
 
       </main>
@@ -76,19 +77,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const result = await prisma.game.findMany();
   const paths = result.map((project) => ({ params: { id: project.id } }));
   return {
-    paths: paths,
+    paths,
     fallback: "blocking",
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const result = await prisma.game.findUnique({ where: { id: params?.id as string } });
-  if (!result) return { notFound: true };
-  const game = {
-    ...result,
-    created_at: Number(result.created_at),
-    updated_at: Number(result.updated_at),
-  };
+  const game = await prisma.game.findUnique({ where: { id: params?.id as string } });
+  if (!game) return { notFound: true };
 
   return { props: { game } };
 };

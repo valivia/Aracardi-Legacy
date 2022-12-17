@@ -3,8 +3,9 @@ import LayoutComponent from "src/components/global/layout.module";
 import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
 import Link from "next/link";
+import { GetStaticProps, NextPage } from "next";
 
-const Games = ({ games }: Props) => {
+const Games: NextPage<Props> = ({ games }) => {
   return (
     <LayoutComponent>
       <main className={styles.main}>
@@ -37,9 +38,9 @@ interface Props {
 
 export default Games;
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const result = await prisma.game.findMany();
   const games = result.map(game => ({ ...game, created_at: Number(game.created_at), updated_at: Number(game.updated_at) }));
   return { props: { games } };
 
-}
+};
