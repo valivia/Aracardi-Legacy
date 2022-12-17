@@ -11,7 +11,6 @@ body {
   -ms-overflow-style: none;
   overflow-x: hidden;
 
-  letter-spacing: 3px;
   font-weight: 300;
 }
 
@@ -23,7 +22,7 @@ a {
 * {
   box-sizing: border-box;
   font-family: $font;
-  font-variant-numeric: normal;
+  font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 /* Scrollbar */
