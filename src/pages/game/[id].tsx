@@ -7,10 +7,13 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import { Button } from "@components/input/button.module";
 import { Addon } from "@components/setup/addon.module";
-import { UIEvent } from "react";
+import { UIEvent, useState } from "react";
 import { Tag } from "@components/global/tag.module";
+import { TextInput } from "@components/input/text_input.module";
 
 const GameSetup: NextPage<Props> = ({ game }) => {
+
+  const [query, setQuery] = useState("");
   const addons = trpc.addon.all.useInfiniteQuery(
     { limit: 7, game_id: game.id },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
@@ -25,13 +28,20 @@ const GameSetup: NextPage<Props> = ({ game }) => {
   }
 
   return (
-    <LayoutComponent title={game.title}>
-      <main className={styles.main}>
+    <LayoutComponent
+      title={game.title}
+      subTitle={"Please select your addons"}
+    >
 
+      <main className={styles.main}>
         {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
           {/* TODO 2 dropdown menus */}
-          <input placeholder="E.g 'Base pack'" />
+          <TextInput
+            placeholder="E.g 'Base pack'"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </form>
 
         <hr />

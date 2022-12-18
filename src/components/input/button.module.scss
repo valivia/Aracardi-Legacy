@@ -11,15 +11,25 @@
   transform: scale(1);
   transition: transform 100ms ease-in-out;
 
-  &[data-variant="Primary"] {
+  &[data-variant="primary"] {
     background-color: $text;
     color: $primary;
+
+    &:focus {
+      outline: none;
+      background-color: $accent;
+    }
   }
 
-  &[data-variant="Secondary"] {
+  &[data-variant="secondary"] {
     background-color: transparent;
     color: $text;
     border: 1px solid currentColor;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+    }
   }
 
   &:hover:not(:active) {
