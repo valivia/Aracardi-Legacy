@@ -7,7 +7,7 @@ import { DbId } from "@utils/input_validation";
 import { createJoinCode } from "@utils/join_code";
 import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 
-const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
+export const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
   created_at: true,
 
