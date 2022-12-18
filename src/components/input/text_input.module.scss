@@ -1,0 +1,17 @@
+@use "src/styles/vars" as *;
+
+.main {
+  color: $text;
+  background-color: transparent;
+
+  border: 1px solid currentColor;
+  border-radius: 100px;
+
+  padding: 6px 12px;
+
+  &:focus {
+    outline: none;
+    color: $accent;
+  }
+}
+
