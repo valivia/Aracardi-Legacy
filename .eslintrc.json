@@ -41,7 +41,19 @@
       }
     ],
     "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "enums": "always-multiline",
+        "functions": "never",
+        "generics": "never",
+        "tuples": "never"
+      }
+    ],
     "comma-spacing": "off",
     "@typescript-eslint/comma-spacing": "error",
     "comma-style": "error",
@@ -104,5 +116,13 @@
     "space-unary-ops": "error",
     "spaced-comment": "error",
     "yoda": "error"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/server/**/*.ts"],
+      "rules": {
+        "no-console": "off"
+      }
+    }
+  ]
 }
