@@ -73,8 +73,12 @@ export const addonRouter = router({
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: [
-          "onlineSize" in orderBy ? { onlineSize: orderBy.onlineSize } : (undefined as never),
-          "offlineSize" in orderBy ? { offlineSize: orderBy.offlineSize } : (undefined as never),
+          "onlineSize" in orderBy
+            ? { onlineSize: orderBy.onlineSize, onlineNsfwSize: orderBy.onlineSize }
+            : (undefined as never),
+          "offlineSize" in orderBy
+            ? { offlineSize: orderBy.offlineSize, offlineNsfwSize: orderBy.offlineSize }
+            : (undefined as never),
           { created_at: orderBy.created_at }, // Important to have this last, so that other sorts go first
         ],
       });
