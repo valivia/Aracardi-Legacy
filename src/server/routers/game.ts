@@ -26,7 +26,7 @@ export const gameRouter = router({
       z.object({
         limit: z.number().min(1).max(100).default(50),
         cursor: DbId.nullish(),
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { cursor } = input;
@@ -62,7 +62,7 @@ export const gameRouter = router({
     .input(
       z.object({
         id: DbId,
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { id } = input;
@@ -82,7 +82,7 @@ export const gameRouter = router({
     .input(
       z.object({
         query: z.string(),
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { query } = input;
@@ -108,7 +108,7 @@ export const gameRouter = router({
       z.object({
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const game = await prisma.game.create({

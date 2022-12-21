@@ -110,24 +110,33 @@ export async function getStaticPaths() {
 export async function getStaticProps(context: GetStaticPropsContext) {
   const gameResult = await prisma.game.findUnique({ where: { id: context.params?.id as string } });
   if (gameResult === null) return { notFound: true };
-  const game = { ...gameResult, created_at: Number(gameResult.created_at) };
+  const game = { ...gameResult, updated_at: Number(gameResult.updated_at), created_at: Number(gameResult.created_at) };
 
   const addonResult = await prisma.addon.findMany({
     where: { game_id: gameResult.id },
     include: { _count: { select: { cards: true } }, authors: true, cards: true },
   });
 
-  const addons: Addon[] = addonResult.map(addon => {
-    return {
-      ...addon,
-      created_at: Number(addon.created_at),
-      _count: null,
-      card_count: addon._count.cards,
-      authors: addon.authors.map(x => x.name),
-      cards: addon.cards.map(card => ({ ...card, created_at: Number(addon.created_at) })),
-    };
-  }
-  ).filter(addon => addon.card_count > 1);
+  const addons: Addon[] = addonResult
+    .map((addon) => {
+      return {
+        ...addon,
+        updated_at: Number(addon.updated_at),
+        created_at: Number(addon.created_at),
+        _count: null,
+        card_count: addon._count.cards,
+        authors: addon.authors.map((x) => x.name),
+        cards: addon.cards.map(
+          (card) =>
+            ({
+              ...card,
+              created_at: Number(addon.created_at),
+              updated_at: Number(addon.updated_at),
+            } as unknown as Card) // FIXME: This isn't the actual card type we want
+        ),
+      };
+    })
+    .filter((addon) => addon.card_count > 1);
 
   return {
     props: { game, addons },

@@ -26,7 +26,7 @@ export const addonRouter = router({
         game_id: DbId,
         limit: z.number().min(1).max(100).default(50),
         cursor: DbId.nullish(),
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { cursor } = input;
@@ -56,7 +56,7 @@ export const addonRouter = router({
     .input(
       z.object({
         id: DbId,
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { id } = input;
@@ -78,7 +78,7 @@ export const addonRouter = router({
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
         game_id: DbId,
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const addon = await prisma.addon.create({

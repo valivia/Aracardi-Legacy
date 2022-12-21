@@ -48,7 +48,7 @@ export const sessionRouter = router({
     .input(
       z.object({
         id: DbId,
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { id } = input;
@@ -74,7 +74,7 @@ export const sessionRouter = router({
       z.object({
         settings: settingsObject,
         game_id: DbId,
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const { game_id, settings } = input;
