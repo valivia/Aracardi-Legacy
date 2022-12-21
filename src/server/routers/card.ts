@@ -25,7 +25,7 @@ export const cardRouter = router({
         limit: z.number().min(1).max(100).default(50),
         cursor: DbId.nullish(),
         addon_id: DbId,
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { cursor } = input;
@@ -61,7 +61,7 @@ export const cardRouter = router({
     .input(
       z.object({
         id: DbId,
-      }),
+      })
     )
     .query(async ({ input }) => {
       const { id } = input;
@@ -81,7 +81,7 @@ export const cardRouter = router({
     .input(
       z.object({
         addon_id: DbId,
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const addon = await prisma.card.create({

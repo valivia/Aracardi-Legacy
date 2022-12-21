@@ -1,4 +1,4 @@
-import { processedCard } from "types/card";
+import { processedCard } from "../../../types/card";
 import React, { ReactNode } from "react";
 import styles from "./card.module.scss";
 import { Settings } from "@structs/game";
@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 
 function CardComponent({ card, settings, preview = false, onClick }: Props) {
   let cardStyle = {};
-
 
   card.has_image && settings.display_images && (cardStyle = { backgroundImage: `url(/cards/${card.id}` });
   let text = card.processed_text;
@@ -18,35 +17,32 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
       return (
         <>
           {" "}
-          <var key={`${card.active_id}_turns`}>{card.turns}</var>{" "}
-          {`turn${card.turns > 1 ? "s" : ""}`}
+          <var key={`${card.active_id}_turns`}>{card.turns}</var> {`turn${card.turns > 1 ? "s" : ""}`}
         </>
       );
     });
   }
 
-  if (preview) return (
-    <motion.article
-      className={styles.active}
-      onClick={onClick}
-      key={card.id}
-
-      // Animation
-      initial={{ opacity: 0, y: 100 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ type: "spring", stiffness: 260, damping: 20 }}
-    >
-      <p>{text as string | ReactNode}</p>
-    </motion.article>
-  );
-
+  if (preview)
+    return (
+      <motion.article
+        className={styles.active}
+        onClick={onClick}
+        key={card.id}
+        // Animation
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      >
+        <p>{text as string | ReactNode}</p>
+      </motion.article>
+    );
 
   return (
     <motion.article
       style={cardStyle}
       className={styles.main}
       onClick={onClick}
-
       // Animation
       initial="hidden"
       animate="visible"
@@ -60,7 +56,6 @@ function CardComponent({ card, settings, preview = false, onClick }: Props) {
       <p>{text as string | ReactNode}</p>
     </motion.article>
   );
-
 }
 
 interface Props {
