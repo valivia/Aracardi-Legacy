@@ -3,6 +3,7 @@ import { procedure, router } from "../trpc";
 import { addonRouter } from "./addon";
 import { cardRouter } from "./card";
 import { gameRouter } from "./game";
+import { joinRouter } from "./mockJoin";
 import { sessionRouter } from "./session";
 
 export const appRouter = router({
@@ -12,15 +13,10 @@ export const appRouter = router({
   addon: addonRouter,
   card: cardRouter,
   session: sessionRouter,
+  mockJoin: joinRouter,
   randomNumber: procedure.subscription(() => {
-    return observable<number>((emit) => {
-      const int = setInterval(() => {
-        emit.next(Math.random());
-      }, 500);
-
-      return () => {
-        clearInterval(int);
-      };
+    return observable<string>((emit) => {
+      emit.next("JOINED");
     });
   }),
 });

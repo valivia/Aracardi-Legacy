@@ -5,6 +5,7 @@ import http from "http";
 import next from "next";
 import { parse } from "url";
 import ws from "ws";
+import { handleSessionConnections } from "./features/socket/connections";
 
 const port = Number(process.env.PORT || "3000");
 const dev = process.env.NODE_ENV !== "production";
@@ -32,12 +33,7 @@ app.prepare().then(() => {
   const wss = new ws.Server({ server });
   const handler = applyWSSHandler({ wss, router: appRouter, createContext, onError: (err) => console.error(err) });
 
-  wss.on("connection", (socket) => {
-    console.log(`++ Connection (${wss.clients.size})`);
-    socket.once("close", () => {
-      console.log(`-- Connection (${wss.clients.size})`);
-    });
-  });
+  handleSessionConnections(wss);
 
   process.on("SIGTERM", () => {
     console.log("SIGTERM");

@@ -2,6 +2,7 @@ import { createContext } from "./context";
 import { appRouter } from "./routers/_app";
 import { applyWSSHandler } from "@trpc/server/adapters/ws";
 import ws from "ws";
+import { handleSessionConnections } from "./features/socket/connections";
 
 const port = +(process.env.PORT || 3000);
 
@@ -11,12 +12,7 @@ const wss = new ws.Server({
 
 const handler = applyWSSHandler({ wss, router: appRouter, createContext });
 
-wss.on("connection", (socket) => {
-  console.log(`++ Connection (${wss.clients.size})`);
-  socket.once("close", () => {
-    console.log(`-- Connection (${wss.clients.size})`);
-  });
-});
+handleSessionConnections(wss);
 
 console.log(`✅ WebSocket Server listening on ws://localhost:${port}`);
 
