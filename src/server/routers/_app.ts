@@ -1,3 +1,4 @@
+import { observable } from "@trpc/server/observable";
 import { procedure, router } from "../trpc";
 import { addonRouter } from "./addon";
 import { cardRouter } from "./card";
@@ -11,6 +12,17 @@ export const appRouter = router({
   addon: addonRouter,
   card: cardRouter,
   session: sessionRouter,
+  randomNumber: procedure.subscription(() => {
+    return observable<number>((emit) => {
+      const int = setInterval(() => {
+        emit.next(Math.random());
+      }, 500);
+
+      return () => {
+        clearInterval(int);
+      };
+    });
+  }),
 });
 
 export type AppRouter = typeof appRouter;
