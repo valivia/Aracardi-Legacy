@@ -48,7 +48,7 @@ export const joinRouter = router({
         player: PLAYER_CREATE_OBJECT,
       })
     )
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       const { join_code, player: playerCreate } = input;
 
       const session = await getSessionByJoinCode(join_code);
