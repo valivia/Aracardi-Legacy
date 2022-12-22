@@ -2,4 +2,9 @@ import { z } from "zod";
 
 export const DbId = z.string().length(24);
 
-export const JoinCode = z.string().length(4);
+export const JOIN_CODE = z.string().length(4);
+
+export const PLAYER_CREATE_OBJECT = z.object({
+  name: z.string().length(24),
+  avatar: z.string().length(24),
+});
