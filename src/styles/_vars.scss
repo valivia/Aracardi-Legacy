@@ -2,25 +2,72 @@ $dark-theme: false !default;
 $font: "raleway", Helvetica, sans-serif;
 
 $text: #d9c193 !default;
-$textHover: #b3a89b !default;
-$textDark: #7e6f54 !default;
-$accent: rgb(255, 218, 98);
+$textHover: #a69371 !default;
+$textDark: #594622 !default;
+$accent: #dfaf55;
 $disabled: #903636 !default;
 $primary: #0b0b0b !default;
 
 @if $dark-theme {
-    $text: #161616;
-    $textHover: #343434;
-    $textDark: rgb(80, 80, 80);
+  $text: #161616;
+  $textHover: #343434;
+  $textDark: rgb(80, 80, 80);
 
-    $primary: #d9c193;
+  $primary: #d9c193;
 }
 
 @mixin noselect {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// Small tablets and large smartphones (landscape view)
+$screen-sm-min: 576px;
+
+// Small tablets (portrait view)
+$screen-md-min: 768px;
+
+// Tablets and small desktops
+$screen-lg-min: 992px;
+
+// Large tablets and desktops
+$screen-xl-min: 1200px;
+
+// Small devices
+@mixin small {
+  @media (min-width: #{$screen-sm-min}) {
+    @content;
+  }
+}
+
+// Medium devices
+@mixin medium {
+  @media (min-width: #{$screen-md-min}) {
+    @content;
+  }
+}
+
+// Large devices
+@mixin large {
+  @media (min-width: #{$screen-lg-min}) {
+    @content;
+  }
+}
+
+// Extra large devices
+@mixin extraLarge {
+  @media (min-width: #{$screen-xl-min}) {
+    @content;
+  }
+}
+
+// Custom devices
+@mixin minWidth($screen) {
+  @media (min-width: ($screen + "px")) {
+    @content;
+  }
 }
