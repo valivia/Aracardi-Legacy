@@ -9,7 +9,7 @@ const Home = () => {
 
   const JOIN_CODE = name;
 
-  const getByJoinCodeResult = trpc.join.get.useQuery({
+  const getByJoinCodeResult = trpc.session.getByJoinCode.useQuery({
     join_code: JOIN_CODE,
   });
 
@@ -19,7 +19,7 @@ const Home = () => {
   // console.log(aa);
 
   const sessionMut = trpc.session.add.useMutation();
-  const joinMut = trpc.join.join.useMutation();
+  const joinMut = trpc.session.join.useMutation();
 
   const onClick = async () => {
     const sessionCreateResult = await sessionMut.mutateAsync({
