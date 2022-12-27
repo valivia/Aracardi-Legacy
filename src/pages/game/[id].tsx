@@ -7,18 +7,36 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import { Button } from "@components/input/button.module";
 import { Addon } from "@components/setup/addon.module";
-import { UIEvent, useState } from "react";
+import { UIEvent, useEffect, useState } from "react";
 import { Tag } from "@components/global/tag.module";
 import { TextInput } from "@components/input/text_input.module";
+import Prisma from "@prisma/client";
 
 const GameSetup: NextPage<Props> = ({ game }) => {
-
+  // TODO proper settings;
+  const allowNsfw = true;
   const [query, setQuery] = useState("");
+  const [activeAddons, setActiveAddons] = useState<Map<string, Prisma.Addon>>(new Map());
+  const [cardSize, setCardSize] = useState({ offline: 0, online: 0 });
+
+  // Update card count when an addon is (de)selected.
+  useEffect(() => {
+    const amount = { offline: 0, online: 0 };
+    for (const entry of activeAddons.values()) {
+      amount.offline += entry.offlineSize - (allowNsfw ? 0 : entry.offlineNsfwSize);
+      amount.online += entry.onlineSize - (allowNsfw ? 0 : entry.onlineNsfwSize);
+    }
+    setCardSize(amount);
+  }, [activeAddons, allowNsfw]);
+
+
+  // Fetch addons.
   const addons = trpc.addon.all.useInfiniteQuery(
-    { limit: 7, game_id: game.id },
+    { limit: 20, game_id: game.id },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
 
+  // Load more addons when end is reached.
   async function scrolling(e: UIEvent) {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if ((scrollTop + clientHeight === scrollHeight) && !addons.isFetching) {
@@ -37,6 +55,8 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
           {/* TODO 2 dropdown menus */}
+          <Button variant="secondary">Sort By</Button>
+          <Button variant="secondary">Order By</Button>
           <TextInput
             placeholder="E.g 'Base pack'"
             value={query}
@@ -53,24 +73,37 @@ const GameSetup: NextPage<Props> = ({ game }) => {
           tabIndex={-1}
         >
           {addons.data?.pages.map(page =>
-            page.items.map(x =>
-              <Addon key={x.id} addon={x} />
+            page.items.map(addon =>
+              <Addon
+                key={addon.id}
+                addon={addon}
+                active={activeAddons.has(addon.id)}
+                onClick={() => setActiveAddons(old => {
+                  const test = new Map(old);
+                  test.has(addon.id) ? test.delete(addon.id) : test.set(addon.id, addon);
+                  return test;
+                })
+                }
+              />
             )
           )}
         </section>
+        <div className={styles.fog}></div>
 
         {/* Card count and settings */}
         <section className={styles.horizontalList}>
-          <Tag><BsWifi />125</Tag>
-          <Tag><BsWifiOff />125</Tag>
-          <Button variant="secondary">Settings</Button>
+          <Tag><BsWifi />{cardSize.online}</Tag>
+          <Tag><BsWifiOff />{cardSize.offline}</Tag>
+          <Button variant="secondary" size="small">Settings</Button>
         </section>
 
         {/* Start */}
-        <section className={styles.horizontalList}>
-          <Button>Start Online</Button>
-          <Button>Start Offline</Button>
-        </section>
+        {activeAddons.size > 0 &&
+          <section className={styles.horizontalList}>
+            <Button variant="primary">Start Online</Button>
+            <Button variant="secondary">Start Offline</Button>
+          </section>
+        }
 
       </main>
     </LayoutComponent>

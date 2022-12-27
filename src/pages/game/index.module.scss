@@ -1,15 +1,23 @@
+@use "src/styles/vars" as *;
+
 .main {
   grid-area: main;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 0 20px;
+  padding: 0 5px;
 
   & > hr {
     width: 70vw;
     border: none;
-    border-top: 1px solid currentColor;
+    border-top: 2px solid $text;
+
+    @include large {
+      padding: 0 20px;
+      width: 30vw;
+      max-width: 400px;
+    }
   }
 }
 
@@ -20,12 +28,39 @@
 }
 
 .addons {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 15px;
 
+  padding: 10px;
+
+  width: 90vw;
   height: 50vh;
+
   overflow: scroll;
 
-  position: relative;
+  @include large {
+    width: 40vw;
+    min-width: 600px;
+    max-width: 800px;
+  }
+}
+
+.fog {
+  height: 100px;
+  z-index: 8;
+  margin-top: -100px;
+  width: 100%;
+
+  pointer-events: none;
+
+  background: transparent;
+  background: linear-gradient(
+    0deg,
+    rgba(11, 11, 11, 1) 0%,
+    rgba(11, 11, 11, 1) 10%,
+    rgba(11, 11, 11, 0) 90%,
+    rgba(11, 11, 11, 0) 100%
+  );
 }

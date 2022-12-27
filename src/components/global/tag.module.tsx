@@ -3,7 +3,7 @@ import styles from "./tag.module.scss";
 
 // TODO semantics?, tag size (only 24px rn)
 
-const Tag: React.FC<PropsWithChildren> = ({ children: input }) => {
+const Tag: React.FC<PropsWithChildren<Props>> = ({ children: input, tooltip }) => {
   const children = Array.isArray(input) ? input : [input];
 
   // Remove padding if icon borders sides.
@@ -13,10 +13,14 @@ const Tag: React.FC<PropsWithChildren> = ({ children: input }) => {
   };
 
   return (
-    <div className={styles.main} style={style}>
+    <div className={styles.main} style={style} title={tooltip}>
       {children}
     </div>
   );
 };
+
+interface Props {
+  tooltip?: string
+}
 
 export { Tag };

@@ -6,14 +6,21 @@
   background-color: transparent;
   color: currentColor;
 
-  padding: 6px 20px;
-
   transform: scale(1);
   transition: transform 100ms ease-in-out;
 
+  &:hover {
+    cursor: pointer;
+  }
+
+  @include large {
+    border-width: 2px;
+  }
+
+  // Variant
   &[data-variant="primary"] {
-    background-color: $text;
     color: $primary;
+    background-color: $text;
 
     &:focus {
       outline: none;
@@ -22,13 +29,38 @@
   }
 
   &[data-variant="secondary"] {
-    background-color: transparent;
     color: $text;
+    background-color: transparent;
     border: 1px solid currentColor;
+
+    @include large {
+      border-width: 2px;
+    }
 
     &:focus {
       outline: none;
-      border-color: $accent;
+      color: $accent;
+    }
+  }
+
+  // Size
+  &[data-size="normal"] {
+    font-size: 0.6875rem;
+    padding: 6px 16px;
+
+    @include large {
+      padding: 12px 20px;
+      font-size: 1.25rem;
+    }
+  }
+
+  &[data-size="small"] {
+    font-size: 0.75rem;
+    padding: 5px 8px;
+
+    @include large {
+      font-size: 0.75rem;
+      padding: 5px 12px;
     }
   }
 

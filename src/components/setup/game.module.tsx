@@ -7,47 +7,40 @@ import styles from "./addon.module.scss";
 
 // TODO display correct card count. keyboard accessibility (keydown and infinite load?)
 
-const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
+const Game: React.FC<Props> = ({ game, active, onClick }) => {
   const avatar = useMemo(() => faker.image.abstract(640, 640, true), []);
   return (
     <article
       className={styles.main}
-      data-active={active}
       onClick={onClick}
       tabIndex={0}
+      data-active={active}
     >
 
-      {/* Addon avatar */}
+      {/* Game avatar */}
       <img className={styles.avatar} src={avatar} alt="" />
 
-      {/* Title, card count and tags */}
+      {/* Title, description,  */}
       <section className={styles.info}>
 
-        <h2 className={styles.title}>{addon.title}</h2>
-        <p className={styles.description}>{addon.description}</p>
+        <h2 className={styles.title}>{game.title}</h2>
+        <p className={styles.description}>{game.description}</p>
 
         <section className={styles.tags}>
-          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.onlineSize}</Tag>
-          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offlineSize}</Tag>
-          {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
+          <Tag><BsWifi /></Tag>
+          <Tag><BsWifiOff /></Tag>
+          {game.is_official && <Tag>Official</Tag>}
         </section>
 
       </section>
-
-      {/* Selection indicator */}
-      {typeof active === "boolean" &&
-        <div className={styles.indicator} data-active={active}>
-          <div></div>
-        </div>
-      }
     </article>
   );
 };
 
-export { Addon };
+export { Game };
 
 interface Props {
-  addon: prisma.Addon;
+  game: prisma.Game;
   onClick?: () => void | Promise<void>;
   active?: boolean;
 }

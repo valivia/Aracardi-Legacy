@@ -2,63 +2,144 @@
 
 .main {
   border: 1px solid currentColor;
-  border-radius: 300px;
+  border-radius: 96px;
+  width: 100%;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: min-content minmax(20px, 1fr) 30px;
+  grid-template-rows: 100%;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 
-  &:focus {
+  transform: scale(1);
+  transition: transform ease-in-out 100ms;
+
+  @include noselect;
+
+  &[data-active="true"] {
+    transform: scale(1.01);
     color: $accent;
     outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @include large {
+    grid-template-columns: min-content minmax(20px, 1fr) 60px;
+    gap: 16px;
+    border-width: 2px;
+
+    &:hover {
+      transform: scale(1.01);
+      color: $accent;
+    }
+
+    &:active {
+      transform: scale(1);
+    }
   }
 }
 
 .avatar {
-  border: 1px solid $text;
+  border: 1px solid currentColor;
   border-radius: 100%;
 
   width: 64px;
   height: 64px;
 
   margin: -1px;
+
+  @include large {
+    border-width: 2px;
+    width: 96px;
+    height: 96px;
+  }
+
+  @include extraLarge {
+    width: 128px;
+    height: 128px;
+  }
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
 
-  padding-top: 2px;
-  padding-bottom: 4px;
+  padding: 6px 0;
 
-  & > h2 {
+  @include large {
+    padding: 10px 0;
+  }
+
+  & > .title {
     font-weight: 300;
-    font-size: 20px;
+    font-size: 1rem;
     margin: 0;
+
+    text-transform: capitalize;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @include large {
+      font-weight: 400;
+      font-size: 1.5rem;
+    }
+  }
+
+  & > .description {
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin: 0;
+    display: none;
+
+    @include large {
+      display: block;
+    }
+  }
+
+  & > .tags {
+    margin-top: auto;
+    display: flex;
+    gap: 5px;
+
+    @include large {
+      margin-left: -10px;
+      gap: 10px;
+    }
   }
 }
 
-.tags {
-  display: flex;
-  gap: 10px;
-  margin-left: -1px;
-}
-
 .indicator {
+  justify-self: center;
   border: 1px solid currentColor;
   border-radius: 100%;
 
-  margin-left: auto;
-  margin-right: 7px;
+  padding: 3px;
+
   width: 16px;
   height: 16px;
 
-  background-color: transparent;
+  @include large {
+    width: 24px;
+    height: 24px;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   transition: background-color 100ms ease-in-out;
 
   &[data-active="true"] {
-    background-color: currentColor;
+    & > div {
+      border-radius: 100%;
+      background-color: currentColor;
+      width: 100%;
+      height: 100%;
+    }
   }
 }

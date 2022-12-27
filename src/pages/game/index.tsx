@@ -1,31 +1,54 @@
 import styles from "./index.module.scss";
 import LayoutComponent from "src/components/global/layout.module";
-import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
-import Link from "next/link";
 import { GetStaticProps, NextPage } from "next";
+import { Game } from "@components/setup/game.module";
+import Prisma from "@prisma/client";
+import { useState } from "react";
+import { Button } from "@components/input/button.module";
+import { TextInput } from "@components/input/text_input.module";
+import { Link } from "@components/input/link.module";
 
 const Games: NextPage<Props> = ({ games }) => {
+  const [selectedGame, setGame] = useState<string>();
+  const [query, setQuery] = useState("");
+
   return (
-    <LayoutComponent>
+    <LayoutComponent title="Aracardi" subTitle="Please select a game">
       <main className={styles.main}>
 
         {/* Search Section */}
-        <section role="search">
-          <button></button>
-          <button></button>
-          <button></button>
-          <input placeholder="E.g 'Drunk pirate'" />
-        </section>
+        {/* Search Section */}
+        <form role="search" className={styles.horizontalList}>
+          {/* TODO 2 dropdown menus */}
+          <Button variant="secondary">Sort By</Button>
+          <Button variant="secondary">Order By</Button>
+          <TextInput
+            placeholder="E.g 'Drunk Pirate'"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
 
         <hr />
 
         {/* List of games */}
-        <section>
-          <ul>
-            {games.map(x => <li key={x.id}><Link href={`/game/${x.id}`}>{x.title}</Link></li>)}
-          </ul>
+        <section
+          className={styles.addons}
+          tabIndex={-1}
+        >
+          {games.map(x =>
+            <Game
+              key={x.id}
+              game={x}
+              onClick={() => setGame(x.id)}
+              active={x.id === selectedGame}
+            />
+          )}
         </section>
+        <div className={styles.fog}></div>
+
+        {selectedGame !== undefined && <Link href={`/game/${selectedGame}`}>Load Game</Link>}
 
       </main>
     </LayoutComponent>
@@ -33,7 +56,7 @@ const Games: NextPage<Props> = ({ games }) => {
 };
 
 interface Props {
-  games: Game[]
+  games: Prisma.Game[]
 }
 
 export default Games;
