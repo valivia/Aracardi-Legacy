@@ -28,6 +28,8 @@ model User {
 
   Addon              Addon[]  @relation(fields: [authored_addon_ids], references: [id])
   authored_addon_ids String[] @db.ObjectId
+
+  favorite_addon_ids String[] @db.ObjectId
 }
 
 // GAME #########################################################################################################
@@ -67,10 +69,12 @@ model Addon {
   has_image   Boolean @default(false)
   is_draft    Boolean @default(true)
 
-  is_available_online  Boolean @default(false)
-  is_available_offline Boolean @default(false)
+  onlineSize      Int @default(0)
+  onlineNsfwSize  Int @default(0)
+  offlineSize     Int @default(0)
+  offlineNsfwSize Int @default(0)
 
-  game_id String
+  game_id String @db.ObjectId
   game    Game   @relation(fields: [game_id], references: [id])
 
   cards Card[]
@@ -87,6 +91,9 @@ model Card {
 
   minimum_players Int?
   maximum_players Int?
+
+  is_available_online  Boolean @default(false)
+  is_available_offline Boolean @default(false)
 
   stages Stage[]
 
