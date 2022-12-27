@@ -2,7 +2,7 @@ import { router, procedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { JOIN_CODE, PLAYER_CREATE_OBJECT } from "@utils/input_validation";
+import { zJOIN_CODE, zPLAYER_CREATE_OBJECT } from "@utils/input_validation";
 import { defaultSessionSelect } from "./session";
 
 const getSessionByJoinCode = async (joinCode: string) => {
@@ -32,7 +32,7 @@ export const joinRouter = router({
   get: procedure
     .input(
       z.object({
-        join_code: JOIN_CODE,
+        join_code: zJOIN_CODE,
       }),
     )
     .query(async ({ input }) => {
@@ -44,8 +44,8 @@ export const joinRouter = router({
   join: procedure
     .input(
       z.object({
-        join_code: JOIN_CODE,
-        player: PLAYER_CREATE_OBJECT,
+        join_code: zJOIN_CODE,
+        player: zPLAYER_CREATE_OBJECT,
       })
     )
     .mutation(async ({ input }) => {
