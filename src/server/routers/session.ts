@@ -172,7 +172,6 @@ export const sessionRouter = router({
       });
 
       if (!createdPlayer) {
-        // TODO throw error
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: `Unable to create new player for session with id: '${session.id}'`,
