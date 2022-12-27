@@ -4,9 +4,6 @@ import { useState } from "react";
 const Home = () => {
   const [name, setName] = useState("");
 
-  const test = trpc.addon.all.useQuery({ limit: 50, game_id: "63964fd8ff9e2d8649857828" });
-  // console.log({ data: test.data, error: test.error });
-
   const JOIN_CODE = name;
 
   const getByJoinCodeResult = trpc.session.getByJoinCode.useQuery({
@@ -17,6 +14,17 @@ const Home = () => {
 
   // const aa = trpc.addon.get.useQuery({ id: "6399fd1cd8ab85e0236be580" });
   // console.log(aa);
+  const test = trpc.addon.all.useQuery({
+    limit: 50,
+    search: name,
+    // inFavorites: false,
+    // officialOnly: false,
+    // orderBy: {
+    //   onlineSize: "asc",
+    //   created_at: "desc",
+    // },
+  });
+  console.log({ data: test.data, error: test.error });
 
   const sessionMut = trpc.session.add.useMutation();
   const joinMut = trpc.session.join.useMutation();
