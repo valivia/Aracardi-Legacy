@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { DbId, zJoinCode, zPlayerCreateObject } from "@utils/input_validation";
+import { zDbId, zJoinCode, zPlayerCreateObject } from "@utils/input_validation";
 import { createJoinCode } from "@utils/join_code";
 import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 
