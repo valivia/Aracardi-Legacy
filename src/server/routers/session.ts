@@ -70,7 +70,7 @@ export const sessionRouter = router({
   get: procedure
     .input(
       z.object({
-        id: DbId,
+        id: zDbId,
       }),
     )
     .query(async ({ input }) => {
@@ -96,7 +96,7 @@ export const sessionRouter = router({
     .input(
       z.object({
         settings: settingsObject,
-        game_id: DbId,
+        game_id: zDbId,
       }),
     )
     .mutation(async ({ input }) => {
