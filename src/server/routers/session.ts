@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { DbId, zJOIN_CODE, zPLAYER_CREATE_OBJECT } from "@utils/input_validation";
+import { DbId, zJoinCode, zPlayerCreateObject } from "@utils/input_validation";
 import { createJoinCode } from "@utils/join_code";
 import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 
@@ -139,7 +139,7 @@ export const sessionRouter = router({
   getByJoinCode: procedure
     .input(
       z.object({
-        join_code: zJOIN_CODE,
+        join_code: zJoinCode,
       }),
     )
     .query(async ({ input }) => {
@@ -151,8 +151,8 @@ export const sessionRouter = router({
   join: procedure
     .input(
       z.object({
-        join_code: zJOIN_CODE,
-        player: zPLAYER_CREATE_OBJECT,
+        join_code: zJoinCode,
+        player: zPlayerCreateObject,
       })
     )
     .mutation(async ({ input }) => {
