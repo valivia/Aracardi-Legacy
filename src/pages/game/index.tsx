@@ -37,12 +37,12 @@ const Games: NextPage<Props> = ({ games }) => {
           className={styles.addons}
           tabIndex={-1}
         >
-          {games.map(x =>
+          {games.map(game =>
             <Game
-              key={x.id}
-              game={x}
-              onClick={() => setGame(x.id)}
-              active={x.id === selectedGame}
+              key={game.id}
+              game={game}
+              onClick={() => setGame(game.id)}
+              active={game.id === selectedGame}
             />
           )}
         </section>

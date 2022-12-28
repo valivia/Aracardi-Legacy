@@ -79,9 +79,9 @@ const GameSetup: NextPage<Props> = ({ game }) => {
                 addon={addon}
                 active={activeAddons.has(addon.id)}
                 onClick={() => setActiveAddons(old => {
-                  const test = new Map(old);
-                  test.has(addon.id) ? test.delete(addon.id) : test.set(addon.id, addon);
-                  return test;
+                  const newAddons = new Map(old);
+                  newAddons.has(addon.id) ? newAddons.delete(addon.id) : newAddons.set(addon.id, addon);
+                  return newAddons;
                 })
                 }
               />

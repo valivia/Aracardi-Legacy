@@ -14,8 +14,11 @@ const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
 
   has_image: true,
   is_official: true,
-  is_available_online: true,
-  is_available_offline: true,
+
+  onlineSize: true,
+  onlineNsfwSize: true,
+  offlineSize: true,
+  offlineNsfwSize: true,
 });
 
 export const addonRouter = router({
