@@ -35,11 +35,7 @@ export const gameRouter = router({
         select: defaultGameSelect,
         take: input.limit + 1,
         where: {},
-        cursor: cursor
-          ? {
-            id: cursor,
-          }
-          : undefined,
+        cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
           created_at: "desc",
         },
@@ -49,8 +45,7 @@ export const gameRouter = router({
         // Remove the last item and use it as next cursor
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const nextItem = items.pop()!;
-        nextCursor = nextItem.id;
+        nextCursor = items.pop()!.id;
       }
 
       return {

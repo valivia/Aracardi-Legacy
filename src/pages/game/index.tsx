@@ -20,9 +20,18 @@ const Games: NextPage<Props> = ({ games }) => {
         {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
           {/* TODO 2 dropdown menus */}
-          <Button variant="secondary">Sort</Button>
-          <Button variant="secondary">Order</Button>
+          <Button
+            size="big"
+            variant="secondary"
+          >
+            Sort</Button>
+          <Button
+            size="big"
+            variant="secondary"
+          >
+            Filter</Button>
           <TextInput
+            size="big"
             placeholder="E.g 'Drunk Pirate'"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -47,7 +56,7 @@ const Games: NextPage<Props> = ({ games }) => {
         </section>
         <div className={styles.fog}></div>
 
-        {selectedGame !== undefined && <Link href={`/game/${selectedGame}`}>Load Game</Link>}
+        {selectedGame !== undefined && <Link size="big" href={`/game/${selectedGame}`}>Load Game</Link>}
 
       </main>
     </LayoutComponent>

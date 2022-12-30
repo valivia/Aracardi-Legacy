@@ -44,6 +44,7 @@ export const addonRouter = router({
   all: procedure
     .input(
       z.object({
+        game_id: DbId,
         limit: z.number().min(1).max(100).default(50),
         cursor: DbId.nullish(),
         inFavorites: z.boolean().default(false),
@@ -53,7 +54,7 @@ export const addonRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const { cursor, inFavorites, officialOnly, orderBy, search } = input;
+      const { game_id, cursor, inFavorites, officialOnly, orderBy, search } = input;
 
       // TODO: Retrieve from context once auth is implemented
       const user = await prisma.user.findFirst({
@@ -68,6 +69,7 @@ export const addonRouter = router({
         select: defaultAddonSelect,
         take: input.limit + 1,
         where: {
+          game_id,
           is_draft: false,
           ...(search ? { title: { contains: search, mode: "insensitive" } } : {}), // TODO: Use full-text search (Prisma + MongoDB isn't supported haaa)
           id: inFavorites && favorites?.length ? { in: favorites } : undefined,
@@ -75,12 +77,8 @@ export const addonRouter = router({
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: [
-          "onlineSize" in orderBy
-            ? { onlineSize: orderBy.onlineSize, onlineNsfwSize: orderBy.onlineSize }
-            : (undefined as never),
-          "offlineSize" in orderBy
-            ? { offlineSize: orderBy.offlineSize, offlineNsfwSize: orderBy.offlineSize }
-            : (undefined as never),
+          "onlineSize" in orderBy ? { onlineSize: orderBy.onlineSize } : undefined as never,
+          "offlineSize" in orderBy ? { offlineSize: orderBy.offlineSize } : undefined as never,
           { created_at: orderBy.created_at }, // Important to have this last, so that other sorts go first
         ],
       });

@@ -7,7 +7,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import { Button } from "@components/input/button.module";
 import { Addon } from "@components/setup/addon.module";
-import { UIEvent, useEffect, useState } from "react";
+import React, { UIEvent, useEffect, useState } from "react";
 import { Tag } from "@components/global/tag.module";
 import { TextInput } from "@components/input/text_input.module";
 import Prisma from "@prisma/client";
@@ -19,6 +19,18 @@ const GameSetup: NextPage<Props> = ({ game }) => {
   const [activeAddons, setActiveAddons] = useState<Map<string, Prisma.Addon>>(new Map());
   const [cardSize, setCardSize] = useState({ offline: 0, online: 0 });
 
+  // Fetch addons.
+  const addons = trpc.addon.all.useInfiniteQuery(
+    {
+      limit: 20,
+      game_id: game.id,
+      search: query,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
+
   // Update card count when an addon is (de)selected.
   useEffect(() => {
     const amount = { offline: 0, online: 0 };
@@ -29,13 +41,6 @@ const GameSetup: NextPage<Props> = ({ game }) => {
     setCardSize(amount);
   }, [activeAddons, allowNsfw]);
 
-
-  // Fetch addons.
-  const addons = trpc.addon.all.useInfiniteQuery(
-    { limit: 20, game_id: game.id },
-    { getNextPageParam: (lastPage) => lastPage.nextCursor }
-  );
-
   // Load more addons when end is reached.
   async function scrolling(e: UIEvent) {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -45,6 +50,10 @@ const GameSetup: NextPage<Props> = ({ game }) => {
     }
   }
 
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <LayoutComponent
       title={game.title}
@@ -53,7 +62,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
 
       <main className={styles.main}>
         {/* Search Section */}
-        <form role="search" className={styles.horizontalList}>
+        <form role="search" className={styles.horizontalList} onSubmit={onSubmit}>
           {/* TODO 2 dropdown menus */}
           <Button
             size="big"
@@ -64,7 +73,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
             size="big"
             variant="secondary"
           >
-            Order</Button>
+            Filter</Button>
           <TextInput
             size="big"
             placeholder="E.g 'Base pack'"
