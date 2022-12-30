@@ -6,15 +6,15 @@
 
   border: 1px solid currentColor;
   border-radius: 100px;
-  padding: 6px 12px;
 
-  font-size: 13px;
+  width: 100%;
 
   @include large {
     border-width: 2px;
-    padding: 10px 20px;
-    font-size: 1rem;
   }
+
+  // Size
+  @include componentSizes;
 
   &:focus {
     outline: none;

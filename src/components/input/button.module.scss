@@ -9,6 +9,9 @@
   transform: scale(1);
   transition: transform 100ms ease-in-out;
 
+  font-weight: 400;
+  white-space: nowrap;
+
   &:hover {
     cursor: pointer;
   }
@@ -44,25 +47,7 @@
   }
 
   // Size
-  &[data-size="normal"] {
-    font-size: 0.6875rem;
-    padding: 6px 16px;
-
-    @include large {
-      padding: 12px 20px;
-      font-size: 1.25rem;
-    }
-  }
-
-  &[data-size="small"] {
-    font-size: 0.75rem;
-    padding: 5px 8px;
-
-    @include large {
-      font-size: 0.75rem;
-      padding: 5px 12px;
-    }
-  }
+  @include componentSizes;
 
   &:hover:not(:active) {
     transform: scale(1.05);

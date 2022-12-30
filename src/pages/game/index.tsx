@@ -18,11 +18,10 @@ const Games: NextPage<Props> = ({ games }) => {
       <main className={styles.main}>
 
         {/* Search Section */}
-        {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
           {/* TODO 2 dropdown menus */}
-          <Button variant="secondary">Sort By</Button>
-          <Button variant="secondary">Order By</Button>
+          <Button variant="secondary">Sort</Button>
+          <Button variant="secondary">Order</Button>
           <TextInput
             placeholder="E.g 'Drunk Pirate'"
             value={query}

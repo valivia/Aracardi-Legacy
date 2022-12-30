@@ -55,9 +55,18 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         {/* Search Section */}
         <form role="search" className={styles.horizontalList}>
           {/* TODO 2 dropdown menus */}
-          <Button variant="secondary">Sort By</Button>
-          <Button variant="secondary">Order By</Button>
+          <Button
+            size="big"
+            variant="secondary"
+          >
+            Sort</Button>
+          <Button
+            size="big"
+            variant="secondary"
+          >
+            Order</Button>
           <TextInput
+            size="big"
             placeholder="E.g 'Base pack'"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

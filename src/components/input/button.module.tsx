@@ -13,10 +13,12 @@ const Button: React.FC<PropsWithChildren<Props>> = ({
   return (
     <button
       className={styles.main}
+
+      type={type}
       data-variant={variant}
       data-size={size}
+
       onClick={onClick}
-      type={type}
     >
       {children}
     </button>

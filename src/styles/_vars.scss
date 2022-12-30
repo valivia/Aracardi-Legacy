@@ -25,6 +25,26 @@ $primary: #0b0b0b !default;
   user-select: none;
 }
 
+@mixin componentSizes() {
+  &[data-size="small"] {
+    font-size: 0.8125rem;
+    padding: 4px 10px;
+    border-width: 1px;
+  }
+
+  &[data-size="normal"] {
+    font-size: 0.875rem;
+    padding: 6px 16px;
+  }
+
+  &[data-size="big"] {
+    font-size: 0.9375rem;
+    padding: 8px 22px;
+  }
+}
+
+// MEDIA QUERIES ########################################
+
 // Small tablets and large smartphones (landscape view)
 $screen-sm-min: 576px;
 
