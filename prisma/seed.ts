@@ -1,16 +1,14 @@
-import { Addon, Game, PrismaClient, StageType } from "@prisma/client";
+import { Addon, Card, Game, Prisma, PrismaClient, Stage, StageType } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
 const createArray = (min: number, max: number) => faker.datatype.array(faker.datatype.number({ min, max }));
 
-function createTextStage() {
-  const a = faker.lorem.sentence()
+function createTextStage(): Stage {
+  const a = faker.lorem
+    .sentence()
     .split(" ")
-    .map(x => Math.random() < 0.1
-      ? faker.helpers.arrayElement(["%PLAYER1%", "%SELF%", "%TURNS%"])
-      : x
-    );
+    .map((x) => (Math.random() < 0.1 ? faker.helpers.arrayElement(["%PLAYER1%", "%SELF%", "%TURNS%"]) : x));
 
   const hasTurns = a.indexOf("%TURNS%") !== -1;
   const text = a.join(" ");
@@ -19,30 +17,33 @@ function createTextStage() {
     type: StageType.TEXT,
     title: faker.random.words(5),
     text,
-    turns: hasTurns ? faker.datatype.number({ min: 1, max: 12 }) : undefined,
-  };
+    turns: hasTurns ? faker.datatype.number({ min: 1, max: 12 }) : null,
+  } as Stage;
 }
 
-function createPollStage() {
+function createPollStage(): Stage {
   return {
     type: StageType.POLL,
     title: faker.random.words(5),
     winner_points: faker.datatype.boolean() ? faker.datatype.number({ min: 100, max: 1000, precision: 100 }) : null,
     selection_count: 1,
     options: createArray(2, 7).map(() => ({ text: faker.lorem.sentence() })),
-  };
+  } as Stage;
 }
 
-function createCard(addon: Addon) {
+function createCard(addon: Addon): Partial<Card> {
+  const is_available_online = faker.datatype.boolean();
+
   return {
     addon_id: addon.id,
     is_nsfw: faker.datatype.boolean(),
-    stages: createArray(1, 5).map(() => faker.datatype.boolean() ? createTextStage() : createPollStage()),
+    stages: createArray(1, 5).map(() => (faker.datatype.boolean() ? createTextStage() : createPollStage())),
+    is_available_online,
+    is_available_offline: is_available_online ? faker.datatype.boolean() : true,
   };
 }
 
-function createAddon(game: Game) {
-  const is_available_online = faker.datatype.boolean();
+function createAddon(game: Game): Omit<Addon, "id" | "author_ids"> {
   return {
     created_at: faker.date.past(2),
     updated_at: faker.date.past(),
@@ -54,8 +55,9 @@ function createAddon(game: Game) {
     has_image: faker.datatype.boolean(),
     is_draft: faker.datatype.boolean(),
 
-    is_available_online,
-    is_available_offline: is_available_online ? faker.datatype.boolean() : true,
+    // We probably want to determine this from the cards later on
+    offlineSize: faker.datatype.number({ min: 1, max: 1000 }),
+    onlineSize: faker.datatype.number({ min: 1, max: 1000 }),
 
     game_id: game.id,
   };
@@ -86,8 +88,8 @@ async function main() {
               is_official: true,
               has_image: true,
               is_draft: false,
-              is_available_offline: true,
-              is_available_online: true,
+              onlineSize: 300,
+              offlineSize: 125,
             },
             {
               title: "Owl pack",
@@ -95,8 +97,8 @@ async function main() {
               is_official: false,
               has_image: true,
               is_draft: false,
-              is_available_offline: true,
-              is_available_online: true,
+              onlineSize: 200,
+              offlineSize: 25,
             },
           ],
         },
@@ -119,7 +121,6 @@ async function main() {
     },
   });
 
-
   // create addons.
   await prisma.addon.createMany({
     data: createArray(10, 30).map(() => createAddon(game)),
@@ -128,7 +129,7 @@ async function main() {
   // create cards.
   const addons = await prisma.addon.findMany();
   for (const addon of addons) {
-    const data = createArray(50, 300).map(() => createCard(addon));
+    const data = createArray(50, 300).map(() => createCard(addon)) as unknown as Prisma.CardCreateManyInput;
 
     await prisma.card.createMany({ data });
   }
@@ -137,7 +138,6 @@ async function main() {
 main()
   .then(async () => await prisma.$disconnect())
   .catch(async (e) => {
-
     console.error(e);
 
     await prisma.$disconnect();
