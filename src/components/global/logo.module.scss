@@ -1,34 +1,38 @@
 @use "src/styles/vars" as *;
 
 .main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    grid-area: logo;
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 10px;
 
-    & svg {
-        height: 100%;
-        padding: 10px;
-        transform: scale(1);
-        transition: transform 100ms ease-in-out;
+  & svg {
+    height: 8vh;
+    padding: 10px;
+    transform: scale(1);
+    transition: transform 100ms ease-in-out;
 
-        &:hover {
-            transform: scale(1.1);
+    &:hover {
+      transform: scale(1.05);
+      cursor: pointer;
 
-            & > * {
-                stroke: $textHover;
-            }
-        }
-
-        &:active {
-            transform: scale(0.95);
-        }
-
-        > * {
-            transform-origin: center;
-            stroke-width: 1px;
-            stroke: $text;
-            fill: none;
-        }
+      & > * {
+        stroke: $accent;
+      }
     }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    > * {
+      transform-origin: center;
+      stroke-width: 1px;
+      stroke: $text;
+      fill: none;
+    }
+  }
 }

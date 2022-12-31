@@ -1,0 +1,29 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 0 8px;
+
+  font-size: 0.75rem;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  & > svg {
+    border: 1px solid currentColor;
+    border-radius: 100px;
+
+    width: 24px;
+    height: 24px;
+
+    @include large {
+      width: 32px;
+      height: 32px;
+    }
+
+    padding: 5px;
+    margin: -1px;
+  }
+}

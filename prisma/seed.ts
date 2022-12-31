@@ -51,13 +51,15 @@ function createAddon(game: Game): Omit<Addon, "id" | "author_ids"> {
     title: faker.random.words(2),
     description: faker.lorem.sentence(),
 
-    is_official: faker.datatype.boolean(),
     has_image: faker.datatype.boolean(),
-    is_draft: faker.datatype.boolean(),
+    is_official: Math.random() < 0.3,
+    is_draft: Math.random() < 0.1,
 
     // We probably want to determine this from the cards later on
     offlineSize: faker.datatype.number({ min: 1, max: 1000 }),
+    offlineNsfwSize: faker.datatype.number({ min: 1, max: 200 }),
     onlineSize: faker.datatype.number({ min: 1, max: 1000 }),
+    onlineNsfwSize: faker.datatype.number({ min: 1, max: 200 }),
 
     game_id: game.id,
   };
@@ -123,7 +125,7 @@ async function main() {
 
   // create addons.
   await prisma.addon.createMany({
-    data: createArray(10, 30).map(() => createAddon(game)),
+    data: createArray(30, 60).map(() => createAddon(game)),
   });
 
   // create cards.

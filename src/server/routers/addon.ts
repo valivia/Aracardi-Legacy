@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { zDbId } from "@utils/input_validation";
+import { zIdentifier } from "@utils/input_validation";
 
 const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   id: true,
@@ -16,8 +16,10 @@ const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   has_image: true,
   is_official: true,
 
-  offlineSize: true,
   onlineSize: true,
+  onlineNsfwSize: true,
+  offlineSize: true,
+  offlineNsfwSize: true,
 });
 
 const defaultAddonSorting = z.object({
@@ -42,8 +44,9 @@ export const addonRouter = router({
   all: procedure
     .input(
       z.object({
+        game_id: zIdentifier,
         limit: z.number().min(1).max(100).default(50),
-        cursor: zDbId.nullish(),
+        cursor: zIdentifier.nullish(),
         inFavorites: z.boolean().default(false),
         officialOnly: z.boolean().default(false),
         search: z.string().nullish(),
@@ -51,7 +54,7 @@ export const addonRouter = router({
       })
     )
     .query(async ({ input }) => {
-      const { cursor, inFavorites, officialOnly, orderBy, search } = input;
+      const { game_id, cursor, inFavorites, officialOnly, orderBy, search } = input;
 
       // TODO: Retrieve from context once auth is implemented
       const user = await prisma.user.findFirst({
@@ -66,6 +69,7 @@ export const addonRouter = router({
         select: defaultAddonSelect,
         take: input.limit + 1,
         where: {
+          game_id,
           is_draft: false,
           ...(search ? { title: { contains: search, mode: "insensitive" } } : {}), // TODO: Use full-text search (Prisma + MongoDB isn't supported haaa)
           id: inFavorites && favorites?.length ? { in: favorites } : undefined,
@@ -73,12 +77,8 @@ export const addonRouter = router({
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: [
-          "onlineSize" in orderBy
-            ? { onlineSize: orderBy.onlineSize, onlineNsfwSize: orderBy.onlineSize }
-            : (undefined as never),
-          "offlineSize" in orderBy
-            ? { offlineSize: orderBy.offlineSize, offlineNsfwSize: orderBy.offlineSize }
-            : (undefined as never),
+          "onlineSize" in orderBy ? { onlineSize: orderBy.onlineSize } : undefined as never,
+          "offlineSize" in orderBy ? { offlineSize: orderBy.offlineSize } : undefined as never,
           { created_at: orderBy.created_at }, // Important to have this last, so that other sorts go first
         ],
       });
@@ -98,7 +98,7 @@ export const addonRouter = router({
   get: procedure
     .input(
       z.object({
-        id: zDbId,
+        id: zIdentifier,
       })
     )
     .query(async ({ input }) => {
@@ -120,7 +120,7 @@ export const addonRouter = router({
       z.object({
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
-        game_id: zDbId,
+        game_id: zIdentifier,
       })
     )
     .mutation(async ({ input }) => {

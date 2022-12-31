@@ -110,7 +110,7 @@ function PlayerMenuComponent({ player: playerInput, players = [], addPlayer }: P
         )}
       </motion.section>
 
-    </article >
+    </article>
   );
 }
 

@@ -1,0 +1,23 @@
+@use "src/styles/vars" as *;
+
+.main {
+  color: $text;
+  background-color: transparent;
+
+  border: 1px solid currentColor;
+  border-radius: 100px;
+
+  width: 100%;
+
+  @include large {
+    border-width: 2px;
+  }
+
+  // Size
+  @include componentSizes;
+
+  &:focus {
+    outline: none;
+    color: $accent;
+  }
+}

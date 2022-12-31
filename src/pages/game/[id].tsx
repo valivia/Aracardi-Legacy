@@ -1,135 +1,151 @@
-import type { GetStaticPropsContext } from "next";
-import SetupScene from "src/components/game/setup.module";
-import GameScene from "src/components/game/ongoing.module";
-import PopulateScene from "src/components/game/populate.module";
-import { useState } from "react";
-import LayoutComponent from "src/components/global/layout.module";
-import { prisma } from "@server/prisma";
+import styles from "./index.module.scss";
+import { Layout } from "src/components/global/layout.module";
+import { Game } from "@structs/game";
+import { prisma } from "src/server/prisma";
+import { trpc } from "@utils/trpc";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { BsWifi, BsWifiOff } from "react-icons/bs";
+import { Button } from "@components/input/button.module";
+import { Addon } from "@components/setup/addon.module";
+import React, { UIEvent, useEffect, useState } from "react";
+import { Tag } from "@components/global/tag.module";
+import { TextInput } from "@components/input/text_input.module";
+import Prisma from "@prisma/client";
 
-// Types
-import { Game, Settings } from "@structs/game";
-import { Player } from "@structs/player";
-import { Card } from "@structs/card";
-import { Scene } from "@structs/scene";
-import shuffle from "@components/functions/shuffle";
-import { Addon } from "@structs/addon";
+const GameSetup: NextPage<Props> = ({ game }) => {
+  // TODO proper settings;
+  const allowNsfw = true;
+  const [query, setQuery] = useState("");
+  const [activeAddons, setActiveAddons] = useState<Map<string, Prisma.Addon>>(new Map());
+  const [cardSize, setCardSize] = useState({ offline: 0, online: 0 });
 
-const DEFAULT_SETTINGS: Settings = {
-  allow_nsfw: false,
-  display_images: true,
-  loop_cards: true,
-  turn_multiplier: 1.0,
-  timer_multiplier: 1.0,
-  backlog_percentage: 0.85,
-};
+  // Fetch addons.
+  const addons = trpc.addon.all.useInfiniteQuery(
+    {
+      limit: 20,
+      game_id: game.id,
+      search: query,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    }
+  );
 
-const GamePage = ({ game, addons }: Props) => {
+  // Update card count when an addon is (de)selected.
+  useEffect(() => {
+    const amount = { offline: 0, online: 0 };
+    for (const entry of activeAddons.values()) {
+      amount.offline += entry.offlineSize - (allowNsfw ? 0 : entry.offlineNsfwSize);
+      amount.online += entry.onlineSize - (allowNsfw ? 0 : entry.onlineNsfwSize);
+    }
+    setCardSize(amount);
+  }, [activeAddons, allowNsfw]);
 
-  const [scene, setScene] = useState<Scene>(Scene.SETUP);
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [cards, setCards] = useState<Card[]>([]);
+  // Load more addons when end is reached.
+  async function scrolling(e: UIEvent) {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if ((scrollTop + clientHeight === scrollHeight) && !addons.isFetching) {
+      await addons.fetchNextPage();
+    }
+  }
 
-  const addPlayer = (player: Player) => {
-    if (player.name.length === 0) return false;
-    if (players.some(x => x.name == player.name)) return false;
-    setPlayers(old => [player, ...old]);
-    return true;
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
   };
 
-  const shufflePlayers = () => setPlayers(old => shuffle(old));
+  return (
+    <Layout
+      title={game.title}
+      subtitle={"Please select your addons"}
+    >
 
-  const loadPlayers = () => {
-    const jsonString = localStorage.getItem("players");
-    const json = jsonString && JSON.parse(jsonString);
-    if (json === null) return;
-    setPlayers(json);
-  };
+      <main className={styles.main}>
+        {/* Search Section */}
+        <form role="search" className={styles.horizontalList} onSubmit={onSubmit}>
+          {/* TODO 2 dropdown menus */}
+          <Button
+            size="lg"
+            variant="secondary"
+          >
+            Sort</Button>
+          <Button
+            size="lg"
+            variant="secondary"
+          >
+            Filter</Button>
+          <TextInput
+            size="lg"
+            type="search"
+            placeholder="E.g 'Base pack'"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </form>
 
-  const removePlayer = (player: Player) => setPlayers(old => old.filter(x => x.name !== player.name));
+        <hr />
 
-  if (scene === Scene.SETUP) return (
-    <LayoutComponent game={game}>
-      <SetupScene
-        addons={addons}
-        settings={settings}
-        setSettings={setSettings}
-        setCards={setCards}
-        setScene={setScene}
-      />
-    </LayoutComponent>
+        {/* List of addons */}
+        <section
+          className={styles.addons}
+          onScroll={scrolling}
+          tabIndex={-1}
+        >
+          {addons.data?.pages.map(page =>
+            page.items.map(addon =>
+              <Addon
+                key={addon.id}
+                addon={addon}
+                active={activeAddons.has(addon.id)}
+                onClick={() => setActiveAddons(old => {
+                  const newAddons = new Map(old);
+                  newAddons.has(addon.id) ? newAddons.delete(addon.id) : newAddons.set(addon.id, addon);
+                  return newAddons;
+                })
+                }
+              />
+            )
+          )}
+        </section>
+        <div className={styles.fog}></div>
+
+        {/* Card count and settings */}
+        <section className={styles.horizontalList}>
+          <Tag><BsWifi />{cardSize.online}</Tag>
+          <Tag><BsWifiOff />{cardSize.offline}</Tag>
+          <Button variant="secondary" size="sm">Settings</Button>
+        </section>
+
+        {/* Start */}
+        {activeAddons.size > 0 &&
+          <section className={styles.horizontalList}>
+            <Button variant="primary">Start Online</Button>
+            <Button variant="secondary">Start Offline</Button>
+          </section>
+        }
+
+      </main>
+    </Layout>
   );
-
-  if (scene === Scene.POPULATE) return (
-    <LayoutComponent game={game}>
-      <PopulateScene
-        players={players}
-        addPlayer={addPlayer}
-        removePlayer={removePlayer}
-        loadPlayers={loadPlayers}
-        setScene={setScene}
-      />
-    </LayoutComponent>
-  );
-
-  if (scene === Scene.ONGOING) return (
-    <LayoutComponent game={game}>
-      <GameScene
-        players={players}
-        addPlayer={addPlayer}
-        removePlayer={removePlayer}
-        shufflePlayers={shufflePlayers}
-        settings={settings}
-        cards={cards}
-      />
-    </LayoutComponent>
-  );
-
-  return <div>Error</div>;
 };
-
-export default GamePage;
-
 
 interface Props {
-  game: Game;
-  addons: Addon[];
+  game: Game
 }
 
+export default GameSetup;
 
-export async function getStaticPaths() {
-  const games = await prisma.game.findMany();
-  const paths = games.map(game => ({ params: { id: game.id } }));
-
+export const getStaticPaths: GetStaticPaths = async () => {
+  const result = await prisma.game.findMany();
+  const paths = result.map((project) => ({ params: { id: project.id } }));
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
-}
+};
 
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const gameResult = await prisma.game.findUnique({ where: { id: context.params?.id as string } });
-  if (gameResult === null) return { notFound: true };
-  const game = { ...gameResult, created_at: Number(gameResult.created_at) };
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const game = await prisma.game.findUnique({ where: { id: params?.id as string } });
+  if (!game) return { notFound: true };
 
-  const addonResult = await prisma.addon.findMany({
-    where: { game_id: gameResult.id },
-    include: { _count: { select: { cards: true } }, authors: true, cards: true },
-  });
-
-  const addons: Addon[] = addonResult.map(addon => {
-    return {
-      ...addon,
-      created_at: Number(addon.created_at),
-      _count: null,
-      card_count: addon._count.cards,
-      authors: addon.authors.map(x => x.name),
-      cards: addon.cards.map(card => ({ ...card, created_at: Number(addon.created_at) })),
-    };
-  }
-  ).filter(addon => addon.card_count > 1);
-
-  return {
-    props: { game, addons },
-  };
-}
+  return { props: { game } };
+};
