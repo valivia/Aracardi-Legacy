@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { zDbId } from "@utils/input_validation";
+import { zIdentifier } from "@utils/input_validation";
 
 const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   id: true,
@@ -44,9 +44,9 @@ export const addonRouter = router({
   all: procedure
     .input(
       z.object({
-        game_id: DbId,
+        game_id: zIdentifier,
         limit: z.number().min(1).max(100).default(50),
-        cursor: zDbId.nullish(),
+        cursor: zIdentifier.nullish(),
         inFavorites: z.boolean().default(false),
         officialOnly: z.boolean().default(false),
         search: z.string().nullish(),
@@ -98,7 +98,7 @@ export const addonRouter = router({
   get: procedure
     .input(
       z.object({
-        id: zDbId,
+        id: zIdentifier,
       })
     )
     .query(async ({ input }) => {
@@ -120,7 +120,7 @@ export const addonRouter = router({
       z.object({
         title: z.string().min(1).max(32),
         description: z.string().min(1).max(256),
-        game_id: zDbId,
+        game_id: zIdentifier,
       })
     )
     .mutation(async ({ input }) => {
