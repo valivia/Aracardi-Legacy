@@ -1,13 +1,14 @@
 import React, { PropsWithChildren } from "react";
 import styles from "./button.module.scss";
 import NextLink from "next/link";
+import { ElementSize } from "@structs/size";
 
 
-const Link: React.FC<PropsWithChildren<Props>> = ({ href,
+const Link: React.FC<PropsWithChildren<Props>> = ({
+  href,
   children,
-  size = "normal",
+  size = "md",
   variant = "primary",
-  onClick = () => undefined,
 }) => {
 
   return (
@@ -17,8 +18,6 @@ const Link: React.FC<PropsWithChildren<Props>> = ({ href,
 
       data-size={size}
       data-variant={variant}
-
-      onClick={onClick}
     >
       {children}
     </NextLink>
@@ -30,6 +29,5 @@ export { Link };
 interface Props {
   href: string;
   variant?: "primary" | "secondary";
-  size?: "small" | "normal" | "big";
-  onClick?: () => void | Promise<void>;
+  size?: ElementSize;
 }

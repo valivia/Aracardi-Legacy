@@ -6,7 +6,7 @@ function CheckBoxComponent({ text: inputText, name, value, onChange }: Props) {
   const input = useRef<HTMLInputElement>(null);
 
   return (
-    <fieldset className={styles.main} >
+    <fieldset className={styles.main}>
       <label
         className={styles.label}
         htmlFor={name}
@@ -28,7 +28,7 @@ function CheckBoxComponent({ text: inputText, name, value, onChange }: Props) {
         className={styles.checkbox}
         onClick={() => input.current?.click()}
       ></span>
-    </fieldset >
+    </fieldset>
   );
 }
 

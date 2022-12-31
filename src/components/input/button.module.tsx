@@ -1,10 +1,11 @@
+import { ElementSize } from "@structs/size";
 import React, { PropsWithChildren } from "react";
 import styles from "./button.module.scss";
 
 
 const Button: React.FC<PropsWithChildren<Props>> = ({
   children,
-  size = "normal",
+  size = "md",
   variant = "primary",
   type = "button",
   onClick = () => undefined,
@@ -30,6 +31,6 @@ export { Button };
 interface Props {
   variant?: "primary" | "secondary";
   type?: "button" | "submit" | "reset";
-  size?: "small" | "normal" | "big";
+  size?: ElementSize;
   onClick?: () => void | Promise<void>;
 }

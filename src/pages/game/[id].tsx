@@ -65,17 +65,18 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         <form role="search" className={styles.horizontalList} onSubmit={onSubmit}>
           {/* TODO 2 dropdown menus */}
           <Button
-            size="big"
+            size="lg"
             variant="secondary"
           >
             Sort</Button>
           <Button
-            size="big"
+            size="lg"
             variant="secondary"
           >
             Filter</Button>
           <TextInput
-            size="big"
+            size="lg"
+            type="search"
             placeholder="E.g 'Base pack'"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -112,7 +113,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         <section className={styles.horizontalList}>
           <Tag><BsWifi />{cardSize.online}</Tag>
           <Tag><BsWifiOff />{cardSize.offline}</Tag>
-          <Button variant="secondary" size="small">Settings</Button>
+          <Button variant="secondary" size="sm">Settings</Button>
         </section>
 
         {/* Start */}
