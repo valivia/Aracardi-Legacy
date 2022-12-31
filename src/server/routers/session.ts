@@ -3,11 +3,11 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { DbId } from "@utils/input_validation";
+import { zDbId, zJoinCode, zPlayerCreateObject } from "@utils/input_validation";
 import { createJoinCode } from "@utils/join_code";
 import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 
-const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
+export const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
   created_at: true,
 
@@ -42,12 +42,35 @@ const settingsObject = z.object({
   backlog_percentage: z.number().gte(0).lte(0.95),
 });
 
+const getSessionByJoinCode = async (joinCode: string) => {
+  const join_code = joinCode.toUpperCase();
+
+  const session = await prisma.session.findUnique({
+    select: defaultSessionSelect,
+    where: { join_code },
+  });
+
+  if (!session) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: `No session with join_code '${join_code}'`,
+    });
+  }
+
+  return session;
+};
+
+const generateToken = (): string => { //  TODO implement this
+  return "";
+};
+
+
 export const sessionRouter = router({
   // GET
   get: procedure
     .input(
       z.object({
-        id: DbId,
+        id: zDbId,
       }),
     )
     .query(async ({ input }) => {
@@ -73,7 +96,7 @@ export const sessionRouter = router({
     .input(
       z.object({
         settings: settingsObject,
-        game_id: DbId,
+        game_id: zDbId,
       }),
     )
     .mutation(async ({ input }) => {
@@ -112,4 +135,49 @@ export const sessionRouter = router({
       });
     }),
 
+  // GET a session by join code
+  getByJoinCode: procedure
+    .input(
+      z.object({
+        join_code: zJoinCode,
+      }),
+    )
+    .query(async ({ input }) => {
+      const { join_code } = input;
+      return await getSessionByJoinCode(join_code);
+    }),
+
+  // join a session by join code
+  join: procedure
+    .input(
+      z.object({
+        join_code: zJoinCode,
+        player: zPlayerCreateObject,
+      })
+    )
+    .mutation(async ({ input }) => {
+      const { join_code, player: playerCreate } = input;
+
+      const session = await getSessionByJoinCode(join_code);
+
+      const token = generateToken(); // TODO call this with proper parameters
+
+      const createdPlayer = await prisma.player.create({
+        data: {
+          token,
+          name: playerCreate.name,
+          avatar: playerCreate.avatar,
+          session_id: session.id,
+        },
+      });
+
+      if (!createdPlayer) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: `Unable to create new player for session with id: '${session.id}'`,
+        });
+      }
+
+      return createdPlayer;
+    }),
 });

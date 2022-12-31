@@ -3,7 +3,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@server/prisma";
-import { DbId } from "@utils/input_validation";
+import { zDbId } from "@utils/input_validation";
 
 const defaultGameSelect = Prisma.validator<Prisma.GameSelect>()({
   id: true,
@@ -25,7 +25,7 @@ export const gameRouter = router({
     .input(
       z.object({
         limit: z.number().min(1).max(100).default(50),
-        cursor: DbId.nullish(),
+        cursor: zDbId.nullish(),
       }),
     )
     .query(async ({ input }) => {
@@ -61,7 +61,7 @@ export const gameRouter = router({
   get: procedure
     .input(
       z.object({
-        id: DbId,
+        id: zDbId,
       }),
     )
     .query(async ({ input }) => {
