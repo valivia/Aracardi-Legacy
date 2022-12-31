@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import LayoutComponent from "src/components/global/layout.module";
+import { Layout } from "src/components/global/layout.module";
 import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
 import { trpc } from "@utils/trpc";
@@ -55,9 +55,9 @@ const GameSetup: NextPage<Props> = ({ game }) => {
   };
 
   return (
-    <LayoutComponent
+    <Layout
       title={game.title}
-      subTitle={"Please select your addons"}
+      subtitle={"Please select your addons"}
     >
 
       <main className={styles.main}>
@@ -124,7 +124,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         }
 
       </main>
-    </LayoutComponent>
+    </Layout>
   );
 };
 

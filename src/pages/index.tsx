@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import LayoutComponent from "src/components/global/layout.module";
+import { Layout } from "src/components/global/layout.module";
 import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
 import { trpc } from "@utils/trpc";
@@ -11,7 +11,7 @@ const Home = ({ games }: Props) => {
   console.log({ games });
 
   return (
-    <LayoutComponent>
+    <Layout>
       <main className={styles.main}>
         {games && games.map((game) =>
           <GameComponent
@@ -20,7 +20,7 @@ const Home = ({ games }: Props) => {
           />
         )}
       </main>
-    </LayoutComponent>
+    </Layout>
   );
 };
 

@@ -4,7 +4,7 @@ import Head from "next/head";
 import styles from "./layout.module.scss";
 import LogoComponent from "./logo.module";
 
-function LayoutComponent({ title, subTitle, game, children }: Props) {
+function Layout({ title, subtitle, game, children }: Props) {
   const description = game?.description ?? "Play card games!";
   return (
     <div className={styles.frame}>
@@ -19,7 +19,7 @@ function LayoutComponent({ title, subTitle, game, children }: Props) {
         animate={{ x: 0 }}
       >
         {title && <h1>{title}</h1>}
-        {subTitle && <p>{subTitle}</p>}
+        {subtitle && <p>{subtitle}</p>}
       </motion.header>
       {children}
       <LogoComponent />
@@ -27,11 +27,11 @@ function LayoutComponent({ title, subTitle, game, children }: Props) {
   );
 }
 
-export default LayoutComponent;
+export { Layout };
 
 interface Props {
   title?: string;
-  subTitle?: string;
+  subtitle?: string;
   game?: Game;
   children: JSX.Element | JSX.Element[];
 }

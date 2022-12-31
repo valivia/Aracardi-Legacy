@@ -1,5 +1,5 @@
 import styles from "./index.module.scss";
-import LayoutComponent from "src/components/global/layout.module";
+import { Layout } from "src/components/global/layout.module";
 import { prisma } from "src/server/prisma";
 import { GetStaticProps, NextPage } from "next";
 import { Game } from "@components/setup/game.module";
@@ -14,7 +14,7 @@ const Games: NextPage<Props> = ({ games }) => {
   const [query, setQuery] = useState("");
 
   return (
-    <LayoutComponent title="Aracardi" subTitle="Please select a game">
+    <Layout title="Aracardi" subtitle="Please select a game">
       <main className={styles.main}>
 
         {/* Search Section */}
@@ -59,7 +59,7 @@ const Games: NextPage<Props> = ({ games }) => {
         {selectedGame !== undefined && <Link size="big" href={`/game/${selectedGame}`}>Load Game</Link>}
 
       </main>
-    </LayoutComponent>
+    </Layout>
   );
 };
 
