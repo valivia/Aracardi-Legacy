@@ -45,7 +45,6 @@ const GameSetup: NextPage<Props> = ({ game }) => {
   async function scrolling(e: UIEvent) {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if ((scrollTop + clientHeight === scrollHeight) && !addons.isFetching) {
-      console.log("fetching...");
       await addons.fetchNextPage();
     }
   }
