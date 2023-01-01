@@ -12,15 +12,17 @@ function Layout({ title, subtitle, game, children }: Props) {
         <title>{title}</title>
         <meta name="description" content={description} />
       </Head>
-      <motion.header
-        key={title}
-        className={styles.title}
-        initial={{ x: 300 }}
-        animate={{ x: 0 }}
-      >
-        {title && <h1>{title}</h1>}
-        {subtitle && <p>{subtitle}</p>}
-      </motion.header>
+      {(title || subtitle) &&
+        <motion.header
+          key={title}
+          className={styles.title}
+          initial={{ x: 300 }}
+          animate={{ x: 0 }}
+        >
+          {title && <h1>{title}</h1>}
+          {subtitle && <p>{subtitle}</p>}
+        </motion.header>
+      }
       {children}
       <LogoComponent />
     </div>
