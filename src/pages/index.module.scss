@@ -35,6 +35,10 @@
   width: 100%;
   padding: 20px 0;
 
+  @include large {
+    width: 80%;
+  }
+
   & hr {
     border-width: 1px;
     width: 90%;
