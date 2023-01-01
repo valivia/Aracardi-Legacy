@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./banner.module.scss";
+import styles from "./header.module.scss";
 
 const Header: React.FC<Props> = ({ title, description, avatar: Avatar }) => {
   return (

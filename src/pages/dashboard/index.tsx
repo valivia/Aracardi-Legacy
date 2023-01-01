@@ -1,6 +1,6 @@
 import styles from "./main.module.scss";
 import { Layout } from "src/components/global/layout.module";
-import { Banner } from "@components/dashboard/banner";
+import { Header } from "@components/dashboard/header";
 import Marceline from "@public/avatars/marceline.svg";
 import { Accordion } from "@components/dashboard/accordion";
 import { User } from "@prisma/client";
@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className={styles.main}>
-        <Banner
+        <Header
           title={user.name}
           avatar={Marceline}
         />
