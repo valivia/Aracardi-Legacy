@@ -1,0 +1,43 @@
+@use "src/styles/vars" as *;
+
+.main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.bar {
+  background-color: transparent;
+  border: none;
+  color: $text;
+
+  display: flex;
+
+  border-bottom: 1px solid currentColor;
+
+  &:focus {
+    color: $accent;
+    outline: none;
+  }
+
+  &[aria-expanded="true"] {
+    & > .icon {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.icon {
+  transform: rotate(0);
+  transition: transform 200ms ease-in-out;
+  fill: currentColor;
+  width: 1.5rem;
+
+  margin-left: auto;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 200;
+  text-transform: capitalize;
+}
