@@ -1,19 +1,40 @@
+@use "src/styles/vars" as *;
+
 .main {
   grid-area: main;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 40px;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  gap: 30px;
+
+  @include large {
+    width: 50vw;
+    gap: 30px;
+  }
+}
+
+.itemList {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 
-.gameList {
-  padding: 10px 0 10px 10px;
+.settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(1fr, 5);
+  gap: 5px 20px;
+}
+
+.permissions {
   display: flex;
   flex-direction: column;
   gap: 10px;

@@ -33,7 +33,7 @@ const Dashboard = () => {
 
         <main className={styles.menu}>
           <Accordion title="My Games">
-            <section className={styles.gameList}>
+            <section className={styles.itemList}>
               {games.data?.items.map(game => <Game key={game.id} game={game} />)}
             </section>
           </Accordion>

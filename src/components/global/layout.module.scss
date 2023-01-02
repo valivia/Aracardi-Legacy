@@ -18,7 +18,7 @@
 
   @include large {
     grid-template-columns: auto 1fr 200px 1fr auto;
-    grid-template-rows: 200px 1fr 90px;
+    grid-template-rows: min-content 1fr 90px;
     grid-template-areas:
       "players title title title activeCards"
       "players main main main activeCards"
