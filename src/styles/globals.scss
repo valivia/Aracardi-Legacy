@@ -22,7 +22,12 @@ a {
 * {
   box-sizing: border-box;
   font-family: $font;
-  font-feature-settings: 'pnum' on, 'lnum' on;
+  font-feature-settings: "pnum" on, "lnum" on;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid $text;
 }
 
 /* Scrollbar */

@@ -14,12 +14,11 @@
 
   @include large {
     width: 20vw;
+    min-width: 280px;
   }
 
   & hr {
     width: 70%;
-    border: none;
-    border-top: 2px solid $text;
   }
 }
 
@@ -35,20 +34,21 @@
   width: 100%;
   padding: 20px 0;
 
-  @include large {
-    width: 80%;
-  }
-
   & hr {
     border-width: 1px;
     width: 90%;
   }
 
   & .joinGame {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
+    flex-direction: column;
     border: none;
     padding: 0;
     gap: 10px;
+
+    @include large {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+    }
   }
 }

@@ -16,6 +16,8 @@
   // Size
   @include componentSizes;
 
+  padding-left: 10px !important;
+
   &:focus {
     outline: none;
     color: $accent;

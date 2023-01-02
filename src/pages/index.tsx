@@ -4,15 +4,12 @@ import { TextInput } from "@components/input/text_input.module";
 import { Button } from "@components/input/button.module";
 import { useState } from "react";
 import { Link } from "@components/input/link.module";
-import { trpc } from "@utils/trpc";
 
 const Home = () => {
   const [joinCode, setJoinCode] = useState("");
 
   const fetchSession = async () => {
-    // TODO make this not be broken
-    const session = await trpc.session.getByJoinCode.useQuery({ join_code: joinCode });
-    console.log(session);
+    // TODO make this do something
   };
 
   return (
