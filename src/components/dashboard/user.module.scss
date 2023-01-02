@@ -1,0 +1,55 @@
+@use "src/styles/vars" as *;
+
+.main {
+  display: grid;
+  grid-template-columns: 64px 1fr 20px;
+  grid-template-rows: 32px 32px;
+  grid-template-areas:
+    "avatar name icon"
+    "avatar role icon";
+
+  gap: 0 8px;
+}
+
+.avatar {
+  grid-area: avatar;
+
+  padding: 0;
+  margin: 0;
+
+  border: 1px solid currentColor;
+  border-radius: 100%;
+  overflow: hidden;
+
+  & > svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.name,
+.role {
+  padding: 0;
+  margin: 0;
+}
+
+.name {
+  grid-area: name;
+  align-self: flex-end;
+}
+.role {
+  grid-area: role;
+  font-size: 0.6rem;
+  color: $textDark;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-area: icon;
+
+  &:hover {
+    color: $accent;
+  }
+}
