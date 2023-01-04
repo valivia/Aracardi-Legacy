@@ -18,31 +18,37 @@
     min-width: 350px;
   }
 
-  & hr {
+  & .divider {
     width: 70%;
   }
 }
 
+.divider {
+  @include divider();
+}
+
 .title {
   font-weight: 300;
-  margin: 0;
+  margin: 6px;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   padding: 20px 0;
 
-  & hr {
-    border-width: 1px;
+  & > .divider {
+    height: 1px;
     width: 90%;
   }
 
   & .joinGame {
     display: flex;
     flex-direction: column;
+    width: 100%;
     border: none;
     padding: 0;
     gap: 10px;

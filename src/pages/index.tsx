@@ -17,7 +17,7 @@ const Home = () => {
       <main className={styles.main}>
 
         <h1 className={styles.title}>Play now!</h1>
-        <hr />
+        <div className={styles.divider} />
 
         <form className={styles.form}>
 
@@ -39,7 +39,7 @@ const Home = () => {
             </Button>
           </fieldset>
 
-          <hr />
+          <div className={styles.divider} />
 
           {/* Create game */}
           <Link

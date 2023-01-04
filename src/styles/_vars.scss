@@ -91,3 +91,11 @@ $screen-xl-min: 1200px;
     @content;
   }
 }
+
+@mixin divider() {
+  height: 2px;
+  background-color: $text;
+  width: 100%;
+
+  align-self: center;
+}
