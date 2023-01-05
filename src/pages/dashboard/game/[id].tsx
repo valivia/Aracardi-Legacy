@@ -9,18 +9,16 @@ import { Addon } from "@components/setup/addon.module";
 import { prisma } from "src/server/prisma";
 import { Button } from "@components/input/button.module";
 import { Toggle } from "@components/input/toggle";
-import { useState } from "react";
 import { User } from "@components/dashboard/user";
 
 import Marceline from "@public/avatars/marceline.svg";
 import Ghost from "@public/avatars/ghost.svg";
 import Frog from "@public/avatars/froggi.svg";
+import useBoolean from "@components/functions/useboolean";
 
 const GameDashboard: NextPage<Props> = ({ game }) => {
   const addons = trpc.addon.all.useQuery({ limit: 5, game_id: game.id });
-  const [allowNsfw, setAllowNsfw] = useState(true);
-  console.log(allowNsfw);
-
+  const { value: allowNsfw, toggle: toggleAllowNsfw } = useBoolean(true);
 
   return (
     <Layout>
@@ -49,27 +47,28 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
                 name="allow_nsfw"
                 label="Allow nsfw"
                 value={allowNsfw}
-                onChange={() => setAllowNsfw(old => !old)}
+                disabled={true}
+                onChange={() => toggleAllowNsfw()}
               />
               <Toggle
                 name="loop_cards"
                 label="Loop cards"
                 value={allowNsfw}
-                onChange={() => setAllowNsfw(old => !old)}
+                onChange={() => toggleAllowNsfw()}
               />
 
               <Toggle
                 name="available_online"
                 label="Available online"
                 value={allowNsfw}
-                onChange={() => setAllowNsfw(old => !old)}
+                onChange={() => toggleAllowNsfw()}
               />
 
               <Toggle
                 name="available_offline"
                 label="Available offline"
                 value={allowNsfw}
-                onChange={() => setAllowNsfw(old => !old)}
+                onChange={() => toggleAllowNsfw()}
               />
             </section>
           </Accordion>

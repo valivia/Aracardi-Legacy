@@ -11,11 +11,9 @@
 
   @include noselect();
 
-  &[data-disabled="true"] {
-    & * {
-      cursor: not-allowed !important;
-      color: $textDark;
-    }
+  &:disabled * {
+    cursor: not-allowed !important;
+    color: $textDark;
   }
 }
 

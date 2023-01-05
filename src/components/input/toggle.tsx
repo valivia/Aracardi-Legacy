@@ -2,21 +2,21 @@ import { ElementSize } from "@structs/size";
 import React, { useRef } from "react";
 import styles from "./toggle.module.scss";
 
-function Toggle({
+const Toggle: React.FC<Props> = ({
   label,
   name,
   disabled,
   size = "md",
   value,
   onChange,
-}: Props) {
+}: Props) => {
   const text = label ?? name;
   const input = useRef<HTMLInputElement>(null);
 
   return (
     <fieldset
       className={styles.main}
-      data-disabled={disabled}
+      disabled={disabled}
     >
       <label className={styles.label} htmlFor={name}>
         {text}
@@ -42,7 +42,7 @@ function Toggle({
 
     </fieldset>
   );
-}
+};
 
 export { Toggle };
 

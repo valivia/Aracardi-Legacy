@@ -20,7 +20,7 @@ const Accordion: React.FC<PropsWithChildren<Props>> = ({ children, title }) => {
 
       <div
         className={styles.content}
-        style={expanded ? { display: "block" } : { display: "none" }}
+        style={{ display: expanded ? "block" : "none" }}
       >
         {children}
       </div>

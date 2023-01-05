@@ -7,7 +7,7 @@ const Header: React.FC<Props> = ({ title, description, avatar: Avatar }) => {
       {Avatar && <figure className={styles.avatar}><Avatar /></figure>}
       {title && <h1 className={styles.title}>{title}</h1>}
       {description && <p className={styles.description}>{description}</p>}
-      <hr className={styles.line} />
+      <div className={styles.line} />
     </header>
   );
 };
