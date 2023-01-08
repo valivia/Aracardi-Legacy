@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -19,48 +19,45 @@ datasource db {
 model User {
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String   @id @default(uuid())
 
-  name String
-
-  Game              Game[]   @relation(fields: [authored_game_ids], references: [id])
-  authored_game_ids String[] @db.ObjectId
-
-  Addon              Addon[]  @relation(fields: [authored_addon_ids], references: [id])
-  authored_addon_ids String[] @db.ObjectId
-
-  favorite_addon_ids String[] @db.ObjectId
+  name            String
+  authored_games  Game[]
+  authored_addons Addon[]
 }
 
 // GAME #########################################################################################################
 model Game {
+  id         String   @id @default(uuid()) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  title            String
-  description      String
-  default_settings Settings
+  title       String
+  description String
 
-  has_image            Boolean @default(false)
-  is_official          Boolean @default(false)
+  has_image   Boolean @default(false)
+  is_official Boolean @default(false)
+
+  // settings
   is_available_online  Boolean @default(false)
   is_available_offline Boolean @default(false)
+  backlog_percentage   Float   @default(0.85)
+  allow_hotjoin        Boolean @default(true)
 
-  addons Addon[]
+  allow_poll  Boolean @default(true)
+  allow_input Boolean @default(true)
 
   // Relationship
-  authors    User[]   @relation(fields: [author_ids], references: [id])
-  author_ids String[] @db.ObjectId
-
+  addons  Addon[]
+  authors User[]
   session Session[]
 }
 
 // ADDON #########################################################################################################
 model Addon {
+  id         String   @id @default(uuid()) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   title       String
   description String
@@ -74,37 +71,35 @@ model Addon {
   offlineSize     Int @default(0)
   offlineNsfwSize Int @default(0)
 
-  game_id String @db.ObjectId
-  game    Game   @relation(fields: [game_id], references: [id])
-
-  cards Card[]
-
   // Relationship
-  authors    User[]   @relation(fields: [author_ids], references: [id])
-  author_ids String[] @db.ObjectId
+  game_id String @db.Uuid
+  game    Game   @relation(fields: [game_id], references: [id])
+  cards   Card[]
+  authors User[]
 }
 
 model Card {
+  id         String   @id @default(uuid()) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
   minimum_players Int?
   maximum_players Int?
 
   is_available_online  Boolean @default(false)
   is_available_offline Boolean @default(false)
+  is_nsfw              Boolean @default(false)
 
   stages Stage[]
 
-  is_nsfw Boolean @default(false)
-
   // Relationship
-  addon_id String @db.ObjectId
+  addon_id String @db.Uuid
   addon    Addon  @relation(fields: [addon_id], references: [id])
 }
 
-type Stage {
+model Stage {
+  id String @id @default(uuid()) @db.Uuid
+
   type StageType
 
   // Base
@@ -119,10 +114,14 @@ type Stage {
   // Poll Card
   winner_points   Int?
   selection_count Int?
-  options         PollOption[]
+  options         Json[]
 
   // Input Card
   target String[]
+
+  // relation
+  card    Card   @relation(fields: [card_id], references: [id])
+  card_id String @db.Uuid
 }
 
 enum StageType {
@@ -131,28 +130,27 @@ enum StageType {
   INPUT
 }
 
-type PollOption {
-  text   String
-  player String? @db.ObjectId
-}
-
 // SESSION #########################################################################################################
 model Session {
+  id         String   @id @default(uuid()) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
 
-  join_code String   @unique
-  settings  Settings
+  join_code String @unique
 
-  players Player[]
+  // Settings
+  timer_multiplier Float   @default(1)
+  turn_multiplier  Float   @default(1)
+  allow_nsfw       Boolean @default(true)
 
   // Relations
-  game_id String @db.ObjectId
+  players Player[]
+
+  game_id String @db.Uuid
   game    Game   @relation(fields: [game_id], references: [id])
 }
 
 model Player {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  id    String @id @default(uuid()) @db.Uuid
   token String
 
   name   String
@@ -161,20 +159,5 @@ model Player {
 
   // Relations
   session    Session @relation(fields: [session_id], references: [id])
-  session_id String  @db.ObjectId
-}
-
-// OTHER #########################################################################################################
-type Settings {
-  use_timers Boolean @default(true)
-  use_images Boolean @default(true)
-  use_loop   Boolean @default(true)
-  use_nsfw   Boolean @default(false)
-
-  allow_hotjoin Boolean @default(true)
-
-  timer_multiplier Float @default(1)
-  turn_multiplier  Float @default(1)
-
-  backlog_percentage Float @default(0.85)
+  session_id String  @db.Uuid
 }
