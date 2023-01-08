@@ -19,16 +19,18 @@ datasource db {
 model User {
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(uuid())
+  id         String   @id @default(dbgenerated("uuid_generate_v4()"))
 
-  name            String
+  name      String
+  avatar_id String? @db.Uuid
+
   authored_games  Game[]
   authored_addons Addon[]
 }
 
 // GAME #########################################################################################################
 model Game {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
 
@@ -55,7 +57,7 @@ model Game {
 
 // ADDON #########################################################################################################
 model Addon {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
 
@@ -79,7 +81,7 @@ model Addon {
 }
 
 model Card {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
 
@@ -98,7 +100,7 @@ model Card {
 }
 
 model Stage {
-  id String @id @default(uuid()) @db.Uuid
+  id String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
 
   type StageType
 
@@ -132,7 +134,7 @@ enum StageType {
 
 // SESSION #########################################################################################################
 model Session {
-  id         String   @id @default(uuid()) @db.Uuid
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   created_at DateTime @default(now()) @db.Timestamp()
 
   join_code String @unique
@@ -150,12 +152,12 @@ model Session {
 }
 
 model Player {
-  id    String @id @default(uuid()) @db.Uuid
+  id    String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   token String
 
-  name   String
-  avatar String
-  points Int    @default(0)
+  name      String
+  avatar_id String @db.Uuid
+  points    Int    @default(0)
 
   // Relations
   session    Session @relation(fields: [session_id], references: [id])
