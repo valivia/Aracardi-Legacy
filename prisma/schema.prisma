@@ -26,6 +26,9 @@ model User {
 
   authored_games  Game[]
   authored_addons Addon[]
+
+  favourite_addons Addon[] @relation("favourited_addons")
+  favourite_games  Game[]  @relation("favourited_games")
 }
 
 // GAME #########################################################################################################
@@ -50,9 +53,10 @@ model Game {
   allow_input Boolean @default(true)
 
   // Relationship
-  addons  Addon[]
-  authors User[]
-  session Session[]
+  addons        Addon[]
+  session       Session[]
+  authors       User[]
+  favourited_by User[]    @relation("favourited_games")
 }
 
 // ADDON #########################################################################################################
@@ -74,10 +78,11 @@ model Addon {
   offlineNsfwSize Int @default(0)
 
   // Relationship
-  game_id String @db.Uuid
-  game    Game   @relation(fields: [game_id], references: [id])
-  cards   Card[]
-  authors User[]
+  game_id       String @db.Uuid
+  game          Game   @relation(fields: [game_id], references: [id])
+  cards         Card[]
+  authors       User[]
+  favourited_by User[] @relation("favourited_addons")
 }
 
 model Card {
