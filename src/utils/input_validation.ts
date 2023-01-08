@@ -6,5 +6,5 @@ export const zJoinCode = z.string().length(4);
 
 export const zPlayerCreateObject = z.object({
   name: z.string(),
-  avatar: z.string(),
+  avatar_id: z.string(),
 });
