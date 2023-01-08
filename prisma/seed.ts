@@ -1,8 +1,8 @@
-import { Addon, Card, Game, Prisma, PrismaClient, Stage, StageType } from "@prisma/client";
+import { Addon, Game, PrismaClient, Stage, StageType } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
-const createArray = (min: number, max: number) => faker.datatype.array(faker.datatype.number({ min, max }));
+const createArray = (min: number, max: number) => Array(faker.datatype.number({ min, max })).fill(2);
 
 function createTextStage(): Stage {
   const a = faker.lorem
@@ -27,20 +27,22 @@ function createPollStage(): Stage {
     title: faker.random.words(5),
     winner_points: faker.datatype.boolean() ? faker.datatype.number({ min: 100, max: 1000, precision: 100 }) : null,
     selection_count: 1,
-    options: createArray(2, 7).map(() => ({ text: faker.lorem.sentence() })),
   } as Stage;
 }
 
-function createCard(addon: Addon): Partial<Card> {
+function createCard(addon: Addon) {
   const is_available_online = faker.datatype.boolean();
+  const query = prisma.card.create({
+    data: {
+      addon_id: addon.id,
+      is_nsfw: faker.datatype.boolean(),
+      is_available_online,
+      stages: { create: createArray(1, 5).map(() => (faker.datatype.boolean() ? createTextStage() : createPollStage())) },
+      is_available_offline: is_available_online ? faker.datatype.boolean() : true,
+    },
+  });
 
-  return {
-    addon_id: addon.id,
-    is_nsfw: faker.datatype.boolean(),
-    stages: createArray(1, 5).map(() => (faker.datatype.boolean() ? createTextStage() : createPollStage())),
-    is_available_online,
-    is_available_offline: is_available_online ? faker.datatype.boolean() : true,
-  };
+  return query;
 }
 
 function createAddon(game: Game): Omit<Addon, "id" | "author_ids"> {
@@ -69,10 +71,8 @@ async function main() {
   // generate preset games.
   await prisma.game.create({
     data: {
-      id: "63964fd8ff9e2d8649857828",
       title: "Drunk Pirate",
       description: "A drinking game",
-      default_settings: {},
 
       has_image: true,
       is_official: true,
@@ -112,7 +112,6 @@ async function main() {
     data: {
       title: "Tipsy Sailor",
       description: "gamer gaming game",
-      default_settings: {},
 
       has_image: true,
       is_official: false,
@@ -131,9 +130,8 @@ async function main() {
   // create cards.
   const addons = await prisma.addon.findMany();
   for (const addon of addons) {
-    const data = createArray(50, 300).map(() => createCard(addon)) as unknown as Prisma.CardCreateManyInput;
-
-    await prisma.card.createMany({ data });
+    const data = createArray(50, 300).map(() => createCard(addon));
+    await prisma.$transaction(data);
   }
 }
 
