@@ -15,6 +15,7 @@ import Marceline from "@public/avatars/marceline.svg";
 import Ghost from "@public/avatars/ghost.svg";
 import Frog from "@public/avatars/froggi.svg";
 import useBoolean from "@components/functions/useboolean";
+import { Avatar } from "@components/global/avatar";
 
 const GameDashboard: NextPage<Props> = ({ game }) => {
   const addons = trpc.addon.all.useQuery({ limit: 5, game_id: game.id });
@@ -26,7 +27,7 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
         <Header
           title={game.title}
           description={game.description}
-          avatar={Marceline}
+          avatar={<Avatar id="ghost" />}
         />
 
         <main className={styles.menu}>
@@ -76,8 +77,8 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
           <Accordion title="Permissions">
             <section className={styles.permissions}>
               <User avatar={Marceline} user={{ name: "Owlive" }} role="admin" />
-              <User avatar={Ghost} user={{ name: "Usyer" }} can_edit={true} role="collaborator" />
-              <User avatar={Frog} user={{ name: "Birbreme" }} can_edit={true} role="collaborator" />
+              <User avatar={Ghost} user={{ name: "Usyer" }} canEdit={true} role="collaborator" />
+              <User avatar={Frog} user={{ name: "Birbreme" }} canEdit={true} role="collaborator" />
               <Button variant="secondary">Add collaborator</Button>
             </section>
           </Accordion>
