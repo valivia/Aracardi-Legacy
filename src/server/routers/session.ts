@@ -10,14 +10,13 @@ import { isDatabaseError, DatabaseErrorCode } from "@utils/database_error";
 export const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
   id: true,
   created_at: true,
-
-  settings: true,
   join_code: true,
 
   game: {
     select: {
       title: true,
-      default_settings: true,
+      backlog_percentage: true,
+      allow_hotjoin: true,
       has_image: true,
     },
   },
@@ -26,20 +25,11 @@ export const defaultSessionSelect = Prisma.validator<Prisma.SessionSelect>()({
     select: {
       id: true,
       name: true,
-      avatar: true,
+      avatar_id: true,
       points: true,
     },
   },
 
-});
-
-const settingsObject = z.object({
-  use_images: z.boolean(),
-  use_nsfw: z.boolean(),
-
-  timer_multiplier: z.number().gte(0).lte(2),
-  turn_multiplier: z.number().gte(0).lte(2),
-  backlog_percentage: z.number().gte(0).lte(0.95),
 });
 
 const getSessionByJoinCode = async (joinCode: string) => {
@@ -95,12 +85,14 @@ export const sessionRouter = router({
   add: procedure
     .input(
       z.object({
-        settings: settingsObject,
+        timer_multiplier: z.number().max(2).min(0),
+        turn_multiplier: z.number().max(2).min(0),
+        allow_nsfw: z.boolean(),
         game_id: zIdentifier,
       }),
     )
     .mutation(async ({ input }) => {
-      const { game_id, settings } = input;
+      const { game_id, timer_multiplier, turn_multiplier, allow_nsfw } = input;
 
       // Generate x random codes to try.
       const randomCodes = new Array(10).fill(1).map(createJoinCode);
@@ -113,7 +105,9 @@ export const sessionRouter = router({
             data: {
               game: { connect: { id: game_id } },
               join_code,
-              settings,
+              timer_multiplier,
+              turn_multiplier,
+              allow_nsfw,
             },
           });
 
@@ -166,7 +160,7 @@ export const sessionRouter = router({
         data: {
           token,
           name: playerCreate.name,
-          avatar: playerCreate.avatar,
+          avatar_id: playerCreate.avatar_id,
           session_id: session.id,
         },
       });

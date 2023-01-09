@@ -12,12 +12,14 @@ const defaultGameSelect = Prisma.validator<Prisma.GameSelect>()({
 
   title: true,
   description: true,
-  default_settings: true,
 
   has_image: true,
   is_official: true,
+
   is_available_online: true,
   is_available_offline: true,
+  backlog_percentage: true,
+  allow_hotjoin: true,
 });
 
 export const gameRouter = router({
@@ -107,7 +109,7 @@ export const gameRouter = router({
     )
     .mutation(async ({ input }) => {
       const game = await prisma.game.create({
-        data: { ...input, default_settings: {} },
+        data: input,
         select: defaultGameSelect,
       });
       return game;
