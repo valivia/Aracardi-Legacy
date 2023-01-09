@@ -1,4 +1,4 @@
-import { Addon, Game, PrismaClient, Stage, StageType } from "@prisma/client";
+import { Addon, Game, PrismaClient, Role, Stage, StageType } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
@@ -79,7 +79,12 @@ async function main() {
       is_available_online: true,
       is_available_offline: true,
 
-      authors: { create: [{ name: "Owl" }, { name: "Usyer" }] },
+      authors: {
+        create: [
+          { role: Role.AUTHOR, author: { create: { name: "Owlive", avatar_id: "marceline" } } },
+          { role: Role.CONTRIBUTOR, author: { create: { name: "Usyer", avatar_id: "ghost" } } },
+        ],
+      },
 
       addons: {
         createMany: {
@@ -118,7 +123,12 @@ async function main() {
       is_available_online: true,
       is_available_offline: false,
 
-      authors: { create: [{ name: "Julien" }, { name: "Tetro" }] },
+      authors: {
+        create: [
+          { role: Role.AUTHOR, author: { create: { name: "Julien", avatar_id: "flapjack" } } },
+          { role: Role.CONTRIBUTOR, author: { create: { name: "Tetro", avatar_id: "jake" } } },
+        ],
+      },
     },
   });
 

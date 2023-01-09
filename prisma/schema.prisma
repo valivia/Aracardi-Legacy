@@ -19,16 +19,51 @@ datasource db {
 model User {
   created_at DateTime @default(now()) @db.Timestamp()
   updated_at DateTime @updatedAt
-  id         String   @id @default(dbgenerated("uuid_generate_v4()"))
+  id         String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
 
   name      String
-  avatar_id String? @db.Uuid
-
-  authored_games  Game[]
-  authored_addons Addon[]
+  avatar_id String?
 
   favourite_addons Addon[] @relation("favourited_addons")
   favourite_games  Game[]  @relation("favourited_games")
+
+  authored_games  AuthorToGame[]
+  authored_addons AuthorToAddon[]
+}
+
+model AuthorToGame {
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+
+  role Role
+
+  author_id String @db.Uuid
+  author    User   @relation(fields: [author_id], references: [id])
+
+  game_id String @db.Uuid
+  game    Game   @relation(fields: [game_id], references: [id])
+
+  @@id([author_id, game_id])
+}
+
+model AuthorToAddon {
+  created_at DateTime @default(now()) @db.Timestamp()
+  updated_at DateTime @updatedAt
+
+  role Role
+
+  user_id String @db.Uuid
+  user    User   @relation(fields: [user_id], references: [id])
+
+  addon_id String @db.Uuid
+  addon    Addon  @relation(fields: [addon_id], references: [id])
+
+  @@id([user_id, addon_id])
+}
+
+enum Role {
+  AUTHOR
+  CONTRIBUTOR
 }
 
 // GAME #########################################################################################################
@@ -55,8 +90,8 @@ model Game {
   // Relationship
   addons        Addon[]
   session       Session[]
-  authors       User[]
-  favourited_by User[]    @relation("favourited_games")
+  authors       AuthorToGame[]
+  favourited_by User[]         @relation("favourited_games")
 }
 
 // ADDON #########################################################################################################
@@ -72,17 +107,17 @@ model Addon {
   has_image   Boolean @default(false)
   is_draft    Boolean @default(true)
 
-  onlineSize      Int @default(0)
-  onlineNsfwSize  Int @default(0)
-  offlineSize     Int @default(0)
-  offlineNsfwSize Int @default(0)
+  online_size       Int @default(0)
+  online_nsfw_size  Int @default(0)
+  offline_size      Int @default(0)
+  offline_nsfw_size Int @default(0)
 
   // Relationship
-  game_id       String @db.Uuid
-  game          Game   @relation(fields: [game_id], references: [id])
+  game_id       String          @db.Uuid
+  game          Game            @relation(fields: [game_id], references: [id])
   cards         Card[]
-  authors       User[]
-  favourited_by User[] @relation("favourited_addons")
+  authors       AuthorToAddon[]
+  favourited_by User[]          @relation("favourited_addons")
 }
 
 model Card {
