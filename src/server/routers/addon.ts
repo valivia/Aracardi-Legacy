@@ -59,11 +59,11 @@ export const addonRouter = router({
       // TODO: Retrieve from context once auth is implemented
       const user = await prisma.user.findFirst({
         select: {
-          favorite_addon_ids: true,
+          favourite_addons: true,
         },
       });
 
-      const favorites = user?.favorite_addon_ids;
+      const favorites = user?.favourite_addons.map(x => x.id);
 
       const items = await prisma.addon.findMany({
         select: defaultAddonSelect,
