@@ -109,7 +109,7 @@ export const gameRouter = router({
     )
     .mutation(async ({ input }) => {
       const game = await prisma.game.create({
-        data: { ...input },
+        data: input,
         select: defaultGameSelect,
       });
       return game;
