@@ -5,7 +5,7 @@ const Avatar: React.FC<Props> = ({ id }) => {
   const [element, setElement] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
-    import(`@public/avatars/${id}.svg`).then((res) => {
+    import(`@public/avatars/${id || "marceline"}.svg`).then((res) => {
       const Icon = res.default as React.ComponentType<JSX.IntrinsicElements["svg"]>;
       setElement(<Icon className={styles.main} />);
     });
@@ -17,5 +17,5 @@ const Avatar: React.FC<Props> = ({ id }) => {
 export { Avatar };
 
 interface Props {
-  id: string;
+  id?: string | null;
 }

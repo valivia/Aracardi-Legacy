@@ -41,10 +41,7 @@ const Games: NextPage<Props> = ({ games }) => {
         <hr />
 
         {/* List of games */}
-        <section
-          className={styles.addons}
-          tabIndex={-1}
-        >
+        <section className={styles.addons}>
           {games.map(game =>
             <Game
               key={game.id}

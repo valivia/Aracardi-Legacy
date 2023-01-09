@@ -1,21 +1,20 @@
-import styles from "../main.module.scss";
+import styles from "@styles/dashboard.module.scss";
 import { Layout } from "src/components/global/layout.module";
 import { Header } from "@components/dashboard/header";
 import { Accordion } from "@components/dashboard/accordion";
-import Prisma from "@prisma/client";
+import Prisma, { Role } from "@prisma/client";
 import { trpc } from "@utils/trpc";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { Addon } from "@components/setup/addon.module";
 import { prisma } from "src/server/prisma";
 import { Button } from "@components/input/button.module";
 import { Toggle } from "@components/input/toggle";
 import { User } from "@components/dashboard/user";
 
-import Marceline from "@public/avatars/marceline.svg";
-import Ghost from "@public/avatars/ghost.svg";
-import Frog from "@public/avatars/froggi.svg";
 import useBoolean from "@components/functions/useboolean";
 import { Avatar } from "@components/global/avatar";
+import { DashboardItem } from "@components/dashboard/dashboard_item";
+import { Tag } from "@components/global/tag.module";
+import { BsWifi, BsWifiOff } from "react-icons/bs";
 
 const GameDashboard: NextPage<Props> = ({ game }) => {
   const addons = trpc.addon.all.useQuery({ limit: 5, game_id: game.id });
@@ -31,13 +30,26 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
         />
 
         <main className={styles.menu}>
-          <Accordion title="Statistics">
+          <Accordion title="Statistics" defaultExpanded={true}>
             a
           </Accordion>
 
-          <Accordion title="Default Addons">
+          <Accordion title="Default Addons" defaultExpanded={true}>
             <section className={styles.itemList}>
-              {addons.data?.items.map(addon => <Addon key={addon.id} addon={addon} />)}
+
+              {addons.data?.items.map(addon =>
+                <DashboardItem
+                  key={addon.id}
+                  title={addon.title}
+                  href={`/dashboard/addon/${addon.id}`}
+                  avatar={<Avatar id="ghost" />}
+                >
+                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.onlineSize}</Tag>
+                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offlineSize}</Tag>
+                  {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
+                </DashboardItem>
+              )}
+
               <Button variant="secondary">Add default addon</Button>
             </section>
           </Accordion>
@@ -76,9 +88,9 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
 
           <Accordion title="Permissions">
             <section className={styles.permissions}>
-              <User avatar={Marceline} user={{ name: "Owlive" }} role="admin" />
-              <User avatar={Ghost} user={{ name: "Usyer" }} canEdit={true} role="collaborator" />
-              <User avatar={Frog} user={{ name: "Birbreme" }} canEdit={true} role="collaborator" />
+              <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
+              <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit={true} role={Role.CONTRIBUTOR} />
+              <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit={true} role={Role.CONTRIBUTOR} />
               <Button variant="secondary">Add collaborator</Button>
             </section>
           </Accordion>

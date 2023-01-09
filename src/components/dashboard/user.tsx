@@ -1,12 +1,14 @@
-import Prisma from "@prisma/client";
+import Prisma, { Role } from "@prisma/client";
 import React from "react";
 import styles from "./user.module.scss";
 import { BsGear } from "react-icons/bs";
+import { Avatar } from "@components/global/avatar";
+import { HasAtLeast } from "@structs/hasatleast";
 
-const User: React.FC<Props> = ({ user, role, canEdit, avatar: Avatar }) => {
+const User: React.FC<Props> = ({ user, role, canEdit }) => {
   return (
     <li className={styles.main}>
-      <figure className={styles.avatar}><Avatar /></figure>
+      <figure className={styles.avatar}><Avatar id={user.avatar_id} /></figure>
       <p className={styles.name}>{user.name}</p>
       {/* TODO roles */}
       <p className={styles.role}>{role}</p>
@@ -18,8 +20,7 @@ const User: React.FC<Props> = ({ user, role, canEdit, avatar: Avatar }) => {
 export { User };
 
 interface Props {
-  user: Prisma.User
-  role: string;
-  avatar: React.FC;
-  canEdit: boolean;
+  user: HasAtLeast<Prisma.User, "name">
+  role: Role;
+  canEdit?: boolean;
 }

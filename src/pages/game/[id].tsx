@@ -88,7 +88,6 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         <section
           className={styles.addons}
           onScroll={scrolling}
-          tabIndex={-1}
         >
           {addons.data?.pages.map(page =>
             page.items.map(addon =>

@@ -1,8 +1,8 @@
 import React, { PropsWithChildren, useState } from "react";
 import styles from "./accordion.module.scss";
 
-const Accordion: React.FC<PropsWithChildren<Props>> = ({ children, title }) => {
-  const [expanded, setExpanded] = useState(false);
+const Accordion: React.FC<PropsWithChildren<Props>> = ({ children, defaultExpanded, title }) => {
+  const [expanded, setExpanded] = useState(defaultExpanded || false);
 
   return (
     <section className={styles.main}>
@@ -33,4 +33,5 @@ export { Accordion };
 
 interface Props {
   title: string;
+  defaultExpanded?: boolean;
 }
