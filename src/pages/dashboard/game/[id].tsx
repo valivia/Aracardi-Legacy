@@ -44,8 +44,8 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
                   href={`/dashboard/addon/${addon.id}`}
                   avatar={<Avatar id="ghost" />}
                 >
-                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.onlineSize}</Tag>
-                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offlineSize}</Tag>
+                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.online_size}</Tag>
+                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offline_size}</Tag>
                   {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
                 </DashboardItem>
               )}
