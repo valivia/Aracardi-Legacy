@@ -1,6 +1,5 @@
 import styles from "./index.module.scss";
 import { Layout } from "src/components/global/layout.module";
-import { Game } from "@structs/game";
 import { prisma } from "src/server/prisma";
 import { trpc } from "@utils/trpc";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
@@ -10,13 +9,14 @@ import { Addon } from "@components/setup/addon.module";
 import React, { UIEvent, useEffect, useState } from "react";
 import { Tag } from "@components/global/tag.module";
 import { TextInput } from "@components/input/text_input.module";
-import Prisma from "@prisma/client";
+import { Game } from "@prisma/client";
+import { RouterOutput } from "@server/routers/_app";
 
 const GameSetup: NextPage<Props> = ({ game }) => {
   // TODO proper settings;
   const allowNsfw = true;
   const [query, setQuery] = useState("");
-  const [activeAddons, setActiveAddons] = useState<Map<string, Prisma.Addon>>(new Map());
+  const [activeAddons, setActiveAddons] = useState<Map<string, RouterOutput["addon"]["get"]>>(new Map());
   const [cardSize, setCardSize] = useState({ offline: 0, online: 0 });
 
   // Fetch addons.
@@ -128,7 +128,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
 };
 
 interface Props {
-  game: Game
+  game: Game;
 }
 
 export default GameSetup;

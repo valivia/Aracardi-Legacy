@@ -1,6 +1,6 @@
 import { Tag } from "@components/global/tag.module";
 import { faker } from "@faker-js/faker";
-import prisma from "@prisma/client";
+import { RouterOutput } from "@server/routers/_app";
 import React, { useMemo } from "react";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import styles from "./addon.module.scss";
@@ -47,7 +47,7 @@ const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
 export { Addon };
 
 interface Props {
-  addon: prisma.Addon;
+  addon: RouterOutput["addon"]["get"];
   onClick?: () => void | Promise<void>;
   active?: boolean;
 }
