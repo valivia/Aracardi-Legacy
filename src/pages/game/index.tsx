@@ -1,4 +1,4 @@
-import styles from "./index.module.scss";
+import styles from "@styles/setup.module.scss";
 import { Layout } from "src/components/global/layout.module";
 import { prisma } from "src/server/prisma";
 import { GetStaticProps, NextPage } from "next";

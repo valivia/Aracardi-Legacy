@@ -1,9 +1,9 @@
+import styles from "./setup_item.module.scss";
 import { Tag } from "@components/global/tag.module";
 import { faker } from "@faker-js/faker";
 import { RouterOutput } from "@server/routers/_app";
 import React, { useMemo } from "react";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
-import styles from "./addon.module.scss";
 
 // TODO display correct card count. keyboard accessibility (keydown and infinite load?)
 
