@@ -8,9 +8,10 @@ import { Avatar } from "@components/global/avatar";
 import { DashboardItem } from "@components/dashboard/dashboard_item";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 import { Tag } from "@components/global/tag";
+import { NextPage } from "next";
 
 
-const Dashboard = () => {
+const Dashboard: NextPage = () => {
   const user: User = {
     name: "Owlive",
     created_at: new Date(),

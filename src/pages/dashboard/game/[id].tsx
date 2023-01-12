@@ -10,7 +10,7 @@ import { Button } from "@components/input/button";
 import { Toggle } from "@components/input/toggle";
 import { User } from "@components/dashboard/user";
 
-import useBoolean from "@components/functions/useboolean";
+import { useBoolean } from "@components/functions/hooks/useBoolean";
 import { Avatar } from "@components/global/avatar";
 import { DashboardItem } from "@components/dashboard/dashboard_item";
 import { Tag } from "@components/global/tag";
@@ -61,27 +61,27 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
                 label="Allow nsfw"
                 value={allowNsfw}
                 disabled={true}
-                onChange={() => toggleAllowNsfw()}
+                onChange={toggleAllowNsfw}
               />
               <Toggle
                 name="loop_cards"
                 label="Loop cards"
                 value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
+                onChange={toggleAllowNsfw}
               />
 
               <Toggle
                 name="available_online"
                 label="Available online"
                 value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
+                onChange={toggleAllowNsfw}
               />
 
               <Toggle
                 name="available_offline"
                 label="Available offline"
                 value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
+                onChange={toggleAllowNsfw}
               />
             </section>
           </Accordion>
@@ -89,8 +89,8 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
           <Accordion title="Permissions">
             <section className={styles.permissions}>
               <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
-              <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit={true} role={Role.CONTRIBUTOR} />
-              <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit={true} role={Role.CONTRIBUTOR} />
+              <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit role={Role.CONTRIBUTOR} />
+              <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit role={Role.CONTRIBUTOR} />
               <Button variant="secondary">Add collaborator</Button>
             </section>
           </Accordion>
