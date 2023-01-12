@@ -20,6 +20,7 @@ const Dashboard: NextPage = () => {
     avatar_id: "marceline",
   };
 
+  // TODO: proper query for user's games.
   const games = trpc.game.all.useQuery({ limit: 5 });
 
   return (

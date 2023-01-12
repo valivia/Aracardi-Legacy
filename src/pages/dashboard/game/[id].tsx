@@ -10,7 +10,7 @@ import { Button } from "@components/input/button";
 import { Toggle } from "@components/input/toggle";
 import { User } from "@components/dashboard/user";
 
-import { useBoolean } from "@components/functions/hooks/useBoolean";
+import { useBoolean } from "@hooks/useBoolean";
 import { Avatar } from "@components/global/avatar";
 import { DashboardItem } from "@components/dashboard/dashboard_item";
 import { Tag } from "@components/global/tag";

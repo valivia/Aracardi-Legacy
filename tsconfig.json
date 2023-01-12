@@ -33,6 +33,9 @@
       "@components/*": [
         "src/components/*"
       ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
       "@server/*": [
         "src/server/*"
       ],
@@ -54,6 +57,5 @@
   ],
   "exclude": [
     "node_modules",
-    "archive"
   ]
 }

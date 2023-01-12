@@ -10,6 +10,7 @@ function Layout({ title, subtitle, description, children }: Props) {
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
       </Head>
+
       {(title || subtitle) &&
         <motion.header
           key={title || subtitle}
@@ -22,6 +23,7 @@ function Layout({ title, subtitle, description, children }: Props) {
         </motion.header>
       }
       {children}
+
       <LogoComponent />
     </div>
   );

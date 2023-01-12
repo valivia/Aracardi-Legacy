@@ -4,8 +4,9 @@ import { TextInput } from "@components/input/text_input";
 import { Button } from "@components/input/button";
 import { useState } from "react";
 import { Link } from "@components/input/link";
+import { NextPage } from "next";
 
-const Home = () => {
+const Home: NextPage = () => {
   const [joinCode, setJoinCode] = useState("");
 
   const fetchSession = async () => {

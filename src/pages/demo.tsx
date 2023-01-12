@@ -1,4 +1,6 @@
-const Demo = () => {
+import { NextPage } from "next";
+
+const Demo: NextPage = () => {
   return (
     <></>
   );

@@ -28,9 +28,12 @@ const DashboardItem: React.FC<PropsWithChildren<Props>> = ({ title, href, avatar
       </section>
 
       {/* Settings */}
-      <div className={styles.settings} onClick={(e) => { e.stopPropagation(); e.nativeEvent.preventDefault(); }}>
+      <button
+        className={styles.settings}
+        onClick={(e) => { e.stopPropagation(); e.nativeEvent.preventDefault(); }}
+      >
         <BsGear />
-      </div>
+      </button>
     </Link>
   );
 };

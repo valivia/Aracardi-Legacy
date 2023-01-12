@@ -1,9 +1,9 @@
 import styles from "./setup_item.module.scss";
 import { Tag } from "@components/global/tag";
 import { faker } from "@faker-js/faker";
-import { RouterOutput } from "@server/routers/_app";
 import React, { useMemo } from "react";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
+import { RouterOutput } from "@utils/trpc";
 
 const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
   const avatar = useMemo(() => faker.image.abstract(640, 640, true), []);

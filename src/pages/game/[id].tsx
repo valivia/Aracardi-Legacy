@@ -10,7 +10,7 @@ import React, { UIEvent, useEffect, useState } from "react";
 import { Tag } from "@components/global/tag";
 import { TextInput } from "@components/input/text_input";
 import { Game } from "@prisma/client";
-import { RouterOutput } from "@server/routers/_app";
+import { RouterOutput } from "@utils/trpc";
 
 const GameSetup: NextPage<Props> = ({ game }) => {
   // TODO proper settings;

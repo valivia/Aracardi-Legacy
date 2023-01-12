@@ -1,4 +1,3 @@
-import { inferRouterOutputs } from "@trpc/server";
 import { procedure, router } from "../trpc";
 import { addonRouter } from "./addon";
 import { cardRouter } from "./card";
@@ -15,5 +14,3 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
-
-export type RouterOutput = inferRouterOutputs<AppRouter>;
