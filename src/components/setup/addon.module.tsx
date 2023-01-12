@@ -27,8 +27,8 @@ const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
         <p className={styles.description}>{addon.description}</p>
 
         <section className={styles.tags}>
-          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.onlineSize}</Tag>
-          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offlineSize}</Tag>
+          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.online_size}</Tag>
+          <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offline_size}</Tag>
           {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
         </section>
 

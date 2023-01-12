@@ -16,10 +16,10 @@ const defaultAddonSelect = Prisma.validator<Prisma.AddonSelect>()({
   has_image: true,
   is_official: true,
 
-  onlineSize: true,
-  onlineNsfwSize: true,
-  offlineSize: true,
-  offlineNsfwSize: true,
+  online_size: true,
+  online_nsfw_size: true,
+  offline_size: true,
+  offline_nsfw_size: true,
 });
 
 const defaultAddonSorting = z.object({
@@ -29,13 +29,13 @@ const defaultAddonSorting = z.object({
 
 const addonSorting = defaultAddonSorting
   .extend({
-    onlineSize: z.enum(["asc", "desc"]).default("desc"),
+    online_size: z.enum(["asc", "desc"]).default("desc"),
   })
   .default({}) // default is required so we always have an object value
   .or(
     defaultAddonSorting
       .extend({
-        offlineSize: z.enum(["asc", "desc"]).default("desc"),
+        offline_size: z.enum(["asc", "desc"]).default("desc"),
       })
       .default({}) // default is required so we always have an object value
   );
@@ -77,8 +77,8 @@ export const addonRouter = router({
         },
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: [
-          "onlineSize" in orderBy ? { onlineSize: orderBy.onlineSize } : undefined as never,
-          "offlineSize" in orderBy ? { offlineSize: orderBy.offlineSize } : undefined as never,
+          "online_size" in orderBy ? { online_size: orderBy.online_size } : undefined as never,
+          "offline_size" in orderBy ? { offline_size: orderBy.offline_size } : undefined as never,
           { created_at: orderBy.created_at }, // Important to have this last, so that other sorts go first
         ],
       });

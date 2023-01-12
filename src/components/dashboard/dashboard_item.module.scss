@@ -1,0 +1,115 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border: 1px solid currentColor;
+  border-radius: 96px;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: min-content minmax(20px, 1fr) 30px;
+  grid-template-rows: 100%;
+  align-items: center;
+  gap: 10px;
+
+  transform: scale(1);
+  transition: transform ease-in-out 100ms;
+
+  @include noselect;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @include large {
+    grid-template-columns: min-content minmax(20px, 1fr) 60px;
+    gap: 16px;
+
+    &:hover {
+      transform: scale(1.01);
+      color: $accent;
+    }
+
+    &:active {
+      transform: scale(1);
+    }
+  }
+}
+
+.avatar {
+
+  width: 64px;
+  height: 64px;
+
+  margin: -1px;
+
+  @include large {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  padding: 6px 0;
+
+  @include large {
+    padding: 10px 0;
+  }
+
+  & > .title {
+    font-weight: 300;
+    font-size: 1rem;
+    margin: 0;
+
+    text-transform: capitalize;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    @include large {
+      font-weight: 400;
+      font-size: 1.5rem;
+    }
+  }
+
+  & > .description {
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin: 0;
+    display: none;
+
+    @include large {
+      display: block;
+    }
+  }
+
+  & > .tags {
+    margin-top: auto;
+    display: flex;
+    gap: 5px;
+
+    @include large {
+      gap: 10px;
+    }
+  }
+}
+
+.settings {
+  justify-self: center;
+  padding: 3px;
+
+  width: 32px;
+  height: 32px;
+
+  @include large {
+    width: 46px;
+    height: 46px;
+  }
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

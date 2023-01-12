@@ -25,6 +25,10 @@ a {
   font-feature-settings: "pnum" on, "lnum" on;
 }
 
+*:focus {
+  outline: 2px solid currentColor;
+}
+
 /* Scrollbar */
 
 body,

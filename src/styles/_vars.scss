@@ -1,20 +1,21 @@
 $dark-theme: false !default;
 $font: "raleway", Helvetica, sans-serif;
 
+// Colors
 $text: #d9c193 !default;
 $textHover: #a69371 !default;
-$textDark: #594622 !default;
-$accent: #dfaf55;
-$disabled: #903636 !default;
+$textDark: #73654c !default;
+$accent: #dfaf55 !default;
 $primary: #0b0b0b !default;
 
-@if $dark-theme {
-  $text: #161616;
-  $textHover: #343434;
-  $textDark: rgb(80, 80, 80);
-
-  $primary: #d9c193;
-}
+// Z index
+$zindex-dropdown: 1000;
+$zindex-sticky: 1020;
+$zindex-fixed: 1030;
+$zindex-modal-backdrop: 1040;
+$zindex-modal: 1050;
+$zindex-popover: 1060;
+$zindex-tooltip: 1070;
 
 @mixin noselect {
   -webkit-touch-callout: none;

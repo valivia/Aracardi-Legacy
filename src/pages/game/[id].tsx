@@ -35,8 +35,8 @@ const GameSetup: NextPage<Props> = ({ game }) => {
   useEffect(() => {
     const amount = { offline: 0, online: 0 };
     for (const entry of activeAddons.values()) {
-      amount.offline += entry.offlineSize - (allowNsfw ? 0 : entry.offlineNsfwSize);
-      amount.online += entry.onlineSize - (allowNsfw ? 0 : entry.onlineNsfwSize);
+      amount.offline += entry.offline_size - (allowNsfw ? 0 : entry.offline_nsfw_size);
+      amount.online += entry.online_size - (allowNsfw ? 0 : entry.online_nsfw_size);
     }
     setCardSize(amount);
   }, [activeAddons, allowNsfw]);
@@ -88,7 +88,6 @@ const GameSetup: NextPage<Props> = ({ game }) => {
         <section
           className={styles.addons}
           onScroll={scrolling}
-          tabIndex={-1}
         >
           {addons.data?.pages.map(page =>
             page.items.map(addon =>

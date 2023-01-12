@@ -1,4 +1,4 @@
-import { Addon, Game, PrismaClient, Stage, StageType } from "@prisma/client";
+import { Addon, Game, PrismaClient, Role, Stage, StageType } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 
 const prisma = new PrismaClient();
@@ -58,10 +58,10 @@ function createAddon(game: Game): Omit<Addon, "id" | "author_ids"> {
     is_draft: Math.random() < 0.1,
 
     // We probably want to determine this from the cards later on
-    offlineSize: faker.datatype.number({ min: 1, max: 1000 }),
-    offlineNsfwSize: faker.datatype.number({ min: 1, max: 200 }),
-    onlineSize: faker.datatype.number({ min: 1, max: 1000 }),
-    onlineNsfwSize: faker.datatype.number({ min: 1, max: 200 }),
+    offline_size: faker.datatype.number({ min: 1, max: 1000 }),
+    offline_nsfw_size: faker.datatype.number({ min: 1, max: 200 }),
+    online_size: faker.datatype.number({ min: 1, max: 1000 }),
+    online_nsfw_size: faker.datatype.number({ min: 1, max: 200 }),
 
     game_id: game.id,
   };
@@ -79,7 +79,12 @@ async function main() {
       is_available_online: true,
       is_available_offline: true,
 
-      authors: { create: [{ name: "Owl" }, { name: "Usyer" }] },
+      authors: {
+        create: [
+          { role: Role.AUTHOR, author: { create: { name: "Owlive", avatar_id: "marceline" } } },
+          { role: Role.CONTRIBUTOR, author: { create: { name: "Usyer", avatar_id: "ghost" } } },
+        ],
+      },
 
       addons: {
         createMany: {
@@ -90,8 +95,8 @@ async function main() {
               is_official: true,
               has_image: true,
               is_draft: false,
-              onlineSize: 300,
-              offlineSize: 125,
+              online_size: 300,
+              offline_size: 125,
             },
             {
               title: "Owl pack",
@@ -99,8 +104,8 @@ async function main() {
               is_official: false,
               has_image: true,
               is_draft: false,
-              onlineSize: 200,
-              offlineSize: 25,
+              online_size: 200,
+              offline_size: 25,
             },
           ],
         },
@@ -118,7 +123,12 @@ async function main() {
       is_available_online: true,
       is_available_offline: false,
 
-      authors: { create: [{ name: "Julien" }, { name: "Tetro" }] },
+      authors: {
+        create: [
+          { role: Role.AUTHOR, author: { create: { name: "Julien", avatar_id: "flapjack" } } },
+          { role: Role.CONTRIBUTOR, author: { create: { name: "Tetro", avatar_id: "jake" } } },
+        ],
+      },
     },
   });
 

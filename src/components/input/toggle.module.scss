@@ -1,0 +1,65 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: $text;
+
+  @include noselect();
+
+  &:disabled * {
+    cursor: not-allowed !important;
+    color: $textDark;
+  }
+}
+
+.label {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  width: 50px;
+  height: 25px;
+}
+
+.switch input[type="checkbox"] {
+  display: none;
+}
+
+.switch .indicator {
+  position: absolute;
+  cursor: pointer;
+  border-radius: 25px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transition: background-color 0.2s ease;
+  outline: 1px solid currentColor;
+}
+
+.switch .indicator::before {
+  position: absolute;
+  content: "";
+  left: 3px;
+  top: 3px;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  outline: 1px solid currentColor;
+  transition: transform 0.3s ease;
+}
+
+.switch input[type="checkbox"]:checked + .indicator::before {
+  transform: translateX(25px);
+  background-color: currentColor;
+}
