@@ -14,7 +14,7 @@ function Layout({ title, subtitle, game, children }: Props) {
       </Head>
       {(title || subtitle) &&
         <motion.header
-          key={title}
+          key={title || subtitle}
           className={styles.title}
           initial={{ x: 300 }}
           animate={{ x: 0 }}

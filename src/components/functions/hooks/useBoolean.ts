@@ -22,4 +22,4 @@ function useBoolean(defaultValue?: boolean): UseBooleanOutput {
 }
 
 
-export default useBoolean;
+export { useBoolean };

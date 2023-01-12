@@ -18,12 +18,11 @@ const Accordion: React.FC<PropsWithChildren<Props>> = ({ children, defaultExpand
         </svg>
       </button>
 
-      <div
-        className={styles.content}
-        style={{ display: expanded ? "block" : "none" }}
-      >
-        {children}
-      </div>
+      {expanded &&
+        <div className={styles.content}>
+          {children}
+        </div>
+      }
 
     </section>
   );
