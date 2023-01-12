@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import styles from "./avatar.module.scss";
 
-const Avatar: React.FC<Props> = ({ id }) => {
+const Avatar = memo<Props>(({ id }) => {
   const [element, setElement] = useState<JSX.Element | null>(null);
 
   useEffect(() => {
@@ -12,7 +12,9 @@ const Avatar: React.FC<Props> = ({ id }) => {
   }, [id]);
 
   return element;
-};
+});
+
+Avatar.displayName = "Avatar";
 
 export { Avatar };
 
