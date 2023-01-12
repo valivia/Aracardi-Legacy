@@ -1,14 +1,14 @@
 import styles from "@styles/setup.module.scss";
-import { Layout } from "src/components/global/layout.module";
+import { Layout } from "src/components/global/layout";
 import { prisma } from "src/server/prisma";
 import { trpc } from "@utils/trpc";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
-import { Button } from "@components/input/button.module";
-import { Addon } from "@components/setup/addon.module";
+import { Button } from "@components/input/button";
+import { Addon } from "@components/setup/addon";
 import React, { UIEvent, useEffect, useState } from "react";
-import { Tag } from "@components/global/tag.module";
-import { TextInput } from "@components/input/text_input.module";
+import { Tag } from "@components/global/tag";
+import { TextInput } from "@components/input/text_input";
 import { Game } from "@prisma/client";
 import { RouterOutput } from "@server/routers/_app";
 

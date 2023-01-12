@@ -1,13 +1,13 @@
 import styles from "@styles/setup.module.scss";
-import { Layout } from "src/components/global/layout.module";
+import { Layout } from "src/components/global/layout";
 import { prisma } from "src/server/prisma";
 import { GetStaticProps, NextPage } from "next";
-import { Game } from "@components/setup/game.module";
+import { Game } from "@components/setup/game";
 import Prisma from "@prisma/client";
 import { useState } from "react";
-import { Button } from "@components/input/button.module";
-import { TextInput } from "@components/input/text_input.module";
-import { Link } from "@components/input/link.module";
+import { Button } from "@components/input/button";
+import { TextInput } from "@components/input/text_input";
+import { Link } from "@components/input/link";
 
 const Games: NextPage<Props> = ({ games }) => {
   const [selectedGame, setGame] = useState<string>();

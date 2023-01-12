@@ -1,9 +1,9 @@
 import styles from "./index.module.scss";
-import { Layout } from "src/components/global/layout.module";
-import { TextInput } from "@components/input/text_input.module";
-import { Button } from "@components/input/button.module";
+import { Layout } from "src/components/global/layout";
+import { TextInput } from "@components/input/text_input";
+import { Button } from "@components/input/button";
 import { useState } from "react";
-import { Link } from "@components/input/link.module";
+import { Link } from "@components/input/link";
 
 const Home = () => {
   const [joinCode, setJoinCode] = useState("");

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import { BsGear } from "react-icons/bs";
 import styles from "./dashboard_item.module.scss";
 
@@ -40,5 +40,5 @@ export { DashboardItem };
 interface Props {
   title: string;
   href: string;
-  avatar: any;
+  avatar: ReactNode;
 }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Head from "next/head";
 import styles from "./layout.module.scss";
-import LogoComponent from "./logo.module";
+import LogoComponent from "./logo";
 
 function Layout({ title, subtitle, description, children }: Props) {
   return (
