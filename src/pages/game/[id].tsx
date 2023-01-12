@@ -53,6 +53,14 @@ const GameSetup: NextPage<Props> = ({ game }) => {
     e.preventDefault();
   };
 
+  const toggleActive = (addon: RouterOutput["addon"]["get"]) => {
+    setActiveAddons(old => {
+      const newAddons = new Map(old);
+      newAddons.has(addon.id) ? newAddons.delete(addon.id) : newAddons.set(addon.id, addon);
+      return newAddons;
+    });
+  };
+
   return (
     <Layout
       title={game.title}
@@ -67,12 +75,14 @@ const GameSetup: NextPage<Props> = ({ game }) => {
             size="lg"
             variant="secondary"
           >
-            Sort</Button>
+            Sort
+          </Button>
           <Button
             size="lg"
             variant="secondary"
           >
-            Filter</Button>
+            Filter
+          </Button>
           <TextInput
             size="lg"
             type="search"
@@ -95,12 +105,7 @@ const GameSetup: NextPage<Props> = ({ game }) => {
                 key={addon.id}
                 addon={addon}
                 active={activeAddons.has(addon.id)}
-                onClick={() => setActiveAddons(old => {
-                  const newAddons = new Map(old);
-                  newAddons.has(addon.id) ? newAddons.delete(addon.id) : newAddons.set(addon.id, addon);
-                  return newAddons;
-                })
-                }
+                onClick={() => toggleActive(addon)}
               />
             )
           )}

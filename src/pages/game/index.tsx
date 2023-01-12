@@ -24,12 +24,14 @@ const Games: NextPage<Props> = ({ games }) => {
             size="lg"
             variant="secondary"
           >
-            Sort</Button>
+            Sort
+          </Button>
           <Button
             size="lg"
             variant="secondary"
           >
-            Filter</Button>
+            Filter
+          </Button>
           <TextInput
             size="lg"
             placeholder="E.g 'Drunk Pirate'"

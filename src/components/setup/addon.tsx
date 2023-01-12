@@ -5,8 +5,6 @@ import { RouterOutput } from "@server/routers/_app";
 import React, { useMemo } from "react";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
 
-// TODO display correct card count. keyboard accessibility (keydown and infinite load?)
-
 const Addon: React.FC<Props> = ({ addon, active, onClick }) => {
   const avatar = useMemo(() => faker.image.abstract(640, 640, true), []);
   return (

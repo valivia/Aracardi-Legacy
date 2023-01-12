@@ -3,7 +3,7 @@ import React from "react";
 import styles from "./user.module.scss";
 import { BsGear } from "react-icons/bs";
 import { Avatar } from "@components/global/avatar";
-import { HasAtLeast } from "@structs/hasatleast";
+import { HasAtLeast } from "@structs/has_at_least";
 
 const User: React.FC<Props> = ({ user, role, canEdit }) => {
   return (
