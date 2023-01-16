@@ -7,7 +7,7 @@ import { trpc } from "@utils/trpc";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { prisma } from "src/server/prisma";
 import { Button } from "@components/input/button";
-import { Toggle } from "@components/input/toggle";
+import { Switch } from "@components/input/switch";
 import { User } from "@components/dashboard/user";
 
 import { useBoolean } from "@hooks/useBoolean";
@@ -56,28 +56,28 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
 
           <Accordion title="Default Settings">
             <section className={styles.settings}>
-              <Toggle
+              <Switch
                 name="allow_nsfw"
                 label="Allow nsfw"
                 value={allowNsfw}
                 disabled={true}
                 onChange={toggleAllowNsfw}
               />
-              <Toggle
+              <Switch
                 name="loop_cards"
                 label="Loop cards"
                 value={allowNsfw}
                 onChange={toggleAllowNsfw}
               />
 
-              <Toggle
+              <Switch
                 name="available_online"
                 label="Available online"
                 value={allowNsfw}
                 onChange={toggleAllowNsfw}
               />
 
-              <Toggle
+              <Switch
                 name="available_offline"
                 label="Available offline"
                 value={allowNsfw}

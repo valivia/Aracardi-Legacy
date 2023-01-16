@@ -1,0 +1,53 @@
+@use "src/styles/vars" as *;
+
+.main {
+  border: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: $text;
+
+  @include noselect();
+
+  &:disabled * {
+    cursor: not-allowed !important;
+    color: $textDark;
+  }
+}
+
+.label {
+  cursor: pointer;
+}
+
+.root {
+  all: unset;
+  width: 42px;
+  height: 25px;
+  background-color: transparent;
+  border-radius: 9999px;
+  outline: 1px solid currentColor;
+  position: relative;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+}
+.root:focus {
+  box-shadow: 0 0 0 2px black;
+}
+
+.thumb {
+  display: block;
+  width: 21px;
+  height: 21px;
+  border-radius: 9999px;
+  box-shadow: 0 2px 2px var(--blackA7);
+  transition: transform 100ms;
+  transform: translateX(2px);
+  will-change: transform;
+  outline: 1px solid currentColor;
+}
+.thumb[data-state="checked"] {
+  transform: translateX(19px);
+  background-color: currentColor;
+}
