@@ -1,7 +1,7 @@
 import styles from "@styles/dashboard.module.scss";
 import { Layout } from "src/components/global/layout";
 import { Header } from "@components/dashboard/header";
-import { Accordion } from "@components/dashboard/accordion";
+import { AccordionItem } from "@components/dashboard/accordion";
 import Prisma, { Role } from "@prisma/client";
 import { trpc } from "@utils/trpc";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
@@ -15,6 +15,8 @@ import { Avatar } from "@components/global/avatar";
 import { DashboardItem } from "@components/dashboard/dashboard_item";
 import { Tag } from "@components/global/tag";
 import { BsWifi, BsWifiOff } from "react-icons/bs";
+
+import * as Accordion from "@radix-ui/react-accordion";
 
 const GameDashboard: NextPage<Props> = ({ game }) => {
   const addons = trpc.addon.all.useQuery({ limit: 5, game_id: game.id });
@@ -30,70 +32,73 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
         />
 
         <main className={styles.menu}>
-          <Accordion title="Statistics" defaultExpanded={true}>
-            a
-          </Accordion>
+          <Accordion.Root type="multiple">
 
-          <Accordion title="Default Addons" defaultExpanded={true}>
-            <section className={styles.itemList}>
+            <AccordionItem title="Statistics" defaultExpanded={true}>
+              a
+            </AccordionItem>
 
-              {addons.data?.items.map(addon =>
-                <DashboardItem
-                  key={addon.id}
-                  title={addon.title}
-                  href={`/dashboard/addon/${addon.id}`}
-                  avatar={<Avatar id="ghost" />}
-                >
-                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.online_size}</Tag>
-                  <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offline_size}</Tag>
-                  {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
-                </DashboardItem>
-              )}
+            <AccordionItem title="Default Addons" defaultExpanded={true}>
+              <section className={styles.itemList}>
 
-              <Button variant="secondary">Add default addon</Button>
-            </section>
-          </Accordion>
+                {addons.data?.items.map(addon =>
+                  <DashboardItem
+                    key={addon.id}
+                    title={addon.title}
+                    href={`/dashboard/addon/${addon.id}`}
+                    avatar={<Avatar id="ghost" />}
+                  >
+                    <Tag tooltip="Amount of offline cards contained in this addon"><BsWifi />{addon.online_size}</Tag>
+                    <Tag tooltip="Amount of offline cards contained in this addon"><BsWifiOff />{addon.offline_size}</Tag>
+                    {addon.is_official && <Tag tooltip="This is a verified addon">Official</Tag>}
+                  </DashboardItem>
+                )}
 
-          <Accordion title="Default Settings">
-            <section className={styles.settings}>
-              <Switch
-                name="allow_nsfw"
-                label="Allow nsfw"
-                value={allowNsfw}
-                disabled={true}
-                onChange={toggleAllowNsfw}
-              />
-              <Switch
-                name="loop_cards"
-                label="Loop cards"
-                value={allowNsfw}
-                onChange={toggleAllowNsfw}
-              />
+                <Button variant="secondary">Add default addon</Button>
+              </section>
+            </AccordionItem>
 
-              <Switch
-                name="available_online"
-                label="Available online"
-                value={allowNsfw}
-                onChange={toggleAllowNsfw}
-              />
+            <AccordionItem title="Default Settings">
+              <section className={styles.settings}>
+                <Switch
+                  name="allow_nsfw"
+                  label="Allow nsfw"
+                  value={allowNsfw}
+                  disabled={true}
+                  onChange={toggleAllowNsfw}
+                />
+                <Switch
+                  name="loop_cards"
+                  label="Loop cards"
+                  value={allowNsfw}
+                  onChange={toggleAllowNsfw}
+                />
 
-              <Switch
-                name="available_offline"
-                label="Available offline"
-                value={allowNsfw}
-                onChange={toggleAllowNsfw}
-              />
-            </section>
-          </Accordion>
+                <Switch
+                  name="available_online"
+                  label="Available online"
+                  value={allowNsfw}
+                  onChange={toggleAllowNsfw}
+                />
 
-          <Accordion title="Permissions">
-            <section className={styles.permissions}>
-              <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
-              <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit role={Role.CONTRIBUTOR} />
-              <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit role={Role.CONTRIBUTOR} />
-              <Button variant="secondary">Add collaborator</Button>
-            </section>
-          </Accordion>
+                <Switch
+                  name="available_offline"
+                  label="Available offline"
+                  value={allowNsfw}
+                  onChange={toggleAllowNsfw}
+                />
+              </section>
+            </AccordionItem>
+
+            <AccordionItem title="Permissions">
+              <section className={styles.permissions}>
+                <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
+                <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit role={Role.CONTRIBUTOR} />
+                <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit role={Role.CONTRIBUTOR} />
+                <Button variant="secondary">Add collaborator</Button>
+              </section>
+            </AccordionItem>
+          </Accordion.Root>
         </main>
 
       </div>
