@@ -1,0 +1,85 @@
+@use "src/styles/vars" as *;
+
+.trigger {
+  all: unset;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 15px;
+  font-size: 13px;
+  line-height: 1;
+  height: 35px;
+  gap: 5px;
+
+  color: $text;
+
+  border: 1px solid currentColor;
+  border-radius: 8px;
+
+  &:hover,
+  &:focus {
+    color: $accent;
+  }
+
+  &[data-placeholder] {
+    color: inherit;
+  }
+}
+
+.content {
+  overflow: hidden;
+  border-radius: 6px;
+  outline: currentColor solid 1px;
+  background-color: $primary;
+}
+
+.viewport {
+  padding: 5px;
+}
+
+.item {
+  font-size: 13px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 35px 0 25px;
+  position: relative;
+  user-select: none;
+
+  &[data-disabled] {
+    color: $textDark;
+    pointer-events: none;
+  }
+
+  &[data-highlighted] {
+    outline: none;
+    color: $accent;
+  }
+}
+
+.label {
+  padding: 0 25px;
+  font-size: 12px;
+  line-height: 25px;
+  color: inherit;
+}
+
+.indicator {
+  position: absolute;
+  left: 0;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 25px;
+  cursor: default;
+}

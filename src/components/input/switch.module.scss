@@ -15,6 +15,10 @@
     cursor: not-allowed !important;
     color: $textDark;
   }
+
+  &:focus-within {
+    color: $accent;
+  }
 }
 
 .label {
