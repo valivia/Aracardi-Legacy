@@ -1,5 +1,11 @@
 @use "src/styles/vars" as *;
 
+
+$height: 1.5rem;
+$thumb: calc($height * .8);
+$width: calc($height * 1.8);
+$offset: calc($height * 0.12);
+
 .main {
   border: none;
   margin: 0;
@@ -27,31 +33,40 @@
 
 .root {
   all: unset;
-  width: 42px;
-  height: 25px;
-  background-color: transparent;
-  border-radius: 9999px;
-  outline: 1px solid currentColor;
   position: relative;
+
+  width: $width;
+  height: $height;
+
+  background-color: transparent;
+
+  border-radius: 3vmin;
+  outline: 1px solid currentColor;
+
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   cursor: pointer;
 }
+
 .root:focus {
   box-shadow: 0 0 0 2px black;
 }
 
 .thumb {
   display: block;
-  width: 21px;
-  height: 21px;
-  border-radius: 9999px;
-  box-shadow: 0 2px 2px var(--blackA7);
-  transition: transform 100ms;
-  transform: translateX(2px);
-  will-change: transform;
+
+  width: $thumb;
+  height: $thumb;
+
+  border-radius: 3vmin;
   outline: 1px solid currentColor;
+
+  transition: transform 100ms;
+  transform: translateX($offset);
+
+  will-change: transform;
 }
+
 .thumb[data-state="checked"] {
-  transform: translateX(19px);
+  transform: translateX($width - $thumb - $offset);
   background-color: currentColor;
 }
