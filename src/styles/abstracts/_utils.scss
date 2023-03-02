@@ -1,0 +1,26 @@
+@mixin noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin componentSizes() {
+  &[data-size="sm"] {
+    font-size: 0.8125rem;
+    padding: 4px 10px;
+    border-width: 1px;
+  }
+
+  &[data-size="md"] {
+    font-size: 0.875rem;
+    padding: 6px 16px;
+  }
+
+  &[data-size="lg"] {
+    font-size: 0.9375rem;
+    padding: 8px 22px;
+  }
+}

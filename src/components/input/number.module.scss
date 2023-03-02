@@ -1,4 +1,4 @@
-@use "src/styles/vars" as *;
+@use "@styles/abstracts" as *;
 @use "src/styles/input" as *;
 $size: 20px;
 
@@ -6,7 +6,7 @@ $size: 20px;
     display: flex;
     gap: 5px;
     &:hover {
-        color: $textHover;
+        color: $textLight;
     }
 }
 
