@@ -1,24 +1,24 @@
 @use "@styles/abstracts" as *;
+@use "@styles/component" as component;
+
+.wrapper {
+  @include component.componentSizes;
+}
 
 .main {
+  @include component.baseComponent;
+
   color: $text;
   background-color: transparent;
 
   border: 1px solid currentColor;
-  border-radius: 9px;
+  border-radius: $borderRadius;
 
-  width: 100%;
+  font-size: 0.875rem;
 
-  @include large {
-    border-width: 2px;
-  }
+  padding-left: 0.7em;
 
-  // Size
-  @include componentSizes;
-
-  padding-left: 10px !important;
-
-  &:focus {
+  &:focus-visible {
     outline: none;
     color: $accent;
   }

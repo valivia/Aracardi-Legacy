@@ -16,7 +16,7 @@ const Select: React.FC<SelectProps> = ({ defaultValue, value, onValueChange, dis
         disabled={disabled}
       >
         <Radix.Value />
-        <Radix.Icon>
+        <Radix.Icon className={styles.icon}>
           <BsChevronDown />
         </Radix.Icon>
       </Radix.Trigger>

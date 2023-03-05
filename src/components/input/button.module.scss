@@ -1,56 +1,49 @@
 @use "@styles/abstracts" as *;
+@use "@styles/component" as component;
 
 .main {
-  border-radius: 100px;
+  @include component.baseComponent;
+  @include component.componentSizes;
+
+  border-radius: 100vmin;
   border: none;
+
   background-color: transparent;
   color: currentColor;
+
   text-align: center;
+  font-weight: 400;
+  white-space: nowrap;
 
   transform: scale(1);
   transition: transform 100ms ease-in-out;
 
-  font-weight: 400;
-  white-space: nowrap;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  @include large {
-    border-width: 2px;
-  }
-
-  // Variant
-  &[data-variant="primary"] {
-    color: $primary;
-    background-color: $text;
-
-    &:focus {
-      outline: none;
-      background-color: $accent;
-    }
-  }
-
-  &[data-variant="secondary"] {
-    color: $text;
-    background-color: transparent;
-    border: 1px solid currentColor;
-
-    @include large {
-      border-width: 2px;
-    }
-
-    &:focus {
-      outline: none;
-      color: $accent;
-    }
-  }
-
-  // Size
-  @include componentSizes;
-
   &:hover:not(:active) {
     transform: scale(1.05);
+  }
+}
+
+// Variants
+
+.main[data-variant="primary"] {
+  color: $primary;
+  background-color: $text;
+
+  &:focus-visible,
+  &:hover {
+    outline: none;
+    background-color: $accent;
+  }
+}
+
+.main[data-variant="secondary"] {
+  color: $text;
+  background-color: transparent;
+  border: 1px solid currentColor;
+
+  &:focus-visible,
+  &:hover {
+    outline: none;
+    color: $accent;
   }
 }

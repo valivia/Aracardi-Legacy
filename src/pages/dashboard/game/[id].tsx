@@ -34,11 +34,11 @@ const GameDashboard: NextPage<Props> = ({ game }) => {
         <main className={styles.menu}>
           <Accordion.Root type="multiple">
 
-            <AccordionItem title="Statistics" defaultExpanded={true}>
+            <AccordionItem title="Statistics">
               a
             </AccordionItem>
 
-            <AccordionItem title="Default Addons" defaultExpanded={true}>
+            <AccordionItem title="Default Addons">
               <section className={styles.itemList}>
 
                 {addons.data?.items.map(addon =>

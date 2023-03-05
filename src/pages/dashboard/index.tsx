@@ -33,7 +33,7 @@ const Dashboard: NextPage = () => {
 
         <main className={styles.menu}>
           <Accordion.Root type="multiple">
-            <AccordionItem title="My Games" defaultExpanded={true}>
+            <AccordionItem title="My Games">
               <section className={styles.itemList}>
 
                 {games.data?.items.map(game =>
@@ -52,7 +52,7 @@ const Dashboard: NextPage = () => {
               </section>
             </AccordionItem>
 
-            <AccordionItem title="My Addons" defaultExpanded={true}>
+            <AccordionItem title="My Addons">
               <span>aaa</span>
             </AccordionItem>
           </Accordion.Root>

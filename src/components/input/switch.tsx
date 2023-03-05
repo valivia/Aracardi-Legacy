@@ -12,10 +12,7 @@ const Switch: React.FC<Props> = ({
   const text = label ?? name;
 
   return (
-    <fieldset
-      className={styles.main}
-      disabled={disabled}
-    >
+    <div className={styles.main}>
       <label className={styles.label} htmlFor={name}>
         {text}
       </label>
@@ -32,7 +29,7 @@ const Switch: React.FC<Props> = ({
       </Radix.Root>
 
 
-    </fieldset>
+    </div>
   );
 };
 
