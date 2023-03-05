@@ -72,4 +72,5 @@ $offset: calc($height * 0.12);
 .thumb[data-state="checked"] {
   transform: translateX($width - $thumb - $offset);
   background-color: currentColor;
+  outline: none;
 }
