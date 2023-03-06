@@ -14,11 +14,12 @@
   border: 1px solid currentColor;
   border-radius: $borderRadius;
 
-  font-size: 0.875rem;
+  font-size: 1em;
 
   padding-left: 0.7em;
 
-  &:focus-visible {
+  &:focus-visible,
+  &:hover {
     outline: none;
     color: $accent;
   }
