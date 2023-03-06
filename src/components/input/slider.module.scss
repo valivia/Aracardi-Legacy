@@ -1,0 +1,60 @@
+@use "@styles/abstracts" as *;
+@use "@styles/component" as component;
+
+$height: 1.2rem;
+$thumb-size: 0.7em;
+
+.root {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  user-select: none;
+  touch-action: none;
+
+  width: 200px;
+  height: $height;
+  font-size: $height;
+
+  color: $text;
+}
+
+.track,
+.range,
+.thumb {
+  border-radius: 100vmin;
+}
+
+.track {
+  background-color: $textDark;
+
+  position: relative;
+
+  flex-grow: 1;
+  height: 0.1em;
+}
+
+.range {
+  position: absolute;
+
+  background-color: currentColor;
+
+  height: 100%;
+}
+
+.thumb {
+  display: block;
+
+  width: $thumb-size;
+  height: $thumb-size;
+
+  background-color: currentColor;
+
+  &:hover {
+    background-color: $accent;
+  }
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 5px rgba($accent, 0.2);
+  }
+}

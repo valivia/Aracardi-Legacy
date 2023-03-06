@@ -1,6 +1,7 @@
 import { AccordionItem } from "@components/dashboard/accordion";
 import { Button } from "@components/input/button";
 import { Select } from "@components/input/select";
+import { Slider } from "@components/input/slider";
 import { Switch } from "@components/input/switch";
 import { TextInput } from "@components/input/text_input";
 import { Root } from "@radix-ui/react-accordion";
@@ -10,6 +11,8 @@ import React from "react";
 const Demo: NextPage = () => {
   const [selection, setSelection] = React.useState("foo");
   const [switchValue, setSwitchValue] = React.useState(false);
+  const [sliderValue, setSliderValue] = React.useState([0, 100]);
+  const [slider2Value, setSlider2Value] = React.useState([0]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -34,7 +37,32 @@ const Demo: NextPage = () => {
           />
           <TextInput placeholder="Weewoo" />
         </div>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "inline-flex" }}>
+            {sliderValue.map((v, i) => <p key={i}>{v}-</p>)}
+          </div>
+
+          <Slider
+            max={100}
+            min={0}
+            step={1}
+            value={sliderValue}
+            onValueChange={setSliderValue}
+          />
+
+          <div style={{ display: "inline-flex" }}>
+            {slider2Value.map((v, i) => <p key={i}>{v}-</p>)}
+          </div>
+
+          <Slider
+
+            max={300}
+            min={0}
+            step={5}
+            value={slider2Value}
+            onValueChange={setSlider2Value}
+          />
+
         </div>
       </section>
       {/* Switch */}
