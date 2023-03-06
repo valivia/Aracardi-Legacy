@@ -1,4 +1,4 @@
-@use "src/styles/vars" as *;
+@use "@styles/abstracts" as *;
 
 .main {
   border: 1px solid currentColor;
@@ -36,7 +36,6 @@
 }
 
 .avatar {
-
   width: 64px;
   height: 64px;
 
@@ -118,7 +117,12 @@
   border: none;
   color: currentColor;
 
-  &>svg {
+  &:focus {
+    outline: none;
+    color: $accent;
+  }
+
+  & > svg {
     width: 100%;
     height: 100%;
   }

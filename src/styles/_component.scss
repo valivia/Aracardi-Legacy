@@ -1,0 +1,34 @@
+$font-sm: 0.8125rem;
+$font-md: 0.875rem;
+$font-lg: 1rem;
+
+$paddingBlock: 0.5em;
+$paddingInline: 1.2em;
+$margin: 0.2em;
+
+$borderRadius: 0.5em;
+
+@mixin baseComponent() {
+  padding-block: $paddingBlock;
+  padding-inline: $paddingInline;
+  margin: $margin;
+
+  border-radius: $borderRadius;
+  line-height: 1;
+}
+
+@mixin componentSizes() {
+  font-size: $font-md;
+
+  &[data-size="sm"] {
+    font-size: $font-sm;
+  }
+
+  &[data-size="md"] {
+    font-size: $font-md;
+  }
+
+  &[data-size="lg"] {
+    font-size: $font-lg;
+  }
+}

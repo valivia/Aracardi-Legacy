@@ -1,16 +1,18 @@
 import styles from "@styles/dashboard.module.scss";
 import { Layout } from "src/components/global/layout";
 import { Header } from "@components/dashboard/header";
-import { Accordion } from "@components/dashboard/accordion";
+import { AccordionItem } from "@components/dashboard/accordion";
 import Prisma, { Role } from "@prisma/client";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { prisma } from "src/server/prisma";
 import { Button } from "@components/input/button";
-import { Toggle } from "@components/input/toggle";
+import { Switch } from "@components/input/switch";
 import { User } from "@components/dashboard/user";
 
 import { useBoolean } from "@hooks/useBoolean";
 import { Avatar } from "@components/global/avatar";
+
+import * as Accordion from "@radix-ui/react-accordion";
 
 const AddonDashboard: NextPage<Props> = ({ addon }) => {
   const { value: allowNsfw, toggle: toggleAllowNsfw } = useBoolean(true);
@@ -25,50 +27,52 @@ const AddonDashboard: NextPage<Props> = ({ addon }) => {
         />
 
         <main className={styles.menu}>
-          <Accordion title="Statistics" defaultExpanded={true}>
-            a
-          </Accordion>
+          <Accordion.Root type="multiple">
+            <AccordionItem title="Statistics" defaultExpanded={true}>
+              a
+            </AccordionItem>
 
-          <Accordion title="Default Settings">
-            <section className={styles.settings}>
-              <Toggle
-                name="allow_nsfw"
-                label="Allow nsfw"
-                value={allowNsfw}
-                disabled={true}
-                onChange={() => toggleAllowNsfw()}
-              />
-              <Toggle
-                name="loop_cards"
-                label="Loop cards"
-                value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
-              />
+            <AccordionItem title="Default Settings">
+              <section className={styles.settings}>
+                <Switch
+                  name="allow_nsfw"
+                  label="Allow nsfw"
+                  value={allowNsfw}
+                  disabled={true}
+                  onChange={() => toggleAllowNsfw()}
+                />
+                <Switch
+                  name="loop_cards"
+                  label="Loop cards"
+                  value={allowNsfw}
+                  onChange={() => toggleAllowNsfw()}
+                />
 
-              <Toggle
-                name="available_online"
-                label="Available online"
-                value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
-              />
+                <Switch
+                  name="available_online"
+                  label="Available online"
+                  value={allowNsfw}
+                  onChange={() => toggleAllowNsfw()}
+                />
 
-              <Toggle
-                name="available_offline"
-                label="Available offline"
-                value={allowNsfw}
-                onChange={() => toggleAllowNsfw()}
-              />
-            </section>
-          </Accordion>
+                <Switch
+                  name="available_offline"
+                  label="Available offline"
+                  value={allowNsfw}
+                  onChange={() => toggleAllowNsfw()}
+                />
+              </section>
+            </AccordionItem>
 
-          <Accordion title="Permissions">
-            <section className={styles.permissions}>
-              <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
-              <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit role={Role.CONTRIBUTOR} />
-              <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit role={Role.CONTRIBUTOR} />
-              <Button variant="secondary">Add collaborator</Button>
-            </section>
-          </Accordion>
+            <AccordionItem title="Permissions">
+              <section className={styles.permissions}>
+                <User user={{ name: "Owlive", avatar_id: "marceline" }} role={Role.AUTHOR} />
+                <User user={{ name: "Usyer", avatar_id: "ghost" }} canEdit role={Role.CONTRIBUTOR} />
+                <User user={{ name: "Birbreme", avatar_id: "froggi" }} canEdit role={Role.CONTRIBUTOR} />
+                <Button variant="secondary">Add collaborator</Button>
+              </section>
+            </AccordionItem>
+          </Accordion.Root>
         </main>
 
       </div>
