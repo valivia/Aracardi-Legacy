@@ -1,6 +1,6 @@
 import { Player } from "@structs/player";
 import styles from "./player_menu.module.scss";
-import avatars from "@assets/avatars/avatars";
+import { avatars } from "@public/avatars/avatars";
 import AvatarComponent from "./avatar.module";
 import { useState } from "react";
 import { motion } from "framer-motion";

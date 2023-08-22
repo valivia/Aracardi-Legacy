@@ -1,6 +1,6 @@
 import { Player } from "@structs/player";
 import styles from "./player.module.scss";
-import avatars from "@assets/avatars/avatars";
+import { avatars } from "@public/avatars/avatars";
 import { motion } from "framer-motion";
 
 function PlayerComponent({ player, active = false, canRemove = true, removePlayer }: Props) {
@@ -35,8 +35,8 @@ function PlayerComponent({ player, active = false, canRemove = true, removePlaye
 export default PlayerComponent;
 
 interface Props {
-    player: Player;
-    removePlayer: (player: Player) => void;
-    active?: boolean;
-    canRemove?: boolean;
+  player: Player;
+  removePlayer: (player: Player) => void;
+  active?: boolean;
+  canRemove?: boolean;
 }
