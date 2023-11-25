@@ -8,6 +8,9 @@
 # data
 /assets
 /data
+/public/cards
+/convert/*
+!/convert/convert.js
 
 # testing
 /coverage
