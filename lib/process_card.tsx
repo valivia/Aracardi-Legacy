@@ -5,15 +5,16 @@ import shuffle from "./shuffle";
 const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[]): processedCard => {
   const card = { ...cardInput };
   let players = [...playersInput];
-  const player = { ...playerInput };
+  const currentPlayer = { ...playerInput };
+  const currentPlayerIndex = players.findIndex((player) => player.id == currentPlayer.id);
 
-  const text = card.text as string;
+  const text = card.text;
 
   const output: processedCard = {
     ...card,
     turns: card.turns ?? 0,
     players: [],
-    active_id: `${card.id}_${Date.now()}_${player.name}`,
+    active_id: `${card.id}_${Date.now()}_${currentPlayer.name}`,
     processed_text: [],
   };
 
@@ -23,8 +24,9 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
   const previousPlayerRegex = /%PREVIOUS_PLAYER%/g;
   if (text.match(previousPlayerRegex)) {
     // Get player
-    const currentPlayerIndex = players.indexOf(player ?? players[0]);
-    const match_player = players.splice(currentPlayerIndex - 1, 1)[0];
+    let targetPlayerIndex = currentPlayerIndex - 1;
+    if (targetPlayerIndex < players.length) targetPlayerIndex = players.length - 1;
+    const match_player = players[targetPlayerIndex];
 
     // Add player to card list
     output.players.push(match_player);
@@ -41,10 +43,9 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
   const nextPlayerRegex = /%NEXT_PLAYER%/g;
   if (text.match(nextPlayerRegex)) {
     // Get player
-    const currentPlayerIndex = players.indexOf(player ?? players[0]);
-    const match_player = players.splice(currentPlayerIndex + 1, 1)[0];
-
-    // Add player to card list
+    let targetPlayerIndex = currentPlayerIndex + 1;
+    if (targetPlayerIndex >= players.length) targetPlayerIndex = 0;
+    const match_player = players[targetPlayerIndex];
     output.players.push(match_player);
 
     // Loop over card text and replace with player name.
@@ -57,24 +58,24 @@ const processCard = (cardInput: Card, playerInput: Player, playersInput: Player[
 
   // Current player.
   const currentPlayerRegex = /%SELF%/g;
-  // Get player.
-  const currentPlayerIndex = players.indexOf(player ?? players[0]);
-  players.splice(currentPlayerIndex, 1)[0];
-
-  // Add player to card list
-  output.players.push(player);
-
-  // Check for matches.
   if (text.match(currentPlayerRegex)) {
+    // Get player.
+    const match_player = players[currentPlayerIndex];
+    output.players.push(match_player);
+
     // Loop over card text and replace with player name.
     processed_text = processed_text.map((substring, index) => {
       if (typeof substring !== "string") return substring;
       if (!substring.match(currentPlayerRegex)) return substring;
       return (
-        <var key={`${output.active_id}_self_${index}`}><u> {player.name}</u></var>
+        <var key={`${output.active_id}_self_${index}`}><u> {match_player.name}</u></var>
       );
     });
   }
+
+
+  // Removed used players from list.
+  players = players.filter((player) => output.players.findIndex((p) => p.id == player.id) === -1);
 
   // Random players
   let randomPlayers: [placeholder: string, player: Player][] = [];
