@@ -5,26 +5,43 @@ const PrismaClient = require("@prisma/client").PrismaClient;
 
 const client = require("https");
 const extensions = ["png", "jpg", "jpeg", "gif"];
+// main pack  "a5eb2b3b-9326-460d-b0b0-11e07a7617cd";
+// dev pack "564f41d0-0389-43bc-9f79-70e951008b7c"
+const addon_id = "564f41d0-0389-43bc-9f79-70e951008b7c";
 
 const main = async () => {
+  const prisma = new PrismaClient();
+
   const success = [];
   const failed = [];
 
   // Process cards
-  for (let card of cards) {
-    const newCard = { ...card };
-    newCard.id = card.id ?? uuidv4();
+  for (let originalCard of cards) {
+    const card = {};
+    card.id = originalCard.id ?? uuidv4();
 
+    // Text
+    card.text = originalCard.text;
     if (card.text === "") {
-      failed.push(card);
-      console.warn(`${card} has no text`);
+      failed.push({ ...card, ...originalCard });
+      console.warn(`${card.id} has no text`);
       continue;
     }
 
+    // Title
+    card.title = originalCard.title;
+
+    // Nsfw
+    card.is_nsfw = originalCard.is_nsfw;
+
+    //  Turns
+    card.turns = originalCard.turns;
     if (card.turns === 0) {
-      newCard.turns = undefined;
+      card.turns = undefined;
     }
 
+    // Background
+    card.background = originalCard.background;
     if (card.background) {
       try {
         const extension = card.background.split(".").pop();
@@ -35,32 +52,35 @@ const main = async () => {
         await downloadImageFromURL(card.background, card.id);
 
         card.has_image = true;
-        card.background = undefined;
       } catch (e) {
         console.log(`${card.id} failed: ${e.message}`);
         failed.push(card);
       }
+    } else {
+      card.has_image = false;
     }
-
-    if (!card.has_image && !card.background) card.has_image = false;
+    card.background = undefined;
 
     success.push(card);
   }
 
 
   // save cards
-  cards = newCards;
-  fs.writeFileSync("./convert/success.json", JSON.stringify(cards));
+  fs.writeFileSync("./convert/success.json", JSON.stringify(success));
   fs.writeFileSync("./convert/failed.json", JSON.stringify(failed));
 
 
   // save cards to db
-  await prisma.card.createMany({
-    data: success.map((card) => ({
-      ...card,
-      addon_id: "a5eb2b3b-9326-460d-b0b0-11e07a7617cd",
-    })),
-  });
+  if (addon_id) {
+    await prisma.card.createMany({
+      data: success.map((card) => ({
+        ...card,
+        addon_id,
+      })),
+    });
+
+    console.log("Cards saved to db");
+  }
 
   console.log(`Success: ${success.length}`);
   console.log(`Failed: ${failed.length}`);
