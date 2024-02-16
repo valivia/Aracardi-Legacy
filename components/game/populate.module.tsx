@@ -1,5 +1,4 @@
 import { Player } from "@structs/player";
-import { Scene } from "@structs/scene";
 import styles from "./populate.module.scss";
 import PlayerComponent from "@components/player/player.module";
 import PlayerMenuComponent from "@components/player/player_menu.module";
@@ -9,7 +8,7 @@ import { motion } from "framer-motion";
 const MIN_PLAYER_COUNT = process.env.NEXT_PUBLIC_MINIMUM_PLAYER_COUNT as unknown as number;
 const MAX_PLAYER_COUNT = process.env.NEXT_PUBLIC_MAXIMUM_PLAYER_COUNT as unknown as number;
 
-function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers }: Props) {
+function PopulateScene({ players, addPlayer, removePlayer, startGame, loadPlayers }: Props) {
   const [canLoadPlayers, setCanLoad] = useState(false);
 
   // Check if can load old players.
@@ -21,13 +20,7 @@ function PopulateScene({ players, addPlayer, removePlayer, setScene, loadPlayers
 
   }, [players, canLoadPlayers]);
 
-  // Start the game and save the current players.
-  const startGame = () => {
-    setScene(Scene.ONGOING);
-  };
-
   const loadPlayerElement = <u onClick={() => loadPlayers()} className={styles.loadPrev}>Load from previous session</u>;
-
 
   return (
     <motion.main
@@ -84,5 +77,5 @@ interface Props {
   addPlayer: (player: Player) => boolean;
   removePlayer: (player: Player) => void;
   loadPlayers: () => void;
-  setScene: (scene: Scene) => void;
+  startGame: () => void;
 }

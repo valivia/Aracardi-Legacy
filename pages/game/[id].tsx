@@ -46,6 +46,17 @@ const GamePage = ({ game, addons }: Props) => {
     setPlayers(json);
   };
 
+  const startGame = () => {
+    fetch("/api/start", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ players, game, addons }),
+    });
+    setScene(Scene.ONGOING);
+  };
+
   const removePlayer = (player: Player) => setPlayers(old => old.filter(x => x.name !== player.name));
 
   if (scene === Scene.SETUP) return (
@@ -67,7 +78,7 @@ const GamePage = ({ game, addons }: Props) => {
         addPlayer={addPlayer}
         removePlayer={removePlayer}
         loadPlayers={loadPlayers}
-        setScene={setScene}
+        startGame={startGame}
       />
     </LayoutComponent>
   );
@@ -127,7 +138,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       cards: addon.cards.map(card => ({ ...card, created_at: Number(addon.created_at) })),
     };
   }
-  ).filter(addon => addon.card_count > 1);
+  ).filter(addon => addon.card_count > 0);
 
   return {
     props: { game, addons },

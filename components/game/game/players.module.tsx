@@ -41,7 +41,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
 
       {/* Add */}
       {players.length < MAX_PLAYER_COUNT &&
-        <motion.article
+        <motion.div
           className={styles.playerButton}
           onClick={() => setAddPlayerIsOpen(true)}
 
@@ -53,7 +53,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
           }}
         >
           +
-        </motion.article>
+        </motion.div>
       }
 
 
@@ -70,7 +70,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
 
 
       {/* Shuffle */}
-      <motion.article
+      <motion.div
         className={styles.playerButton}
         onClick={shufflePlayers}
 
@@ -82,7 +82,7 @@ function PlayersComponent({ players, currentPlayer, removePlayer, addPlayer, shu
         transition={{ type: "spring", stiffness: 260, damping: 20 }}
       >
         ~
-      </motion.article>
+      </motion.div>
 
 
     </motion.section>

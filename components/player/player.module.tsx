@@ -7,7 +7,7 @@ function PlayerComponent({ player, active = false, canRemove = true, removePlaye
   const Avatar = avatars[player.avatar].element;
 
   return (
-    <motion.article
+    <motion.div
       className={styles.main}
       id={`player_${player.name}`}
       data-active={active}
@@ -28,7 +28,7 @@ function PlayerComponent({ player, active = false, canRemove = true, removePlaye
       </section>
       {/* Name */}
       <p className={styles.name}>{player.name}</p>
-    </motion.article>
+    </motion.div>
   );
 }
 
