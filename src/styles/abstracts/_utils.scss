@@ -1,0 +1,18 @@
+@use "@styles/abstracts/theme" as *;
+
+@mixin noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@mixin divider() {
+  height: 2px;
+  background-color: $text;
+  width: 100%;
+
+  align-self: center;
+}

@@ -1,26 +1,25 @@
-@use "src/styles/vars" as *;
-@use "src/styles/input" as *;
-$size: 20px;
+@use "@styles/abstracts" as *;
 
 .main {
-    display: flex;
-    gap: 5px;
-    &:hover {
-        color: $textHover;
-    }
+  display: flex;
+  gap: 5px;
+  &:hover {
+    color: $textLight;
+  }
 }
 
 .label {
-    @include noselect();
+  @include noselect();
 }
 
 .input {
-    background-color: transparent;
-    color: currentColor;
-    border: none;
-    border-bottom: 1px solid currentColor;
+  background-color: transparent;
+  color: currentColor;
 
-    &:focus-visible {
-        outline: none;
-    }
+  border: none;
+  border-bottom: 1px solid currentColor;
+
+  &:focus-visible {
+    outline: none;
+  }
 }

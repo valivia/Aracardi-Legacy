@@ -12,16 +12,18 @@ const TextInput: React.FC<Props> = ({
 }) => {
 
   return (
-    <input
-      type={type}
-      className={styles.main}
-      placeholder={placeholder}
+    <div className={styles.wrapper}>
+      <input
+        type={type}
+        className={styles.main}
+        placeholder={placeholder}
 
-      value={value}
-      onChange={onChange}
+        value={value}
+        onChange={onChange}
 
-      data-size={size}
-    />
+        data-size={size}
+      />
+    </div>
   );
 };
 

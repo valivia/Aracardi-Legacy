@@ -1,0 +1,85 @@
+@use "@styles/abstracts" as *;
+@use "@styles/component" as component;
+
+.trigger,
+.item {
+  gap: 0.3em;
+}
+
+.trigger {
+  @include component.baseComponent;
+  @include component.componentSizes;
+
+  background-color: unset;
+
+  display: inline-flex;
+
+  color: $text;
+  border: 1px solid currentColor;
+
+  & > .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: $accent;
+    outline: currentColor;
+  }
+}
+
+.content {
+  overflow: hidden;
+
+  border-radius: 0.5em;
+  outline: currentColor solid 1px;
+
+  background-color: $primary;
+}
+
+.viewport {
+  padding: 5px;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  padding-inline: 1.6em;
+  height: 2em;
+
+  user-select: none;
+
+  &[data-disabled] {
+    color: $textDark;
+    pointer-events: none;
+  }
+
+  &[data-highlighted] {
+    outline: none;
+    color: $accent;
+  }
+}
+
+.indicator {
+  left: 0;
+  width: 1.6em;
+
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scrollButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 1.6em;
+
+  cursor: default;
+}
