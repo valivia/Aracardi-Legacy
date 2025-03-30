@@ -1,2 +1,2 @@
 # 🦜 Aracardi
-⚠️ Deprecated in favour of [sveltekit + rust](https://github.com/valivia/Aracardi) ⚠️
+⚠️ Deprecated in favour of [sveltekit](https://github.com/valivia/Aracardi) ⚠️
